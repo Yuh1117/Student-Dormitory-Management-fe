@@ -4,7 +4,7 @@ import {MaterialCommunityIcons } from "@expo/vector-icons";
 import AdminHome from '../../screens/home/admin/adminHome';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import ListRoomsScreen from '../../screens/room/ListRoomsScreen';
+import ListRoomsScreen from '../../screens/room/admin/ListRoomsScreen';
 
 
 const Tab = createBottomTabNavigator();
