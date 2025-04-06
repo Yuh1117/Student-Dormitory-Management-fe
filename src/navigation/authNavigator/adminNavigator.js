@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {MaterialCommunityIcons } from "@expo/vector-icons";
-import AdminHome from '../../screens/home/admin/adminHome';
+import AdminHome from '../../components/home/admin/adminHome';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import ListRoomsScreen from '../../screens/room/admin/ListRoomsScreen';
+import ListRoomsScreen from '../../components/room/admin/ListRoomsScreen';
 
 
 const Tab = createBottomTabNavigator();

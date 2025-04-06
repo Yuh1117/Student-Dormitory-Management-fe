@@ -1,12 +1,12 @@
 import  { useState, useEffect } from 'react';
 import {ActivityIndicator, View, StyleSheet, ScrollView } from 'react-native';
-import {RoomCard } from '../../../components/card/RoomCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Apis, { endpoints } from '../../../config/Apis';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MyStyles from '../../../styles/MyStyles';
-import BuildingsSegmentedButtons from '../../../components/SegmentedButtons/BuildingsSegmentedButtons';
 import useFetchWithToken from '../../../config/UserFetchWithToken';
+import BuildingsSegmentedButtons from '../../SegmentedButtons/BuildingsSegmentedButtons';
+import { RoomCard } from '../../card/RoomCard';
 
 
   

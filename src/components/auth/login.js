@@ -1,36 +1,36 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert,ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import Apis, { endpoints } from "../../config/Apis";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const { control, handleSubmit, formState: { errors } } = useForm();
   const [loading, setLoading] = useState(false); // Trạng thái loading
 
   const onSubmit = async (data) => {
-    setLoading(true); 
+    setLoading(true);
     try {
-      const response = await Apis.post(endpoints["login"],{
+      const response = await Apis.post(endpoints["login"], {
         username: data.username,
         password: data.password,
       })
-  
+
       if (response.status === 200) {
 
         //lấy các thông tin token và user
         const accessToken = response.data.access_token;
         const refreshToken = response.data.refresh_token;
         const user = response.data.user;
-        
+
         //lưu lại vào AsyncStorage để cần thì gọi
         await AsyncStorage.setItem("access-token", accessToken);
         await AsyncStorage.setItem("refresh-token", refreshToken);
         await AsyncStorage.setItem("user", JSON.stringify(user));
 
 
-        const is_staff  = response.data.user.is_staff 
+        const is_staff = response.data.user.is_staff
         // nếu là admin thì chuyển đến admin home, nếu là user thường thì chuyển đến trang user
         is_staff ? navigation.navigate("AdminHome") : navigation.navigate('UserHome')
       } else {
@@ -39,7 +39,7 @@ const LoginScreen = ({navigation}) => {
     } catch (error) {
       console.log(error.response ? error.response.data : error);
       Alert.alert('Error', error.response?.data?.error_description || 'Login failed');
-    }finally {
+    } finally {
       setLoading(false); // Ẩn spinner khi xong
     }
   };
@@ -82,7 +82,7 @@ const LoginScreen = ({navigation}) => {
       {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)} disabled={loading}>
-      {loading ? <ActivityIndicator color="white" /> : <Text style={styles.buttonText}>Login</Text>}
+        {loading ? <ActivityIndicator color="white" /> : <Text style={styles.buttonText}>Login</Text>}
       </TouchableOpacity>
     </View>
   );
