@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import UserHome from './userHome';
-import NotiMain from '../notifications/main';
+import UserHome from '../../screens/home/user/userHome';
+import NotiMain from '../../screens/notifications/notiMainScreen';
 import {MaterialCommunityIcons } from "@expo/vector-icons";
-import AdminHome from './adminHome';
+import { createStackNavigator } from '@react-navigation/stack';
 
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-//chia thành 2 giao diện cho người dùng admin và user thường
 
 // UserHome main chứa các tab cho user thường dùng
 export function UserHomeMain(){
@@ -37,30 +37,6 @@ export function UserHomeMain(){
                 }
                 }></Tab.Screen>
         </Tab.Navigator>  
-    )
-}
-
-
-// trang AdminHomeMain chứa các tab cho admin dùng
-export function AdminHomeMain(){
-    return (
-        <Tab.Navigator ScreenOptions ={
-            {
-                headerShown: false,
-                tabBarActiveTintColor: "blue",
-                tabBarInactiveTintColor: "gray",
-            }
-        }>
-            <Tab.Screen name = "Các Phòng" component = {AdminHome} options={
-                { 
-                    headerShown: false,
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="home" color={color} size={size} />
-                      ),
-                }
-            }></Tab.Screen>
-            
-        </Tab.Navigator> 
     )
 }
 const styles = StyleSheet.create({
