@@ -10,7 +10,7 @@ const useFetchWithToken = () => {
     try {
       setLoading(true);
 
-    //   const token = await AsyncStorage.getItem('access-token');
+      //   const token = await AsyncStorage.getItem('access-token');
 
       const config = {
         method,

@@ -4,6 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import Apis, { endpoints } from "../../config/Apis";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import styles from "./styles";
 
 const LoginScreen = ({ navigation }) => {
   const { control, handleSubmit, formState: { errors } } = useForm();
@@ -87,42 +88,5 @@ const LoginScreen = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-    minWidth: 300,
-  },
-  error: {
-    color: 'red',
-    marginBottom: 10,
-  },
-  button: {
-    backgroundColor: 'blue',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
 
 export default LoginScreen;

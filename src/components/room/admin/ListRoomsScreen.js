@@ -4,9 +4,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Apis, { endpoints } from '../../../config/Apis';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MyStyles from '../../../styles/MyStyles';
-import useFetchWithToken from '../../../config/UserFetchWithToken';
 import BuildingsSegmentedButtons from '../../SegmentedButtons/BuildingsSegmentedButtons';
 import { RoomCard } from '../../card/RoomCard';
+import useFetchWithToken from '../../../config/UseFetchWithToken';
 
 
   

@@ -4,6 +4,7 @@ import UserHome from '../../components/home/user/userHome';
 import NotiMain from '../../components/notifications/notiMainScreen';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createStackNavigator } from '@react-navigation/stack';
+import Account from '../../components/auth/Account';
 
 
 const Tab = createBottomTabNavigator();
@@ -33,6 +34,14 @@ export function UserHomeMain() {
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="bell" color={color} size={size} />
+                    ),
+                }
+            }></Tab.Screen>
+            <Tab.Screen name="Tài khoản" component={Account} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="account" color={color} size={size} />
                     ),
                 }
             }></Tab.Screen>
