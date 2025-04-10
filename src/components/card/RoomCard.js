@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { Avatar, Card, IconButton } from 'react-native-paper';
 import { useState } from 'react';
+import AdminStyles from '../../styles/AdminStyles';
 
 export const RoomCard = ({room}) => {
   const isAvailable = room.status === 'Empty';
@@ -10,13 +11,13 @@ export const RoomCard = ({room}) => {
       key={room.id}
       style={[
         styles.container,
-        isAvailable && { backgroundColor: '#e0f7fa' }, // xanh nhạt nếu còn trống
+        isAvailable && {...AdminStyles.roomBgColor }, // xanh nhạt nếu còn trống
       ]}
     >
       <Card.Title
         title = {`Phòng ${room.room_number}`}
         subtitle={`Phòng máy lạnh, ${room.total_beds} giường`}
-        left={(props) => <Avatar.Icon {...props} icon="home" />}
+        left={(props) => <Avatar.Icon {...props} icon="home" style={AdminStyles.iconRoomColor}/>}
         right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
       />
       <Card.Content>

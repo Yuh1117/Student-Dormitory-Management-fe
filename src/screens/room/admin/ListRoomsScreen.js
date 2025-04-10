@@ -1,50 +1,52 @@
-import  { useState, useEffect } from 'react';
-import {ActivityIndicator, View, StyleSheet, ScrollView } from 'react-native';
+import  { useState, useEffect,useCallback  } from 'react';
+import {ActivityIndicator, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import {RoomCard } from '../../../components/card/RoomCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Apis, { endpoints } from '../../../config/Apis';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MyStyles from '../../../styles/MyStyles';
 import BuildingsSegmentedButtons from '../../../components/SegmentedButtons/BuildingsSegmentedButtons';
-import useFetchWithToken from '../../../config/UserFetchWithToken';
+import useFetchWithToken from '../../../config/UseFetchWithToken';
+import { FlatList } from 'react-native-gesture-handler';
+import { useNavigation,useFocusEffect  } from '@react-navigation/native';
+import AdminStyles from '../../../styles/AdminStyles';
 
 
   
 export default function ListRoomsScreen() {
+  const navigation = useNavigation();
   const {loading, fetchWithToken} = useFetchWithToken();
   const [rooms,setRooms] = useState([]);
   const [buildings,setBuilding] = useState([]);
-  // const [loading, setLoading] = useState(true)
   const [page,setPage] = useState(1);
   const [buildindId,setBuildingId] = useState(null);
   const [roomNumber,setRoomNumber] = useState(null);
 
-
+// hàm lấy các phòng
   const loadRooms = async () => {  
 //  lấy token
     const token = await AsyncStorage.getItem("access-token");
     let url = `${endpoints['listRooms']}?page=${page}`
     if (buildindId) {
-      console.log("vào")
       url = `${url}&building_id=${parseInt(buildindId)}`
     }
     if(roomNumber){
       url = `${url}&room_number=${roomNumber}`
     }
-    console.info(url)
     //gọi api
-    const data = await fetchWithToken(
-      { 
-        url, 
-        headers : {Authorization: `Bearer ${token}`} 
-      }
-    );
-    // console.info(url)
-    if (data?.results) setRooms(data.results);
+    if (page > 0) {
+        const data = await fetchWithToken({
+          url,
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        if(data?.results) setRooms([...rooms,...data.results]);
+        if(data.next===null) setPage(0);
+    }
  
   };
  
-
+// hàm lấy id của building
   const loadBuilding = async ()=>{
     //lấy token
     const token = await AsyncStorage.getItem("access-token");
@@ -57,29 +59,69 @@ export default function ListRoomsScreen() {
         headers : {Authorization: `Bearer ${token}`} 
       }
     );
-    console.info(data)
     if (data) setBuilding(data);
+    setBuildingId(data[0].id) // lấy mặc định là tòa đầu tiên
   }
+
+  //hiển thị danh sách các tòa 
   useEffect(()=>{
     loadBuilding();
   },[])
-  useEffect(() => {
-    console.log('Building ID changed:===', buildindId);
-    if (buildindId !== null) {
-      loadRooms();  // Gọi loadRooms mỗi khi buildindId thay đổi
-    }
-  }, [buildindId]);
-  
 
+  // hiển thị danh sách phòng khi có building và page thay đổi
+  useEffect(() => {
+    if (buildindId) {
+      loadRooms();
+    }
+  }, [buildindId, page]); 
+
+  // hàm load thêm trang nữa
+  const loadMore = () =>{
+    if(!loading && rooms.length > 0 && page>0)
+    setPage(page+1)
+  }
+  
+  // hàm khi thay đổi chọn tòa
+  const changeBuilding = (val,callback) =>{
+    setPage(1)
+    setRooms([])
+    callback(val)
+  }
+
+  // khi back từ detail trở về laod lại các room
+  useFocusEffect(
+    useCallback(() => {
+      // Reset lại rooms, page và gọi lại loadRooms
+      setRooms([]);
+      setPage(1); // Triggers useEffect to reload rooms
+      loadRooms()
+    }, [buildindId]) // khi tòa nhà đổi thì cũng chạy lại
+  );
   return (
-    <SafeAreaView > 
-      <ScrollView contentContainerStyle={[styles.container,MyStyles.pb]}>
-        
-        <BuildingsSegmentedButtons buildings={buildings} value={buildindId} onValueChange={setBuildingId} buildingId={buildindId}/>
-        
-        {loading ? <ActivityIndicator color="white" /> : rooms.map(r => <RoomCard key={r.id} room={r}/>)}
-      
+    <SafeAreaView style ={AdminStyles.bgc}> 
+      <SafeAreaView style={AdminStyles.bgc}>
+      <ScrollView contentContainerStyle ={[MyStyles.ml,MyStyles.mr]}>
+        <BuildingsSegmentedButtons buildings={buildings} value={buildindId} onValueChange={val => changeBuilding(val,setBuildingId)} buildingId={buildindId}/>
       </ScrollView>
+      </SafeAreaView>
+      
+      
+      <FlatList contentContainerStyle={[styles.container,MyStyles.pbFlatList]} ListFooterComponent={loading && <ActivityIndicator />}
+        data={rooms}
+        renderItem={
+          ({item}) => (
+          <TouchableOpacity 
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate("roomDetail", { room: item, title: `Phòng ${item.room_number}`, });
+            }}
+          >
+            <RoomCard room={item} />
+          </TouchableOpacity>)
+        }
+        keyExtractor={(item) => item.id.toString()}
+        onEndReached={loadMore}
+      />
     </SafeAreaView>
     
   );
@@ -91,3 +133,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 });
+
+
+

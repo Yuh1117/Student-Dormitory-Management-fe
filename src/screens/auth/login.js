@@ -31,8 +31,17 @@ const LoginScreen = ({navigation}) => {
 
 
         const is_staff  = response.data.user.is_staff 
+        const is_first_access = response.data.user.is_first_access 
         // nếu là admin thì chuyển đến admin home, nếu là user thường thì chuyển đến trang user
-        is_staff ? navigation.navigate("AdminHome") : navigation.navigate('UserHome')
+
+        if(is_first_access){
+          console.log("lan dau")
+          navigation.navigate('ChangePass', {user: user})
+          
+        }else{
+          is_staff ? navigation.navigate("AdminHome") : navigation.navigate('UserHome')
+        }
+
       } else {
         Alert.alert('Error', response.data);
       }
