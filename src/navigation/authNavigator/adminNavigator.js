@@ -4,10 +4,10 @@ import {MaterialCommunityIcons } from "@expo/vector-icons";
 import AdminHome from '../../components/home/admin/adminHome';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import ListRoomsScreen from '../../screens/room/admin/ListRoomsScreen';
-import RoomDetail from '../../screens/room/admin/RoomDetailScreen';
+import ListRoomsScreen from '../../components/room/admin/ListRoomsScreen';
+import RoomDetail from '../../components/room/admin/RoomDetailScreen';
 import AdminStyles from '../../styles/AdminStyles';
-import UpdateRoom from '../../screens/room/admin/UpdateRoomScreen';
+import UpdateRoom from '../../components/room/admin/UpdateRoomScreen';
 
 
 

@@ -6,7 +6,7 @@ import { AdminHomeMain } from './adminNavigator';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Profile from '../../components/auth/Profile';
-import ChangPasswordScreen from '../../screens/auth/changePasswordScreen';
+import ChangPasswordScreen from '../../components/auth/changePasswordScreen';
 
 
 const Stack = createStackNavigator();
