@@ -6,6 +6,8 @@ import { AdminHomeMain } from './adminNavigator';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Profile from '../../components/auth/Profile';
+import ChangPasswordScreen from '../../screens/auth/changePasswordScreen';
+
 
 const Stack = createStackNavigator();
 
@@ -18,10 +20,16 @@ export default function LoginNavigator() {
           component={LoginScreen}
           options={{ headerShown: false }} // Ẩn thanh tiêu đề nếu cần
         />
-        <Stack.Screen
-          name="UserHome"
-          component={UserHomeMain}
-          options={{ headerShown: false }}
+      <Stack.Screen 
+          name="ChangePass" // trang hiện lên đầu tiên là trang admin
+          component={ChangPasswordScreen} 
+          options={{ headerShown: false }} // Ẩn thanh tiêu đề nếu cần
+        />
+        <Stack.Screen 
+          name="UserHome" 
+          component={UserHomeMain} 
+          options={{headerShown: false }} 
+
         />
         <Stack.Screen
           name="AdminHome"

@@ -4,12 +4,19 @@ import {MaterialCommunityIcons } from "@expo/vector-icons";
 import AdminHome from '../../components/home/admin/adminHome';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import ListRoomsScreen from '../../components/room/admin/ListRoomsScreen';
+import ListRoomsScreen from '../../screens/room/admin/ListRoomsScreen';
+import RoomDetail from '../../screens/room/admin/RoomDetailScreen';
+import AdminStyles from '../../styles/AdminStyles';
+import UpdateRoom from '../../screens/room/admin/UpdateRoomScreen';
+
 
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-
+const getTabBarIcon = (name) => ({ color, size }) => (
+    <MaterialCommunityIcons name={name} color={color} size={size} />
+  );
+//chuyêm
 const  StackRoomNavigater =() =>{
     return(
             <Stack.Navigator initialRouteName = "listRooms">
@@ -19,6 +26,25 @@ const  StackRoomNavigater =() =>{
                         tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="home" color={color} size={size} />
                           ),
+                        
+                    }
+                }/>
+                <Stack.Screen name="roomDetail" component={RoomDetail}  options={
+                    { 
+                        // headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                          ),
+                        
+                    }
+                }/>
+                <Stack.Screen name="updateRoom" component={UpdateRoom}  options={
+                    { 
+                        // headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                          ),
+                        
                     }
                 }/>
             </Stack.Navigator>
@@ -38,9 +64,8 @@ export function AdminHomeMain(){
             <Tab.Screen name = "Các Phòng" component = {StackRoomNavigater} options={
                 { 
                     headerShown: false,
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="home" color={color} size={size} />
-                      ),
+                    tabBarIcon: getTabBarIcon('home'),
+                    
                 }
             }></Tab.Screen>
             
