@@ -1,0 +1,102 @@
+import { View, Text, TouchableOpacity } from "react-native";
+import { Card, Drawer } from 'react-native-paper'
+import useFetchWithToken from '../../../config/UseFetchWithToken'
+import { endpoints } from "../../../config/Apis";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { FlatList } from "react-native-gesture-handler";
+import { ActivityIndicator } from "react-native-paper";
+import AdminStyles from "../../../styles/AdminStyles";
+import { RoomContext } from "../../room/admin/roomContext";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+
+const RoomInvoiceList = () => {
+    const {selectedRoom,setSelectedRoom,setSelectedInvoice} = useContext(RoomContext)
+    const { loading, fetchWithToken } = useFetchWithToken();
+    const [page,setPage] = useState(1);
+    const [roomInvoiceList, setRoomInvoiceList] = useState([]);
+    const navigation = useNavigation();
+    const loadInvoice = async () => {
+        if(page>0){
+            const data = await fetchWithToken({
+                // url: `${endpoints['invoices']}?room_id=${selectedRoom.id}&page=${page}`,
+                url: `${endpoints['rooms']}/${selectedRoom.id}/invoices/`
+            })
+            if (data?.results) setRoomInvoiceList([...roomInvoiceList,...data.results]);
+            if(data.next===null) setPage(0);
+        }
+        
+    };
+    useEffect(() => {
+        loadInvoice()
+    }, [page])
+    useFocusEffect(
+        useCallback(()=>{
+            setRoomInvoiceList([])
+            loadInvoice()
+        },[])
+    )
+
+    const loadMore = () =>{
+        if(!loading && roomInvoiceList.length > 0 && page>0)
+        setPage(page+1)
+      }
+    return (
+
+        <View>
+
+            <FlatList
+                onEndReached={loadMore}
+                ListFooterComponent={loading && <ActivityIndicator />}
+                data={roomInvoiceList}
+                renderItem={({ item }) => (
+                    <TouchableOpacity onPress={() => {
+                        setSelectedInvoice(item)
+                        
+                        navigation.navigate('updateInvoice');
+                      }}>
+                        <Card key={item.id} style={[AdminStyles.mb]}>
+                            <Card.Content style={AdminStyles.unPaid}>
+                                <View style={AdminStyles.row}>
+
+                                    <View>
+                                        {/* {item.items.map((i) =>{
+                                            return(
+                                                <View key={i.id}>
+                                                    <Text>{i.description} : {parseFloat(i.amount).toLocaleString('vi-VN')}VND</Text>
+                                                </View>
+                                            );
+                                        })} */}
+                                        <Text>{item.description}</Text>
+                                    </View>
+                                    <View>
+                                        <Text>Tổng Cộng: {parseFloat(item.total_amount).toLocaleString('vi-VN')}VND</Text>
+                                    </View>
+                                </View>
+                            </Card.Content>
+                        </Card>
+                    </TouchableOpacity>
+                    
+                )}
+            />
+            
+            <View>
+                <Card>
+                    <Card.Content style={AdminStyles.paid}>
+                        <View style={AdminStyles.row}>
+
+                            <View >
+                                <Text>tieenf nhaf</Text>
+                                <Text>tieenf nhaf</Text>
+                            </View>
+                            <View>
+                                <Text>Tổng Cộng:</Text>
+                            </View>
+                        </View>
+                    </Card.Content>
+                </Card>
+            </View>
+        </View>
+
+    );
+}
+export default RoomInvoiceList

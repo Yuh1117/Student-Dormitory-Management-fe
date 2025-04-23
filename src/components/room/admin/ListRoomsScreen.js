@@ -1,5 +1,5 @@
 
-import  { useState, useEffect,useCallback  } from 'react';
+import  { useState, useEffect,useCallback,useContext  } from 'react';
 import {ActivityIndicator, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import {RoomCard } from '../../../components/card/RoomCard';
 
@@ -12,6 +12,8 @@ import useFetchWithToken from '../../../config/UseFetchWithToken';
 import { FlatList } from 'react-native-gesture-handler';
 import { useNavigation,useFocusEffect  } from '@react-navigation/native';
 import AdminStyles from '../../../styles/AdminStyles';
+import { RoomContext } from './roomContext';
+
 
 
 
@@ -24,6 +26,7 @@ export default function ListRoomsScreen() {
   const [page,setPage] = useState(1);
   const [buildindId,setBuildingId] = useState(null);
   const [roomNumber,setRoomNumber] = useState(null);
+  const { setSelectedRoom } = useContext(RoomContext);
 
 // hàm lấy các phòng
   const loadRooms = async () => {  
@@ -113,12 +116,12 @@ export default function ListRoomsScreen() {
         data={rooms}
         renderItem={
           ({item}) => (
-          <TouchableOpacity 
-            activeOpacity={0.8}
-            onPress={() => {
-              navigation.navigate("roomDetail", { room: item, title: `Phòng ${item.room_number}`, });
-            }}
-          >
+          <TouchableOpacity
+          onPress={() => {
+            setSelectedRoom(item);
+            navigation.navigate('roomDetail', { title: `Phòng ${item.room_number}` });
+          }}
+>
             <RoomCard room={item} />
           </TouchableOpacity>)
         }

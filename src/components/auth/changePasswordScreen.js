@@ -171,5 +171,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ChangPasswordScreen
-    ;
+export default ChangPasswordScreen;

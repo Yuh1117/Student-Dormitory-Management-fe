@@ -1,32 +1,50 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
+import useFetchWithToken from '../../config/UseFetchWithToken';
+import { endpoints } from '../../config/Apis';
 
-const RegisterScreen = () => {
+const RegisterScreen = ({navigation}) => {
   const { control, handleSubmit, formState: { errors } } = useForm();
-
+  const {loading,fetchWithToken} = useFetchWithToken();
   const onSubmit = async (data) => {
-    try {
-      const response = await axios.post('https://vovanhuy.pythonanywhere.com/users/', data);
-      if (response.status === 201) {
-        Alert.alert('Success', 'User registered successfully');
-      } else {
-        Alert.alert('Error', data);
-      }
-    } catch (error) {
-        console.log(error.response ? error.response.data : error); // Xem lỗi đầy đủ trong console
-        if (error.response && error.response.data) {
-          Alert.alert('Error', JSON.stringify(error.response.data)); // Hiển thị lỗi chính xác
-        } else {
-          Alert.alert('Error', 'Network error or server issue');
-        }
+    // try {
+    //   const response = await axios.post('https://vovanhuy.pythonanywhere.com/users/', data);
+    //   if (response.status === 201) {
+    //     Alert.alert('Success', 'User registered successfully');
+    //   } else {
+    //     Alert.alert('Error', data);
+    //   }
+    // } catch (error) {
+    //     console.log(error.response ? error.response.data : error); // Xem lỗi đầy đủ trong console
+    //     if (error.response && error.response.data) {
+    //       Alert.alert('Error', JSON.stringify(error.response.data)); // Hiển thị lỗi chính xác
+    //     } else {
+    //       Alert.alert('Error', 'Network error or server issue');
+    //     }
+    // }
+    data = {
+      ...data,
+      role:"Student",
     }
+
+    const res = await fetchWithToken({
+      method: 'POST',
+      url: `${endpoints['users']}`,
+      data: data,
+    })
+
+    if(res){
+      Alert.alert('Success', 'Đăng Kí Thành Công');
+      navigation.goBack();
+    }
+
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Register</Text>
+      <Text style={styles.title}>Đăng Kí Sinh Viên</Text>
 
       {/* <Controller
         control={control}
@@ -79,7 +97,7 @@ const RegisterScreen = () => {
       <Controller
         control={control}
         name="password"
-        rules={{ required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters' } }}
+        rules={{ required: 'Password is required', minLength: { value: 3, message: 'Password must be at least 3 characters' } }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             style={styles.input}
@@ -93,9 +111,9 @@ const RegisterScreen = () => {
       />
       {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-        <Text style={styles.buttonText}>Register</Text>
-      </TouchableOpacity>
+      {loading ?<ActivityIndicator/>:<TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+        <Text style={styles.buttonText}>Đăng Kí</Text>
+      </TouchableOpacity>}
     </View>
   );
 };

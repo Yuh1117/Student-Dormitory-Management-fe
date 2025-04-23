@@ -5,8 +5,13 @@ export const endpoints = {
     "login" : "/users/login/",
     "listRooms" : "/rooms/",
     "buildings":"/buildings/",
-    "rooms":"rooms",
-    "users":"/users/"
+    "rooms":"/rooms/",
+    "users":"/users/",
+    "invoices":"/invoices/",
+    "available-student":"/users/available-students/",
+    "room-assignments":"/room-assignments/",
+    "remove-member": (id)=>`/rooms/${id}/remove-member/`,
+    "notifications":"/notifications/"
 
 }
 

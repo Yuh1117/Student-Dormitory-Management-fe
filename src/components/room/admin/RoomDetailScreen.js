@@ -1,19 +1,22 @@
 // import { View } from "react-native";
 import { useRoute,useNavigation,useFocusEffect } from '@react-navigation/native';
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState, useContext } from 'react';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons, FontAwesome } from '@expo/vector-icons'; // hoặc 'react-native-vector-icons'
 import AdminStyles from '../../../styles/AdminStyles';
+import { RoomContext } from './roomContext';
 
 export default function RoomDetail() {
     const route = useRoute();
     const navigation = useNavigation();
-    const { room, title } = route.params;
-const [currentRoom, setCurrentRoom] = useState(room);
+//     const { room, title } = route.params;
+// const [currentRoom, setCurrentRoom] = useState(room);
+const { selectedRoom,setSelectedRoom } = useContext(RoomContext);
+    let currentRoom = selectedRoom
     useEffect(() => {
-        navigation.setOptions({ title: title || 'Chi tiết phòng' });
-    }, [navigation, title]);
+        navigation.setOptions({ title:`Phòng ${currentRoom.room_number}` });
+    }, [navigation,currentRoom.room_number]);
     
 
     const InforBar = ({name,size,color,label,value })=>{
@@ -46,7 +49,10 @@ const [currentRoom, setCurrentRoom] = useState(room);
             </View>
     
             <View >
-              <TouchableOpacity onPress={()=>navigation.navigate("updateRoom",{room:currentRoom,
+            <TouchableOpacity onPress={()=>navigation.navigate("updateRoom")} style={[styles.button,AdminStyles.successColor,]}>
+                <Text style={styles.buttonText}>Cập nhật</Text>
+              </TouchableOpacity>
+              {/* <TouchableOpacity onPress={()=>navigation.navigate("updateRoom",{room:currentRoom,
                                                                                 title : `Cập nhật phòng ${currentRoom.room_number}`,
                                                                                 onRoomUpdated: (updatedRoom) => {
                                                                                   setCurrentRoom(updatedRoom); //  cập nhật state tại RoomDetail
@@ -54,8 +60,18 @@ const [currentRoom, setCurrentRoom] = useState(room);
                                                                               }
                 )} style={[styles.button,AdminStyles.successColor,]}>
                 <Text style={styles.buttonText}>Cập nhật</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               
+            </View>
+            <View>
+              <TouchableOpacity onPress={()=>navigation.navigate("roomInvoices")} style={[styles.button,AdminStyles.successColor,]}>
+                <Text>Hóa Đơn</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity onPress={()=>navigation.navigate("roomMember")} style={[styles.button,AdminStyles.successColor,]}>
+                <Text>Thành viên</Text>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </View>

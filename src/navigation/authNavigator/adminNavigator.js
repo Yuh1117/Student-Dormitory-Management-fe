@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AdminHome from '../../components/home/admin/adminHome';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,75 +8,194 @@ import ListRoomsScreen from '../../components/room/admin/ListRoomsScreen';
 import RoomDetail from '../../components/room/admin/RoomDetailScreen';
 import AdminStyles from '../../styles/AdminStyles';
 import UpdateRoom from '../../components/room/admin/UpdateRoomScreen';
+import RoomInvoiceList from '../../components/billing/admin/RoomInvoiceListScreen';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+// import { Drawer } from 'react-native-paper';
+
+import CreateInvoice from '../../components/billing/admin/CreateInvoiceScreen';
+import { RoomProvider } from '../../components/room/admin/roomContext';
+import UpdateInvoice from '../../components/billing/admin/UpdateInvoicesScreens';
+import UserManage from '../../components/auth/UserManagetScreen';
+import RegisterScreen from '../../components/auth/register';
+import RoomMember from '../../components/room/admin/RoomMemberScreen';
+import AddRoomMember from '../../components/room/admin/AddRoomMemberScreen';
+import CreateNotification from '../../components/notifications/admin/CreateNotiScreen';
 
 
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 const getTabBarIcon = (name) => ({ color, size }) => (
     <MaterialCommunityIcons name={name} color={color} size={size} />
-  );
+);
+const DrawerNavigator = () => {
+    return (
+        <Drawer.Navigator initialRouteName="invoicesList">
+            <Drawer.Screen name="invoicesList" component={RoomInvoiceList} options={{
+                title: 'Danh sách hóa đơn',
+                drawerIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="file-document-outline" size={size} color={color} />
+                ),
+            }} />
+            <Drawer.Screen name="createInvoice" component={CreateInvoice} options={{
+                title: 'Tạo hóa đơn',
+                drawerIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="creation" size={size} color={color} />
+                ),
+            }} />
+            <Drawer.Screen name="updateInvoice" component={UpdateInvoice} options={{
+                drawerItemStyle: { display: 'none' }, // Ẩn khỏi Drawer
+                
+            }} />
+
+        </Drawer.Navigator>
+    );
+}
+
+
+
 //chuyêm
-const  StackRoomNavigater =() =>{
-    return(
-            <Stack.Navigator initialRouteName = "listRooms">
+const StackRoomNavigater = () => {
+    return (
+
+
+        <RoomProvider>
+            <Stack.Navigator initialRouteName="listRooms">
                 <Stack.Screen name="listRooms" component={ListRoomsScreen} options={
-                    { 
+                    {
                         headerShown: false,
                         tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="home" color={color} size={size} />
-                          ),
-                        
+                        ),
+
                     }
-                }/>
-                <Stack.Screen name="roomDetail" component={RoomDetail}  options={
-                    { 
+                } />
+                <Stack.Screen name="roomDetail" component={RoomDetail} options={
+                    {
                         // headerShown: false,
                         tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="home" color={color} size={size} />
-                          ),
-                        
+                        ),
+
                     }
-                }/>
-                <Stack.Screen name="updateRoom" component={UpdateRoom}  options={
-                    { 
+                } />
+                <Stack.Screen name="updateRoom" component={UpdateRoom} options={
+                    {
                         // headerShown: false,
                         tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="home" color={color} size={size} />
-                          ),
-                        
+                        ),
+
                     }
-                }/>
+                } />
+                <Stack.Screen name="roomInvoices" component={DrawerNavigator} options={
+                    {
+                        headerShown: false,
+                        title: "Hóa Đơn",
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="roomMember" component={RoomMember} options={
+                    {
+                        headerShown: false,
+                        title: "Hóa Đơn",
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="addRoomMember" component={AddRoomMember} options={
+                    {
+                        headerShown: false,
+                        title: "Hóa Đơn",
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                
             </Stack.Navigator>
+        </RoomProvider>
     )
 }
 
+const StackUserNavigater = () =>{
+    return(
+        <Stack.Navigator initialRouteName="userManageMainScreen">
+                <Stack.Screen name="userManageMainScreen" component={UserManage} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="register" component={RegisterScreen} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="createNoti" component={CreateNotification} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                
+              
+            </Stack.Navigator>
+    );
+}
+
+
 // trang AdminHomeMain chứa các tab cho admin dùng
-export function AdminHomeMain(){
+export function AdminHomeMain() {
     return (
-        <Tab.Navigator ScreenOptions ={
+        <Tab.Navigator ScreenOptions={
             {
                 headerShown: false,
                 tabBarActiveTintColor: "blue",
                 tabBarInactiveTintColor: "gray",
             }
         }>
-            <Tab.Screen name = "Các Phòng" component = {StackRoomNavigater} options={
-                { 
+            <Tab.Screen name="Các Phòng" component={StackRoomNavigater} options={
+                {
                     headerShown: false,
                     tabBarIcon: getTabBarIcon('home'),
-                    
+
                 }
             }></Tab.Screen>
-            
-        </Tab.Navigator> 
+            <Tab.Screen name="Sinh Viên" component={StackUserNavigater} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: getTabBarIcon('home'),
+
+                }
+            }></Tab.Screen>
+           
+
+        </Tab.Navigator>
     )
 }
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-  });
+});
