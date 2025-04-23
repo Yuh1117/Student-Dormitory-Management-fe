@@ -20,6 +20,9 @@ import RegisterScreen from '../../components/auth/register';
 import RoomMember from '../../components/room/admin/RoomMemberScreen';
 import AddRoomMember from '../../components/room/admin/AddRoomMemberScreen';
 import CreateNotification from '../../components/notifications/admin/CreateNotiScreen';
+import ChatListScreen from '../../services/admin/AdminChatList';
+import StudentChatScreen from '../../services/user/ChatScreen';
+import AdminChatScreen from '../../services/admin/AdminChatScreen';
 
 
 
@@ -161,6 +164,33 @@ const StackUserNavigater = () =>{
     );
 }
 
+const AdminChatStack = ()=>{
+    return(
+        <Stack.Navigator initialRouteName="listChat">
+                <Stack.Screen name="listChat" component={ChatListScreen} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="pesonalChat" component={AdminChatScreen} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                
+                
+              
+            </Stack.Navigator>
+    );
+}
 
 // trang AdminHomeMain chứa các tab cho admin dùng
 export function AdminHomeMain() {
@@ -180,6 +210,13 @@ export function AdminHomeMain() {
                 }
             }></Tab.Screen>
             <Tab.Screen name="Sinh Viên" component={StackUserNavigater} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: getTabBarIcon('home'),
+
+                }
+            }></Tab.Screen>
+            <Tab.Screen name="chat" component={AdminChatStack} options={
                 {
                     headerShown: false,
                     tabBarIcon: getTabBarIcon('home'),
