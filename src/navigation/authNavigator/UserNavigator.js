@@ -5,6 +5,7 @@ import NotiMain from '../../components/notifications/notiMainScreen';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createStackNavigator } from '@react-navigation/stack';
 import Account from '../../components/auth/Account';
+import StudentChatScreen from '../../services/user/ChatScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -43,6 +44,16 @@ export function UserHomeMain() {
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="account" color={color} size={size} />
                     ),
+                }
+            }></Tab.Screen>
+            <Tab.Screen name="chat" component={StudentChatScreen} options={
+                {
+                    headerShown: false,
+                    // tabBarIcon: getTabBarIcon('home'),
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="account" color={color} size={size} />
+                    ),
+
                 }
             }></Tab.Screen>
         </Tab.Navigator>
