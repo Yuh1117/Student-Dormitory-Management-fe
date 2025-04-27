@@ -16,7 +16,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.yourcompany.dormitorymanagement", 
+      "package": "com.yourcompany.dormitorymanagement",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -24,6 +24,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "19956ef5-37eb-4136-9939-f82f7be8f16e"
+      }
+    },
+    "owner": "vovanhuy123"
   }
 }

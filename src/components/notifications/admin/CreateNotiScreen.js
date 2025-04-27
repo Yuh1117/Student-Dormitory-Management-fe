@@ -11,6 +11,7 @@ export default function CreateNotification({ navigation }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [announcementType, setAnnouncementType] = useState('');
+  const [isUrgent,setIsUrgent] = useState(false);
   const { fetchWithToken, loading } = useFetchWithToken();
 
   const handleSubmit = async () => {
@@ -25,7 +26,8 @@ export default function CreateNotification({ navigation }) {
         data: {
           title,
           content,
-          announcement_type: announcementType
+          announcement_type: announcementType,
+          is_urgent: isUrgent 
         }
       });
 
@@ -39,6 +41,14 @@ export default function CreateNotification({ navigation }) {
 
     
   };
+  const setType =(item) =>{
+    setAnnouncementType(item);
+    if(item ==="urgent"){
+      setIsUrgent(true);
+    }else{
+      setIsUrgent(false)
+    }
+  }
   useEffect(()=>{
     setContent("");
     setTitle("");
@@ -69,7 +79,9 @@ export default function CreateNotification({ navigation }) {
       <View style={styles.pickerContainer}>
         <Picker
           selectedValue={announcementType}
-          onValueChange={(itemValue) => setAnnouncementType(itemValue)}
+          onValueChange={(itemValue)=>{setType(itemValue);
+            console.log(itemValue)
+          }}
           >
           <Picker.Item label="Chọn loại" value="" />
           <Picker.Item label="Thông báo chung" value="general" />

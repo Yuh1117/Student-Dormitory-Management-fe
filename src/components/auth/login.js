@@ -5,6 +5,7 @@ import axios from 'axios';
 import Apis, { endpoints } from "../../config/Apis";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./styles";
+import { registerForPushNotificationsAsync } from "../../config/Notis";
 
 const LoginScreen = ({ navigation }) => {
   const { control, handleSubmit, formState: { errors } } = useForm();
@@ -13,9 +14,11 @@ const LoginScreen = ({ navigation }) => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
+      const expo_token = await registerForPushNotificationsAsync();
       const response = await Apis.post(endpoints["login"], {
         username: data.username,
         password: data.password,
+        expo_token: expo_token,
       })
 
       if (response.status === 200) {
