@@ -1,25 +1,24 @@
-import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import MenuItem from './MenuItem';
 import styles from './styles';
-import { useContext, useEffect, useState } from 'react';
-import { UserContext, UserProvider } from './UserContext';
+import { useContext } from 'react';
+import { MyDispatchContext, MyUserContext } from '../../config/MyContexts';
 
 const Account = () => {
-
-  return (
-    <UserProvider>
-      <AccountContent />
-    </UserProvider>
-  );
-};
-
-const AccountContent = () => {
   const nav = useNavigation()
-  const {user} = useContext(UserContext)
+  const user = useContext(MyUserContext)
+  const dispatch = useContext(MyDispatchContext)
+
+  const logout = () => {
+    dispatch({
+      "type": "logout"
+    });
+    nav.navigate("Login");
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -30,7 +29,7 @@ const AccountContent = () => {
           <MenuItem
             onPress={() => nav.navigate('Profile')}
             icon={<Avatar.Image size={50} source={require('../../assets/batman.png')} />}
-            title={user.username}
+            title={user?._j?.username}
           />
         </View>
 
@@ -69,6 +68,7 @@ const AccountContent = () => {
             icon={<Feather name="log-out" size={22} color="#FF3B30" />}
             title="Đăng xuất"
             titleColor="#FF3B30"
+            onPress={logout}
           />
         </View>
       </ScrollView>
