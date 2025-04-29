@@ -1,41 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import axios from 'axios';
 import useFetchWithToken from '../../config/UseFetchWithToken';
 import { endpoints } from '../../config/Apis';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { ActivityIndicator } from 'react-native-paper';
+import { MyDispatchContext, MyUserContext } from '../../config/MyContexts';
 
 const ChangPasswordScreen = () => {
     const route = useRoute();
-    const {user} = route.params;
+    const user = useContext(MyUserContext)
+    const dispatch = useContext(MyDispatchContext)
     const navigation = useNavigation();
-    const { control, handleSubmit,setValue, formState: { errors } } = useForm();
-    const {loading, fetchWithToken} = useFetchWithToken()
-    const [currentUser,setCurrentUser] = useState(user)
-    // setValue("username", data.username);
+    const { control, handleSubmit, setValue, formState: { errors } } = useForm();
+    const { loading, fetchWithToken } = useFetchWithToken()
 
-    useEffect(()=>{
-        // const fetchUser = async () =>{
-        //     const token = await AsyncStorage.getItem("access-token");
-        //     const user = await fetchWithToken({
-        //         method: 'GET',
-        //         url: `${endpoints['users']}/current-user/`,
-        //         headers:{
-        //             Authorization: `Bearer ${token}`
-        //         }
-        //     })
-        //     if(data){
-        //         setCurrentUser(user);
-        //         setValue("username", data.username);
-        //     }
-        // };
-        // fetchUser();
-        setValue("username", currentUser.username);
-    },[])
-    
+    useEffect(() => {
+        setValue('username', user._j.username);
+    }, [])
+
     const onSubmit = async (data) => {
         const token = await AsyncStorage.getItem("access-token");
         const res = await fetchWithToken({
@@ -43,65 +27,67 @@ const ChangPasswordScreen = () => {
             url: `${endpoints['users']}/current-user/`,
             data: {
                 ...data,
-                is_first_access : false,
+                is_first_access: false,
             },
-            headers:{
+            headers: {
                 Authorization: `Bearer ${token}`
             }
         })
-        console.log(res)
-        if(res){
-            res.is_staff ? navigation.navigate("AdminHome") : navigation.navigate('UserHome')
-            // res.is_staff ? navigation.navigate("AdminHome") : console.log("11111111")
-            
-        }
         
+        if (res) {
+            dispatch({
+                "type": "update",
+                "payload": res
+            });
+            res.is_staff ? navigation.navigate("AdminHome") : navigation.navigate('UserHome')
+        }
+
     };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Thay đổi mật khẩu</Text>
+            <Text style={styles.title}>Cập nhật thông tin cá nhân</Text>
 
             <Controller
-        control={control}
-        name="first_name"
-        rules={{ required: 'First name is required' }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.input}
-            placeholder="First Name"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
-        )}
-      />
+                control={control}
+                name="first_name"
+                rules={{ required: 'Thông tin bắt buộc' }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Họ"
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                    />
+                )}
+            />
             {errors.first_name && <Text style={styles.error}>{errors.first_name.message}</Text>}
 
             <Controller
-        control={control}
-        name="last_name"
-        rules={{ required: 'Last name is required' }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.input}
-            placeholder="Last Name"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
-        )}
-      />
-      {errors.last_name && <Text style={styles.error}>{errors.last_name.message}</Text>}
+                control={control}
+                name="last_name"
+                rules={{ required: 'Thông tin bắt buộc' }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Tên"
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                    />
+                )}
+            />
+            {errors.last_name && <Text style={styles.error}>{errors.last_name.message}</Text>}
 
             <Controller
                 control={control}
                 name="username"
-                rules={{ required: 'Username is required' }}
+                rules={{ required: 'Thông tin bắt buộc' }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         style={styles.input}
-                        placeholder="Username"
+                        placeholder="Tên đăng nhập"
                         onBlur={onBlur}
                         onChangeText={onChange}
                         value={value}
@@ -113,11 +99,11 @@ const ChangPasswordScreen = () => {
             <Controller
                 control={control}
                 name="password"
-                rules={{ required: 'Password is required', minLength: { value: 4, message: 'Password must be at least 4 characters' } }}
+                rules={{ required: 'Thông tin bắt buộc', minLength: { value: 4, message: 'Password must be at least 4 characters' } }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         style={styles.input}
-                        placeholder="Password"
+                        placeholder="Mật khẩu"
                         secureTextEntry
                         onBlur={onBlur}
                         onChangeText={onChange}
@@ -127,7 +113,7 @@ const ChangPasswordScreen = () => {
             />
             {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
 
-            {loading ? <ActivityIndicator/>:<TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+            {loading ? <ActivityIndicator /> : <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
                 <Text style={styles.buttonText}>Thay đổi</Text>
             </TouchableOpacity>}
         </View>
