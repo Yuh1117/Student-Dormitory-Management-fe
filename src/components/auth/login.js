@@ -71,7 +71,7 @@ const LoginScreen = ({ navigation }) => {
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             style={styles.input}
-            placeholder="Username"
+            placeholder="Tên đăng nhập"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -87,7 +87,7 @@ const LoginScreen = ({ navigation }) => {
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             style={styles.input}
-            placeholder="Password"
+            placeholder="Mật khẩu"
             secureTextEntry
             onBlur={onBlur}
             onChangeText={onChange}
@@ -98,7 +98,7 @@ const LoginScreen = ({ navigation }) => {
       {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)} disabled={loading}>
-        {loading ? <ActivityIndicator color="white" /> : <Text style={styles.buttonText}>Login</Text>}
+        {loading ? <ActivityIndicator color="white" /> : <Text style={styles.buttonText}>Đăng nhập</Text>}
       </TouchableOpacity>
     </View>
   );
