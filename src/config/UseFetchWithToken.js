@@ -13,15 +13,15 @@ const useFetchWithToken = () => {
       const token = await AsyncStorage.getItem('access-token');
 
       const finalHeaders = Object.keys(headers).length === 0
-      ? { Authorization: `Bearer ${token}` }
-      : headers;
+        ? { Authorization: `Bearer ${token}` }
+        : headers;
 
-    const config = {
-      method,
-      url,
-      headers: finalHeaders,
-      data,
-    };
+      const config = {
+        method,
+        url,
+        headers: finalHeaders,
+        data,
+      };
 
       if (data) {
         config.data = data;
@@ -31,7 +31,7 @@ const useFetchWithToken = () => {
       return res.data;
     } catch (error) {
       console.log(error.response ? error.response.data : error);
-      Alert.alert('Lỗi', error.response?.data?.error  || 'Đã xảy ra lỗi');
+      Alert.alert('Lỗi', error.response?.data?.error || 'Đã xảy ra lỗi');
       return null;
     } finally {
       setLoading(false);

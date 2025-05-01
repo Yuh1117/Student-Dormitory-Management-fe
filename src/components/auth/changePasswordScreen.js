@@ -24,7 +24,7 @@ const ChangPasswordScreen = () => {
         const token = await AsyncStorage.getItem("access-token");
         const res = await fetchWithToken({
             method: 'PATCH',
-            url: `${endpoints['users']}/current-user/`,
+            url: endpoints["current-user"],
             data: {
                 ...data,
                 is_first_access: false,

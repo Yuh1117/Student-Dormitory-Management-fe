@@ -28,7 +28,7 @@ const Account = () => {
         <View style={styles.card}>
           <MenuItem
             onPress={() => nav.navigate('Profile')}
-            icon={<Avatar.Image size={50} source={require('../../assets/batman.png')} />}
+            icon={<Avatar.Image size={50} source={user?._j?.avatar ? { uri: user?._j?.avatar } : require('../../assets/batman.png')} />}
             title={user?._j?.username}
           />
         </View>

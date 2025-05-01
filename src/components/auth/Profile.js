@@ -1,20 +1,19 @@
-import { useContext, useState } from "react";
-import { View, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native';
+import { use, useContext, useState } from "react";
+import { View, ActivityIndicator, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, HelperText, Text, TextInput } from "react-native-paper";
 import styles from "./styles";
 import { MyDispatchContext, MyUserContext } from "../../config/MyContexts";
-import useFetchWithToken from "../../config/UseFetchWithToken";
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from "@react-navigation/native";
-import { endpoints } from "../../config/Apis";
+import { authApis } from "../../config/Apis";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Profile = () => {
     const userData = useContext(MyUserContext)
     const dispatch = useContext(MyDispatchContext)
     const [user, setUser] = useState(userData._j)
-    const { loading, fetchWithToken } = useFetchWithToken()
+    const [loading, setLoading] = useState(false)
     const nav = useNavigation()
     const [msg, setMsg] = useState()
 
@@ -51,38 +50,60 @@ const Profile = () => {
                     return false
                 }
             }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (f.field === "email" && !emailRegex.test(user[f.field])) {
+                setMsg("Email không hợp lệ!");
+                return false;
+            }
         }
         return true
     }
 
     const saveInfor = async () => {
         if (validate() === true) {
-            const token = await AsyncStorage.getItem("access-token");
-            let form = new FormData()
-            for (let key in user) {
-                if (key === "avatar") {
-                    form.append(key, {
-                        uri: user.avatar.uri,
-                        name: user.avatar.fileName,
-                        type: user.avatar.type
-                    })
-                } else {
-                    form.append(key, user[key])
-                }
-            }
+            try {
+                setLoading(true)
 
-            await Apis.post(endpoints["student"], form, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
-            })
+                const token = await AsyncStorage.getItem("access-token")
+                let form = new FormData();
+                for (let key in user) {
+                    if (key === "avatar" && user.avatar) {
+                        if (user.avatar !== userData._j.avatar) {
+                            const name = user.avatar.name?.split('.').pop() || 'jpg';
+                            const type = (name === 'png') ? 'image/png' : 'image/jpeg';
 
-            if (res) {
-                dispatch({
-                    "type": "update",
-                    "payload": res
+                            form.append(key, {
+                                uri: user.avatar.uri,
+                                name: user.avatar.name || "avatar.jpg",
+                                type: user.avatar.type?.includes("image/") ? user.avatar.type : type,
+                            });
+                        }
+                    } else {
+                        form.append(key, user[key])
+                    }
+                }
+
+                const res = await authApis(token).patch("/users/current-user/", form, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "Accept": "application/json",
+                    },
                 });
-                nav.navigate("UserHome")
+
+                if (res) {
+                    dispatch({
+                        type: "update",
+                        payload: res.data,
+                    });
+
+                    Alert.alert("Cập nhật thông tin thành công")
+                    nav.navigate("UserHome")
+                }
+            } catch (ex) {
+                console.error(ex);
+            } finally {
+                setLoading(false);
             }
         }
     }
@@ -94,7 +115,7 @@ const Profile = () => {
                     <TouchableOpacity onPress={pick}>
                         <Avatar.Image
                             size={100}
-                            source={user.avatar.uri ? { uri: user.avatar.uri } : require('../../assets/batman.png')}
+                            source={user.avatar?.uri ? { uri: user.avatar.uri } : user.avatar ? { uri: user.avatar } : require('../../assets/batman.png')}
                         />
                     </TouchableOpacity>
                 </View>
@@ -105,13 +126,11 @@ const Profile = () => {
 
                 <View style={styles.card}>
 
-                    {fields.map(f => <>
+                    {fields.map(f =>
                         <TextInput
-                            mode="outlined"
-                            style={[styles.input, {
-                                padding: 0, borderWidth: 0,
-                            }]}
                             key={f.field}
+                            mode="outlined"
+                            style={[styles.input, { padding: 0, borderWidth: 0 }]}
                             value={user[f.field]}
                             onChangeText={(text) => setState(text, f.field)}
                             label={f.label}
@@ -119,10 +138,10 @@ const Profile = () => {
                             disabled={f.disabled || false}
                             right={<TextInput.Icon icon={f.icon} />}
                         />
-                    </>)}
+                    )}
 
                     < TouchableOpacity style={styles.button} onPress={saveInfor} disabled={loading} >
-                        {loading ? <ActivityIndicator color="white" /> : <Text style={styles.buttonText}>Lưu</Text>}
+                        {loading ? <ActivityIndicator color="white" /> : <Text style={styles.buttonText}>Cập nhật</Text>}
                     </TouchableOpacity >
                 </View>
 
