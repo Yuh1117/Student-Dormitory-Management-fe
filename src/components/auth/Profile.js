@@ -2,12 +2,12 @@ import { use, useContext, useState } from "react";
 import { View, ActivityIndicator, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, HelperText, Text, TextInput } from "react-native-paper";
-import styles from "./styles";
 import { MyDispatchContext, MyUserContext } from "../../config/MyContexts";
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from "@react-navigation/native";
 import { authApis } from "../../config/Apis";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AccountStyles from "./AccountStyles";
 
 const Profile = () => {
     const userData = useContext(MyUserContext)
@@ -109,7 +109,7 @@ const Profile = () => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={AccountStyles.container}>
             <ScrollView>
                 <View style={{ alignItems: 'center', marginBottom: 20 }}>
                     <TouchableOpacity onPress={pick}>
@@ -120,17 +120,17 @@ const Profile = () => {
                     </TouchableOpacity>
                 </View>
 
-                <HelperText style={styles.m} type="error" visible={msg}>
+                <HelperText style={AccountStyles.m} type="error" visible={msg}>
                     {msg}
                 </HelperText>
 
-                <View style={styles.card}>
+                <View style={AccountStyles.card}>
 
                     {fields.map(f =>
                         <TextInput
                             key={f.field}
                             mode="outlined"
-                            style={[styles.input, { padding: 0, borderWidth: 0 }]}
+                            style={[AccountStyles.input, { padding: 0, borderWidth: 0 }]}
                             value={user[f.field]}
                             onChangeText={(text) => setState(text, f.field)}
                             label={f.label}
@@ -140,8 +140,8 @@ const Profile = () => {
                         />
                     )}
 
-                    < TouchableOpacity style={styles.button} onPress={saveInfor} disabled={loading} >
-                        {loading ? <ActivityIndicator color="white" /> : <Text style={styles.buttonText}>Cập nhật</Text>}
+                    < TouchableOpacity style={AccountStyles.button} onPress={saveInfor} disabled={loading} >
+                        {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>Cập nhật</Text>}
                     </TouchableOpacity >
                 </View>
 

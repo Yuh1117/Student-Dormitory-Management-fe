@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import MenuItem from './MenuItem';
-import styles from './styles';
+import styles from './AccountStyles';
 import { useContext } from 'react';
 import { MyDispatchContext, MyUserContext } from '../../config/MyContexts';
 
@@ -22,8 +22,9 @@ const Account = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={styles.headerTitle}>Tài khoản</Text>
+
       <ScrollView>
-        <Text style={styles.headerTitle}>Tài khoản</Text>
 
         <View style={styles.card}>
           <MenuItem

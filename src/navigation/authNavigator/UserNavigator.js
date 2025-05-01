@@ -1,18 +1,69 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import UserHome from '../../components/home/user/userHome';
-import NotiMain from '../../components/notifications/notiMainScreen';
+import NotiMain from '../../components/notifications/client/NotiMain';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createStackNavigator } from '@react-navigation/stack';
 import Account from '../../components/auth/Account';
 import StudentChatScreen from '../../services/user/ChatScreen';
-
+import UserHome from '../../components/home/user/UserHome';
+import Profile from '../../components/auth/Profile';
+import RoomDetails from '../../components/room/client/RoomDetails';
+import RoomInvoice from '../../components/billing/client/RoomInvoice';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+const StackHomeNavigator = () => {
+    return (
+        <Stack.Navigator initialRouteName="UserHome">
+            <Stack.Screen
+                name="UserHome"
+                component={UserHome}
+                options={{ headerShown: false, title: "Trang chủ" }}
+            />
+            <Stack.Screen
+                name="RoomDetails"
+                component={RoomDetails}
+                options={{ headerShown: true, title: "Thông tin phòng" }}
+            />
+            <Stack.Screen
+                name="RoomInvoice"
+                component={RoomInvoice}
+                options={{ headerShown: true, title: "Hóa đơn" }}
+            />
+        </Stack.Navigator>
+    )
+}
 
-// UserHome main chứa các tab cho user thường dùng
+const StackAccountNavigator = () => {
+    return (
+        <Stack.Navigator initialRouteName="Account">
+            <Stack.Screen
+                name="Account"
+                component={Account}
+                options={{ headerShown: false, title: "Tài khoản" }}
+            />
+            <Stack.Screen
+                name="Profile"
+                component={Profile}
+                options={{ headerShown: true, title: "Thông tin cá nhân" }}
+            />
+        </Stack.Navigator>
+    )
+}
+
+const StackNotiNavigator = () => {
+    return (
+        <Stack.Navigator initialRouteName="NotiMain">
+            <Stack.Screen
+                name="NotiMain"
+                component={NotiMain}
+                options={{ headerShown: false, title: "Thông báo" }}
+            />
+        </Stack.Navigator>
+    )
+}
+
 export function UserHomeMain() {
     return (
         <Tab.Navigator ScreenOptions={
@@ -22,7 +73,7 @@ export function UserHomeMain() {
                 tabBarInactiveTintColor: "gray",
             }
         }>
-            <Tab.Screen name="Phòng" component={UserHome} options={
+            <Tab.Screen name="Trang chủ" component={StackHomeNavigator} options={
                 {
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
@@ -30,7 +81,8 @@ export function UserHomeMain() {
                     ),
                 }
             }></Tab.Screen>
-            <Tab.Screen name="Thông Báo" component={NotiMain} options={
+
+            <Tab.Screen name="Thông Báo" component={StackNotiNavigator} options={
                 {
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
@@ -38,24 +90,26 @@ export function UserHomeMain() {
                     ),
                 }
             }></Tab.Screen>
-            <Tab.Screen name="Tài khoản" component={Account} options={
-                {
-                    headerShown: false,
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="account" color={color} size={size} />
-                    ),
-                }
-            }></Tab.Screen>
+
             <Tab.Screen name="chat" component={StudentChatScreen} options={
                 {
                     headerShown: false,
-                    // tabBarIcon: getTabBarIcon('home'),
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="account" color={color} size={size} />
+                        <MaterialCommunityIcons name="chat" color={color} size={size} />
                     ),
 
                 }
             }></Tab.Screen>
+
+            <Tab.Screen name="Tài khoản" component={StackAccountNavigator} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="account" color={color} size={size} />
+                    ),
+                }
+            }></Tab.Screen>
+
         </Tab.Navigator>
     )
 }
