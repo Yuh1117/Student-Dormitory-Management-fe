@@ -1,92 +1,111 @@
 import * as React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, FlatList, ScrollView, Dimensions } from 'react-native';
 import { Card, Button, Divider, Avatar } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Text } from 'react-native';
 import AccountStyles from '../../auth/AccountStyles';
-import { Text } from 'react-native'
 
 const invoices = [
     {
         id: 1,
         type: 'Hoá đơn phòng',
         amount: '400.000đ',
-        status: 'Chưa thanh toán',
-        paid: false,
-        time: '21:05 - 08/02/2024',
+        status: 'Unpaid',
+        time: '21:05 - 08/02/2024'
     },
     {
         id: 2,
         type: 'Hoá đơn phòng',
         amount: '200.000đ',
-        status: 'Chưa thanh toán',
-        paid: false,
-        time: '21:05 - 08/02/2024',
+        status: 'Paid',
+        time: '21:05 - 08/02/2024'
     },
     {
         id: 3,
         type: 'Hoá đơn phòng',
         amount: '1.000.000đ',
-        status: 'Đã thanh toán',
-        paid: true,
-        time: '21:05 - 08/02/2024',
+        status: 'Paid',
+        time: '21:05 - 08/02/2024'
     }
 ];
 
-export default function InvoiceScreen() {
-    return (
-        <View style={AccountStyles.container}>
-            <ScrollView>
-                <Text style={styles.title}>Hoá đơn chưa thanh toán</Text>
+const RoomInvoice = () => {
+    const screenWidth = Dimensions.get('window').width;
 
-                <Card style={styles.card}>
-                    <Card.Content>
-                        <View style={[styles.row, {marginVertical: 5}]}>
-                            <View style={styles.row}>
-                                <Avatar.Icon icon="home" size={45} style={{ backgroundColor: '#FFF3E0' }} color="#FF9800" />
-                                <View style={{ marginLeft: 12 }}>
-                                    <Text style={styles.label}>Hoá đơn</Text>
-                                    <Text style={styles.timestamp}>21:05 - 08/02/2024</Text>
+
+    return (
+        <View style={[AccountStyles.container, { flex: 0 }]}>
+            <Text style={styles.title}>Hoá đơn chưa thanh toán</Text>
+
+            <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+            >
+                {invoices.map((item) => (
+                    <Card key={item.id} style={[styles.card, { width: screenWidth - 50 }]}>
+                        <Card.Content>
+                            <View style={[styles.row, { marginVertical: 5 }]}>
+                                <View style={styles.row}>
+                                    <Avatar.Icon icon="home" size={45} style={{ backgroundColor: '#FFF3E0' }} color="#FF9800" />
+                                    <View style={{ marginLeft: 12 }}>
+                                        <Text style={styles.label}>{item.type}</Text>
+                                        <Text style={styles.timestamp}>{item.time}</Text>
+                                    </View>
+                                </View>
+                                <View style={{ alignItems: 'flex-end' }}>
+                                    <Text style={styles.unpaid}>{item.amount}</Text>
+                                    <Text style={[styles.unpaid, { fontSize: 13 }]}>
+                                        Chưa thanh toán
+                                    </Text>
                                 </View>
                             </View>
-                            <View style={{ alignItems: 'flex-end' }}>
-                                <Text style={styles.unpaid}>400.000đ</Text>
-                                <Text style={[styles.unpaid, { fontSize: 13 }]}>Chưa thanh toán</Text>
-                            </View>
-                        </View>
 
-                        <Button mode="outlined" style={styles.checkButton} textColor="#376be3" onPress={() => console.log('check')}>
-                            Kiểm tra
-                        </Button>
-                    </Card.Content>
-                </Card>
+                            <Button
+                                mode="outlined"
+                                style={styles.checkButton}
+                                textColor="#376be3"
+                                onPress={() => console.log('check')}
+                            >
+                                Kiểm tra
+                            </Button>
+                        </Card.Content>
+                    </Card>
+                ))}
+            </ScrollView>
 
-                <View style={[styles.row, {padding: 7}]}>
-                    <Text style={[styles.title, { margin: 0 }]}>Hoá đơn của tôi</Text>
-                    <Text style={{ color: '#376be3' }}>Xem thêm</Text>
-                </View>
+            <View style={[styles.row, { padding: 7 }]}>
+                <Text style={[styles.title, { margin: 0 }]}>Hoá đơn của tôi</Text>
+                <Text style={{ color: '#376be3' }}>Xem thêm</Text>
+            </View>
 
-                {invoices.map((item, index) => (
-                    <React.Fragment key={item.id}>
-                        <View style={[styles.row, {padding: 7, marginVertical: 5}]}>
+            <FlatList
+                onEndReached={() => console.log(1)}
+                data={invoices}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item, index }) => (
+                    <View key={item.id}>
+                        <View style={[styles.row, { padding: 7, marginVertical: 5 }]}>
                             <View style={styles.row}>
                                 <Avatar.Icon icon="home" size={30} style={{ backgroundColor: '#376be3' }} color="white" />
                                 <View style={{ marginLeft: 12 }}>
                                     <Text style={styles.label}>{item.type}</Text>
-                                    <Text >{item.time}</Text>
+                                    <Text>{item.time}</Text>
                                 </View>
                             </View>
-                            <View style={{ alignItems: 'flex-end' }} >
+                            <View style={{ alignItems: 'flex-end' }}>
                                 <Text style={styles.label}>{item.amount}</Text>
-                                <Text style={{ color: '#4CAF50' }}>Đã thanh toán</Text>
+                                <Text style={{ color: '#4CAF50' }}>
+                                    Đã thanh toán
+                                </Text>
                             </View>
                         </View>
                         {index < invoices.length - 1 && <Divider />}
-                    </React.Fragment>
-                ))}
-            </ScrollView>
+                    </View>
+                )}
+                contentContainerStyle={{ paddingHorizontal: 7 }}
+            />
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     title: {
@@ -123,6 +142,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginTop: 10,
         borderRadius: 10
-    }
-
+    },
 });
+
+export default RoomInvoice;

@@ -98,7 +98,7 @@ const Profile = () => {
                     });
 
                     Alert.alert("Cập nhật thông tin thành công")
-                    nav.navigate("UserHome")
+                    nav.navigate("Account")
                 }
             } catch (ex) {
                 console.error(ex);

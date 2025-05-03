@@ -7,10 +7,10 @@ import { useNavigation } from '@react-navigation/native';
 
 const pricingData = [
     { icon: 'home', label: 'Tiền nhà', value: '1.000.000 VNĐ' },
-    { icon: 'bolt', label: 'Tiền điện', value: '3.500đ/ KWh', sub: 'Tính theo đồng hồ' },
-    { icon: 'water', label: 'Tiền nước', value: '20.000đ/ Khối', sub: 'Tính theo đồng hồ' },
-    { icon: 'delete', label: 'Tiền rác', value: '25.000đ/ Tháng' },
-    { icon: 'wifi', label: 'Tiền wifi', value: '50.000đ/ Tháng' },
+    { icon: 'bolt', label: 'Tiền điện', value: '3.500đ/KWh', sub: 'Tính theo đồng hồ' },
+    { icon: 'water', label: 'Tiền nước', value: '20.000đ/Khối', sub: 'Tính theo đồng hồ' },
+    { icon: 'delete', label: 'Tiền rác', value: '25.000đ/Tháng' },
+    { icon: 'wifi', label: 'Tiền wifi', value: '50.000đ/Tháng' },
 ];
 
 const PricingList = () => {

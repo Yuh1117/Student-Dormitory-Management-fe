@@ -32,6 +32,7 @@ const UserHome = () => {
             <MenuItem
               icon={<MaterialIcons name="swap-horiz" size={22} color="#333" />}
               title="Đổi phòng"
+              onPress={() => nav.navigate('RoomChange')}
             />
           </View>
 
@@ -47,6 +48,7 @@ const UserHome = () => {
             <MenuItem
               icon={<Ionicons name="megaphone-outline" size={22} color="#333" />}
               title="Hỗ trợ"
+              onPress={() => nav.navigate("Support")}
             />
           </View>
 
@@ -54,6 +56,7 @@ const UserHome = () => {
             <MenuItem
               icon={<Feather name="clipboard" size={22} color="#333" />}
               title="Khảo sát"
+              onPress={() => nav.navigate("Survey")}
             />
           </View>
         </View>

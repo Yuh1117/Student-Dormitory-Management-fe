@@ -1,8 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import AccountStyles from '../../auth/AccountStyles';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import RoommateItem from './RoommateItem';
 
 const RoomDetails = () => {
@@ -31,31 +29,28 @@ const RoomDetails = () => {
     ];
 
     return (
-        <View style={AccountStyles.container}>
-            <ScrollView>
-                <View style={AccountStyles.card}>
-                    <View style={styles.row}>
-                        <Text style={styles.title}>Toà A - </Text>
-                        <Text style={styles.title}>Phòng 101</Text>
-                    </View>
-
-                    <View style={styles.row}>
-                        <View style={styles.capacityBox}>
-                            <Text style={styles.capacityText}>Số chỗ: 6</Text>
-                        </View>
-                        <View style={styles.availableBox}>
-                            <Text style={styles.availableText}>Còn 1 chỗ</Text>
-                        </View>
-                    </View>
+        <ScrollView contentContainerStyle={[AccountStyles.container, {justifyContent: ''}]}>
+            <View style={AccountStyles.card}>
+                <View style={styles.row}>
+                    <Text style={styles.title}>Toà A - </Text>
+                    <Text style={styles.title}>Phòng 101</Text>
                 </View>
 
-                <View style={AccountStyles.card}>
-                    <Text style={styles.title}>Bạn cùng phòng</Text>
-                    {roommates.map(r => <RoommateItem key={r.id} item={r} />)}
+                <View style={styles.row}>
+                    <View style={styles.capacityBox}>
+                        <Text style={styles.capacityText}>Số chỗ: 6</Text>
+                    </View>
+                    <View style={styles.availableBox}>
+                        <Text style={styles.availableText}>Còn 1 chỗ</Text>
+                    </View>
                 </View>
-            </ScrollView>
+            </View>
 
-        </View>
+            <View style={AccountStyles.card}>
+                <Text style={styles.title}>Bạn cùng phòng</Text>
+                {roommates.map(r => <RoommateItem key={r.id} item={r} />)}
+            </View>
+        </ScrollView>
     );
 };
 

@@ -32,16 +32,6 @@ const notifications = [
   },
 ];
 
-const customTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    secondaryContainer: '#376be3',
-    onSecondaryContainer: 'white',
-    primary: '#376be3'
-  },
-};
-
 const NotiMain = () => {
   const [selectedType, setSelectedType] = useState('all')
 
@@ -50,43 +40,41 @@ const NotiMain = () => {
     : notifications.filter(n => n.type === selectedType);
 
   return (
-    <PaperProvider theme={customTheme} >
-      <SafeAreaView style={AccountStyles.container}>
-        <Text style={AccountStyles.headerTitle}>Thông báo</Text>
+    <SafeAreaView style={AccountStyles.container}>
+      <Text style={AccountStyles.headerTitle}>Thông báo</Text>
 
-        <SegmentedButtons
-          value={selectedType}
-          onValueChange={setSelectedType}
-          buttons={[
-            { value: 'all', label: 'Tất cả' },
-            { value: 'admin', label: 'Ban quản lý' },
-            { value: 'support', label: 'Hỗ trợ' }
-          ]}
-          style={styles.m}
-        />
+      <SegmentedButtons
+        value={selectedType}
+        onValueChange={setSelectedType}
+        buttons={[
+          { value: 'all', label: 'Tất cả' },
+          { value: 'admin', label: 'Ban quản lý' },
+          { value: 'support', label: 'Hỗ trợ' }
+        ]}
+        style={styles.m}
+      />
 
-        <FlatList
-          style={styles.m}
-          data={filtered}
-          keyExtractor={item => item.id}
-          renderItem={({ item, index }) => (
-            <>
-              <List.Item
-                title={item.title}
-                description={item.content}
-                left={props => (
-                  <Avatar.Icon
-                    icon='message'
-                  />
-                )}
-                right={() => <Text style={{ alignSelf: 'center', fontSize: 12 }}>{item.date}</Text>}
-              />
-              {index < filtered.length - 1 && <Divider />}
-            </>
-          )}
-        />
-      </SafeAreaView>
-    </PaperProvider>
+      <FlatList
+        style={styles.m}
+        data={filtered}
+        keyExtractor={item => item.id}
+        renderItem={({ item, index }) => (
+          <>
+            <List.Item
+              title={item.title}
+              description={item.content}
+              left={props => (
+                <Avatar.Icon
+                  icon='message'
+                />
+              )}
+              right={() => <Text style={{ alignSelf: 'center', fontSize: 12 }}>{item.date}</Text>}
+            />
+            {index < filtered.length - 1 && <Divider />}
+          </>
+        )}
+      />
+    </SafeAreaView>
   );
 }
 

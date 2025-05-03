@@ -10,6 +10,11 @@ import Profile from '../../components/auth/Profile';
 import RoomDetails from '../../components/room/client/RoomDetails';
 import RoomInvoice from '../../components/billing/client/RoomInvoice';
 import Rules from '../../components/home/user/Rules';
+import Support from '../../components/support/Support';
+import { BottomNavigation, DefaultTheme, PaperProvider } from 'react-native-paper';
+import SendSupport from '../../components/support/SendSupport';
+import Survey from '../../components/surveys/Survey';
+import RoomChange from '../../components/room/client/RoomChange';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -28,9 +33,29 @@ const StackHomeNavigator = () => {
                 options={{ headerShown: true, title: "Thông tin phòng" }}
             />
             <Stack.Screen
+                name="RoomChange"
+                component={RoomChange}
+                options={{ headerShown: true, title: "Đổi phòng" }}
+            />
+            <Stack.Screen
                 name="RoomInvoice"
                 component={RoomInvoice}
                 options={{ headerShown: true, title: "Hóa đơn" }}
+            />
+            <Stack.Screen
+                name="Support"
+                component={Support}
+                options={{ headerShown: true, title: "Hỗ trợ" }}
+            />
+            <Stack.Screen
+                name="SendSupport"
+                component={SendSupport}
+                options={{ headerShown: true, title: "Gửi yêu cầu hỗ trợ" }}
+            />
+            <Stack.Screen
+                name="Survey"
+                component={Survey}
+                options={{ headerShown: true, title: "Khảo sát" }}
             />
             <Stack.Screen
                 name="Rules"
@@ -70,53 +95,65 @@ const StackNotiNavigator = () => {
     )
 }
 
+const customTheme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        secondaryContainer: '#376be3',
+        onSecondaryContainer: 'white',
+        primary: '#376be3'
+    },
+};
+
 export function UserHomeMain() {
     return (
-        <Tab.Navigator ScreenOptions={
-            {
-                headerShown: false,
-                tabBarActiveTintColor: "blue",
-                tabBarInactiveTintColor: "gray",
-            }
-        }>
-            <Tab.Screen name="Trang chủ" component={StackHomeNavigator} options={
+        <PaperProvider theme={customTheme}>
+            <Tab.Navigator ScreenOptions={
                 {
                     headerShown: false,
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="home" color={color} size={size} />
-                    ),
+                    tabBarActiveTintColor: "blue",
+                    tabBarInactiveTintColor: "gray",
                 }
-            }></Tab.Screen>
+            }>
+                <Tab.Screen name="Trang chủ" component={StackHomeNavigator} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+                    }
+                }></Tab.Screen>
 
-            <Tab.Screen name="Thông Báo" component={StackNotiNavigator} options={
-                {
-                    headerShown: false,
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="bell" color={color} size={size} />
-                    ),
-                }
-            }></Tab.Screen>
+                <Tab.Screen name="Thông Báo" component={StackNotiNavigator} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="bell" color={color} size={size} />
+                        ),
+                    }
+                }></Tab.Screen>
 
-            <Tab.Screen name="chat" component={StudentChatScreen} options={
-                {
-                    headerShown: false,
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="chat" color={color} size={size} />
-                    ),
+                <Tab.Screen name="chat" component={StudentChatScreen} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="chat" color={color} size={size} />
+                        ),
 
-                }
-            }></Tab.Screen>
+                    }
+                }></Tab.Screen>
 
-            <Tab.Screen name="Tài khoản" component={StackAccountNavigator} options={
-                {
-                    headerShown: false,
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="account" color={color} size={size} />
-                    ),
-                }
-            }></Tab.Screen>
+                <Tab.Screen name="Tài khoản" component={StackAccountNavigator} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="account" color={color} size={size} />
+                        ),
+                    }
+                }></Tab.Screen>
 
-        </Tab.Navigator>
+            </Tab.Navigator>
+        </PaperProvider>
     )
 }
 const styles = StyleSheet.create({
