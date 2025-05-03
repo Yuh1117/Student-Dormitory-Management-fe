@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Menu, Surface, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MenuItem from '../../auth/MenuItem';
 import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import AccountStyles from '../../auth/AccountStyles';
 import { useNavigation } from '@react-navigation/native';
+import PricingList from './PricingList';
 
 
 const UserHome = () => {
@@ -56,6 +57,9 @@ const UserHome = () => {
             />
           </View>
         </View>
+
+        <PricingList />
+
       </ScrollView>
     </SafeAreaView>
   )
@@ -71,7 +75,6 @@ const styles = StyleSheet.create({
 
   card: {
     width: '48%',
-    aspectRatio: 1,
     backgroundColor: 'white',
     borderRadius: 10,
     marginVertical: 7,

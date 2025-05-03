@@ -9,7 +9,7 @@ const RoommateItem = ({ item }) => (
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.subtitle}>{item.subtitle}</Text>
         </View>
-        <View style={styles.actions}>
+        <View>
             <TouchableOpacity>
                 <MaterialIcons name="chat" size={30} color="#4a90e2" />
             </TouchableOpacity>
@@ -39,11 +39,7 @@ const styles = StyleSheet.create({
     subtitle: {
         fontSize: 13,
         color: '#666',
-    },
-    actions: {
-        flexDirection: 'row',
-        gap: 8,
-    },
+    }
 });
 
 export default RoommateItem;

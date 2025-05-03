@@ -4,7 +4,7 @@ const AccountStyles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        padding: 8,
+        padding: 10,
     },
     title: {
         fontSize: 24,

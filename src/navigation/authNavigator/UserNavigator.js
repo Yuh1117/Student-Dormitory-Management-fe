@@ -9,6 +9,7 @@ import UserHome from '../../components/home/user/UserHome';
 import Profile from '../../components/auth/Profile';
 import RoomDetails from '../../components/room/client/RoomDetails';
 import RoomInvoice from '../../components/billing/client/RoomInvoice';
+import Rules from '../../components/home/user/Rules';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -30,6 +31,11 @@ const StackHomeNavigator = () => {
                 name="RoomInvoice"
                 component={RoomInvoice}
                 options={{ headerShown: true, title: "Hóa đơn" }}
+            />
+            <Stack.Screen
+                name="Rules"
+                component={Rules}
+                options={{ headerShown: true, title: "Nội quy ký túc xá" }}
             />
         </Stack.Navigator>
     )

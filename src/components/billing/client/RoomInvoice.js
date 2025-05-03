@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Card, Text, Button, Divider, Avatar } from 'react-native-paper';
+import { Card, Button, Divider, Avatar } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AccountStyles from '../../auth/AccountStyles';
+import { Text } from 'react-native'
 
 const invoices = [
     {
@@ -39,11 +40,11 @@ export default function InvoiceScreen() {
 
                 <Card style={styles.card}>
                     <Card.Content>
-                        <View style={styles.row}>
+                        <View style={[styles.row, {marginVertical: 5}]}>
                             <View style={styles.row}>
-                                <Avatar.Icon icon="home" size={30} style={{ backgroundColor: '#FFF3E0' }} color="#FF9800" />
+                                <Avatar.Icon icon="home" size={45} style={{ backgroundColor: '#FFF3E0' }} color="#FF9800" />
                                 <View style={{ marginLeft: 12 }}>
-                                    <Text style={styles.invoiceTitle}>Hoá đơn</Text>
+                                    <Text style={styles.label}>Hoá đơn</Text>
                                     <Text style={styles.timestamp}>21:05 - 08/02/2024</Text>
                                 </View>
                             </View>
@@ -59,28 +60,28 @@ export default function InvoiceScreen() {
                     </Card.Content>
                 </Card>
 
-                <View style={[styles.row, styles.p]}>
+                <View style={[styles.row, {padding: 7}]}>
                     <Text style={[styles.title, { margin: 0 }]}>Hoá đơn của tôi</Text>
                     <Text style={{ color: '#376be3' }}>Xem thêm</Text>
                 </View>
 
                 {invoices.map((item, index) => (
-                    <>
-                        <View key={item.id} style={[styles.row, styles.p]}>
+                    <React.Fragment key={item.id}>
+                        <View style={[styles.row, {padding: 7, marginVertical: 5}]}>
                             <View style={styles.row}>
                                 <Avatar.Icon icon="home" size={30} style={{ backgroundColor: '#376be3' }} color="white" />
                                 <View style={{ marginLeft: 12 }}>
-                                    <Text style={styles.invoiceTitle}>{item.type}</Text>
+                                    <Text style={styles.label}>{item.type}</Text>
                                     <Text >{item.time}</Text>
                                 </View>
                             </View>
                             <View style={{ alignItems: 'flex-end' }} >
-                                <Text >{item.amount}</Text>
+                                <Text style={styles.label}>{item.amount}</Text>
                                 <Text style={{ color: '#4CAF50' }}>Đã thanh toán</Text>
                             </View>
                         </View>
                         {index < invoices.length - 1 && <Divider />}
-                    </>
+                    </React.Fragment>
                 ))}
             </ScrollView>
         </View>
@@ -88,15 +89,9 @@ export default function InvoiceScreen() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 16,
-    },
-    p: {
-        padding: 7
-    },
     title: {
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 20,
         margin: 10,
     },
     card: {
@@ -114,9 +109,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    invoiceTitle: {
-        fontSize: 15,
-        fontWeight: 'bold',
+    label: {
+        fontSize: 16,
+        fontWeight: '600',
     },
     unpaid: {
         fontSize: 18,
