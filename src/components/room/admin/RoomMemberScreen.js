@@ -99,7 +99,7 @@ export default function RoomMember({ navigation }) {
             disabled={selectedRoom.available_beds === 0}
             onPress={() => navigation.navigate("addRoomMember")}
             style={[styles.button, AdminStyles.successColor, selectedRoom.available_beds === 0 && { opacity: 0.5 }]}>
-            <Text style={styles.buttonText}>Thêm thành viênssss</Text>
+            <Text style={styles.buttonText}>Thêm thành viên</Text>
           </TouchableOpacity>
         </View>
       </View>

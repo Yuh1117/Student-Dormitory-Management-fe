@@ -12,7 +12,9 @@ export const endpoints = {
     "available-student": "/users/available-students/",
     "room-assignments": "/room-assignments/",
     "remove-member": (id) => `/rooms/${id}/remove-member/`,
-    "notifications": "/notifications/"
+    "notifications": "/notifications/",
+    "surveys":"/surveys/",
+    "survey-responses":(surveyId) => `surveys/${surveyId}/survey-responses`
 
 }
 

@@ -61,8 +61,6 @@ export default StyleSheet.create({
         fontSize: 16,
         color: "#333",
         fontWeight: "bold",
-
-
     },
     paid:{
         backgroundColor:"#B5FCCD"

@@ -23,6 +23,10 @@ import CreateNotification from '../../components/notifications/admin/CreateNotiS
 import ChatListScreen from '../../services/admin/AdminChatList';
 import StudentChatScreen from '../../services/user/ChatScreen';
 import AdminChatScreen from '../../services/admin/AdminChatScreen';
+import CreateSurvey from '../../components/surveys/admin/CreateSurveyScreen'
+import SurveyList from '../../components/surveys/admin/ListvurveysScreen';
+import SurveyDetail from '../../components/surveys/admin/SurveyDetail.Screen';
+import SurveyResponses from '../../components/surveys/admin/ResponseSurveysScreen';
 
 
 
@@ -128,6 +132,52 @@ const StackRoomNavigater = () => {
     )
 }
 
+const StackSurveysNavigator =() =>{
+    return(
+        <Stack.Navigator initialRouteName="surveyList">
+                
+                <Stack.Screen name="surveyList" component={SurveyList} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="surveyDetail" component={SurveyDetail} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="createSurvey" component={CreateSurvey} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="surveyResponses" component={SurveyResponses} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                
+              
+            </Stack.Navigator>
+    );
+}
+
 const StackUserNavigater = () =>{
     return(
         <Stack.Navigator initialRouteName="userManageMainScreen">
@@ -150,6 +200,15 @@ const StackUserNavigater = () =>{
                     }
                 } />
                 <Stack.Screen name="createNoti" component={CreateNotification} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="surveyStack" component={StackSurveysNavigator} options={
                     {
                         headerShown: false,
                         tabBarIcon: ({ color, size }) => (
