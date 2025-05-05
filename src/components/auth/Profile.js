@@ -109,7 +109,7 @@ const Profile = () => {
     }
 
     return (
-        <SafeAreaView style={AccountStyles.container}>
+        <SafeAreaView style={[AccountStyles.container, {justifyContent: ''}]}>
             <ScrollView>
                 <View style={{ alignItems: 'center', marginBottom: 20 }}>
                     <TouchableOpacity onPress={pick}>

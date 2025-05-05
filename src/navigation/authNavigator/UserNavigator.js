@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import NotiMain from '../../components/notifications/client/NotiMain';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -15,6 +15,9 @@ import { BottomNavigation, DefaultTheme, PaperProvider } from 'react-native-pape
 import SendSupport from '../../components/support/SendSupport';
 import Survey from '../../components/surveys/Survey';
 import RoomChange from '../../components/room/client/RoomChange';
+import SurveyQuestions from '../../components/surveys/SurveyQuestions';
+import { useNavigation } from '@react-navigation/native';
+import SurveyHistory from '../../components/surveys/SurveyHistory';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -55,7 +58,28 @@ const StackHomeNavigator = () => {
             <Stack.Screen
                 name="Survey"
                 component={Survey}
-                options={{ headerShown: true, title: "Khảo sát" }}
+                options={({ navigation }) => ({
+                    headerShown: true,
+                    title: "Khảo sát",
+                    headerRight: () => (
+                        <TouchableOpacity
+                            style={{ marginRight: 20 }}
+                            onPress={() => navigation.navigate("SurveyHistory")}
+                        >
+                            <MaterialCommunityIcons name="history" size={30} />
+                        </TouchableOpacity>
+                    ),
+                })}
+            />
+            <Stack.Screen
+                name="SurveyQuestions"
+                component={SurveyQuestions}
+                options={{ headerShown: true, title: "Câu hỏi khảo sát" }}
+            />
+            <Stack.Screen
+                name="SurveyHistory"
+                component={SurveyHistory}
+                options={{ headerShown: true, title: "Lịch sử khảo sát" }}
             />
             <Stack.Screen
                 name="Rules"
