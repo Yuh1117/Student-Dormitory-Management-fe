@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-const styles = StyleSheet.create({
+const AccountStyles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16,
         fontWeight: 'bold',
-    }, fw : {
+    }, fw: {
         fontWeight: 'bold'
     },
     headerTitle: {
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     },
     card: {
         backgroundColor: 'white',
-        borderRadius: 12,
+        borderRadius: 10,
         margin: 7,
         padding: 15,
         shadowColor: '#000',
@@ -78,12 +78,14 @@ const styles = StyleSheet.create({
     menuItemLeft: {
         flexDirection: 'row',
         alignItems: 'center',
+        flex: 1,
     },
     menuItemText: {
         fontSize: 16,
         marginLeft: 12,
-    }
+        flexShrink: 1,
+    },
 
 });
 
-export default styles
+export default AccountStyles

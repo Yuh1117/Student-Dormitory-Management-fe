@@ -53,7 +53,7 @@ const DrawerNavigator = () => {
             }} />
             <Drawer.Screen name="updateInvoice" component={UpdateInvoice} options={{
                 drawerItemStyle: { display: 'none' }, // Ẩn khỏi Drawer
-                
+
             }} />
 
         </Drawer.Navigator>
@@ -126,7 +126,7 @@ const StackRoomNavigater = () => {
 
                     }
                 } />
-                
+
             </Stack.Navigator>
         </RoomProvider>
     )
@@ -181,30 +181,30 @@ const StackSurveysNavigator =() =>{
 const StackUserNavigater = () =>{
     return(
         <Stack.Navigator initialRouteName="userManageMainScreen">
-                <Stack.Screen name="userManageMainScreen" component={UserManage} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
+            <Stack.Screen name="userManageMainScreen" component={UserManage} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
 
-                    }
-                } />
-                <Stack.Screen name="register" component={RegisterScreen} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
+                }
+            } />
+            <Stack.Screen name="register" component={RegisterScreen} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
 
-                    }
-                } />
-                <Stack.Screen name="createNoti" component={CreateNotification} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
+                }
+            } />
+            <Stack.Screen name="createNoti" component={CreateNotification} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
 
                     }
                 } />
@@ -223,31 +223,31 @@ const StackUserNavigater = () =>{
     );
 }
 
-const AdminChatStack = ()=>{
-    return(
+const AdminChatStack = () => {
+    return (
         <Stack.Navigator initialRouteName="listChat">
-                <Stack.Screen name="listChat" component={ChatListScreen} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
+            <Stack.Screen name="listChat" component={ChatListScreen} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
 
-                    }
-                } />
-                <Stack.Screen name="pesonalChat" component={AdminChatScreen} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
+                }
+            } />
+            <Stack.Screen name="pesonalChat" component={AdminChatScreen} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
 
-                    }
-                } />
-                
-                
-              
-            </Stack.Navigator>
+                }
+            } />
+
+
+
+        </Stack.Navigator>
     );
 }
 
@@ -282,7 +282,7 @@ export function AdminHomeMain() {
 
                 }
             }></Tab.Screen>
-           
+
 
         </Tab.Navigator>
     )

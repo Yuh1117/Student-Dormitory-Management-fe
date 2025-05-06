@@ -1,13 +1,12 @@
 import { use, useContext, useState } from "react";
 import { View, ActivityIndicator, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, HelperText, Text, TextInput } from "react-native-paper";
-import styles from "./styles";
 import { MyDispatchContext, MyUserContext } from "../../config/MyContexts";
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from "@react-navigation/native";
-import { authApis } from "../../config/Apis";
+import { authApis, endpoints } from "../../config/Apis";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AccountStyles from "./AccountStyles";
 
 const Profile = () => {
     const userData = useContext(MyUserContext)
@@ -50,7 +49,7 @@ const Profile = () => {
                     return false
                 }
             }
-            
+
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (f.field === "email" && !emailRegex.test(user[f.field])) {
                 setMsg("Email không hợp lệ!");
@@ -84,7 +83,7 @@ const Profile = () => {
                     }
                 }
 
-                const res = await authApis(token).patch("/users/current-user/", form, {
+                const res = await authApis(token).patch(endpoints["current-user"], form, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                         "Accept": "application/json",
@@ -98,7 +97,7 @@ const Profile = () => {
                     });
 
                     Alert.alert("Cập nhật thông tin thành công")
-                    nav.navigate("UserHome")
+                    nav.navigate("Account")
                 }
             } catch (ex) {
                 console.error(ex);
@@ -109,9 +108,9 @@ const Profile = () => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={[AccountStyles.container, { justifyContent: 'none', marginTop: 10 }]}>
             <ScrollView>
-                <View style={{ alignItems: 'center', marginBottom: 20 }}>
+                <View style={{ alignItems: 'center' }}>
                     <TouchableOpacity onPress={pick}>
                         <Avatar.Image
                             size={100}
@@ -120,17 +119,17 @@ const Profile = () => {
                     </TouchableOpacity>
                 </View>
 
-                <HelperText style={styles.m} type="error" visible={msg}>
+                <HelperText style={AccountStyles.m} type="error" visible={msg}>
                     {msg}
                 </HelperText>
 
-                <View style={styles.card}>
+                <View style={AccountStyles.card}>
 
                     {fields.map(f =>
                         <TextInput
                             key={f.field}
                             mode="outlined"
-                            style={[styles.input, { padding: 0, borderWidth: 0 }]}
+                            style={[AccountStyles.input, { padding: 0, borderWidth: 0 }]}
                             value={user[f.field]}
                             onChangeText={(text) => setState(text, f.field)}
                             label={f.label}
@@ -140,14 +139,14 @@ const Profile = () => {
                         />
                     )}
 
-                    < TouchableOpacity style={styles.button} onPress={saveInfor} disabled={loading} >
-                        {loading ? <ActivityIndicator color="white" /> : <Text style={styles.buttonText}>Cập nhật</Text>}
+                    < TouchableOpacity style={AccountStyles.button} onPress={saveInfor} disabled={loading} >
+                        {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>Cập nhật</Text>}
                     </TouchableOpacity >
                 </View>
 
 
             </ScrollView>
-        </SafeAreaView>
+        </View>
     )
 }
 

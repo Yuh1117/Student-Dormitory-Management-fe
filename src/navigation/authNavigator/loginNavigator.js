@@ -5,7 +5,6 @@ import { UserHomeMain } from './UserNavigator';
 import { AdminHomeMain } from './adminNavigator';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import Profile from '../../components/auth/Profile';
 import ChangPasswordScreen from '../../components/auth/changePasswordScreen';
 import MyUserReducer from "../../reducers/MyUserReducer";
 import { useReducer } from 'react';
@@ -40,11 +39,6 @@ export default function LoginNavigator() {
               name="AdminHome"
               component={AdminHomeMain}
               options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Profile"
-              component={Profile}
-              options={{ headerShown: true, title: "Thông tin cá nhân" }}
             />
           </Stack.Navigator>
         </NavigationContainer>

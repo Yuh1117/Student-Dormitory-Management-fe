@@ -4,9 +4,9 @@ import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import Apis, { endpoints } from "../../config/Apis";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import styles from "./styles";
 import { registerForPushNotificationsAsync } from "../../config/Notis";
 import { MyDispatchContext } from "../../config/MyContexts";
+import AccountStyles from "./AccountStyles";
 
 const LoginScreen = ({ navigation }) => {
   const { control, handleSubmit, formState: { errors } } = useForm();
@@ -61,8 +61,8 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Đăng nhập</Text>
+    <View style={AccountStyles.container}>
+      <Text style={AccountStyles.title}>Đăng nhập</Text>
 
       <Controller
         control={control}
@@ -70,7 +70,7 @@ const LoginScreen = ({ navigation }) => {
         rules={{ required: 'Tên đăng nhập không được để trống' }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={styles.input}
+            style={AccountStyles.input}
             placeholder="Tên đăng nhập"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -78,7 +78,7 @@ const LoginScreen = ({ navigation }) => {
           />
         )}
       />
-      {errors.username && <Text style={styles.error}>{errors.username.message}</Text>}
+      {errors.username && <Text style={AccountStyles.error}>{errors.username.message}</Text>}
 
       <Controller
         control={control}
@@ -86,7 +86,7 @@ const LoginScreen = ({ navigation }) => {
         rules={{ required: 'Mật khẩu không được để trống', minLength: { value: 1, message: 'Password must be at least 6 characters' } }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={styles.input}
+            style={AccountStyles.input}
             placeholder="Mật khẩu"
             secureTextEntry
             onBlur={onBlur}
@@ -95,10 +95,10 @@ const LoginScreen = ({ navigation }) => {
           />
         )}
       />
-      {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
+      {errors.password && <Text style={AccountStyles.error}>{errors.password.message}</Text>}
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)} disabled={loading}>
-        {loading ? <ActivityIndicator color="white" /> : <Text style={styles.buttonText}>Đăng nhập</Text>}
+      <TouchableOpacity style={AccountStyles.button} onPress={handleSubmit(onSubmit)} disabled={loading}>
+        {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>Đăng nhập</Text>}
       </TouchableOpacity>
     </View>
   );
