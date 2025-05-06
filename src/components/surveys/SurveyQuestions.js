@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Alert, TouchableOpacity, View } from "react-native";
 import AccountStyles from "../auth/AccountStyles";
 import { authApis, endpoints } from "../../config/Apis";
@@ -7,6 +7,7 @@ import { ActivityIndicator, Card, HelperText, Text, TextInput } from "react-nati
 import { FlatList } from "react-native-gesture-handler";
 import { StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MyUserContext } from '../../config/MyContexts';
 
 const SurveyQuestions = ({ route }) => {
     const [questions, setQuestions] = useState([])
@@ -15,15 +16,16 @@ const SurveyQuestions = ({ route }) => {
     const done = route.params?.done
     const [answers, setAnswers] = useState([])
     const [msg, setMsg] = useState()
+    const user = useContext(MyUserContext)
     const nav = useNavigation()
 
     const loadQuestions = async () => {
         try {
             setLoading(true)
 
-            const token = await AsyncStorage.getItem("access-token")
-            let res = await authApis(token).get(endpoints["survey-questions"](survey.id))
-            setQuestions(res.data)
+            // const token = await AsyncStorage.getItem("access-token")
+            // let res = await authApis(token).get(endpoints["survey-questions"](survey.id))
+            setQuestions(survey.questions)
         } catch (ex) {
             console.error(ex)
         } finally {
@@ -41,7 +43,7 @@ const SurveyQuestions = ({ route }) => {
 
     const validate = () => {
         for (let a of answers) {
-            if (a.answer === '') {
+            if (!a.answer || a.answer.trim() === "") {
                 setMsg(`Vui lòng nhập câu trả lời!`)
                 return false
             }
@@ -49,25 +51,36 @@ const SurveyQuestions = ({ route }) => {
         return true
     }
 
-    const submitAnswer = async () => {
+    const handleSubmit = () => {
         if (validate() === true) {
-            try {
-                setLoading(true)
+            Alert.alert(
+                "Xác nhận",
+                "Bạn có chắc chắn hoàn thành khảo sát?",
+                [
+                    { text: "Hủy", style: "cancel" },
+                    { text: "Xác nhận", onPress: submitAnswer }
+                ]
+            )
+        }
+    }
 
-                const token = await AsyncStorage.getItem("access-token")
-                const res = await authApis(token).post(endpoints["survey-responses"](survey.id),
-                    answers
-                )
+    const submitAnswer = async () => {
+        try {
+            setLoading(true)
 
-                if (res) {
-                    Alert.alert("Bạn đã hoàn thành khảo sát")
-                    nav.navigate("UserHome")
-                }
-            } catch (ex) {
-                console.error(ex);
-            } finally {
-                setLoading(false);
+            const token = await AsyncStorage.getItem("access-token")
+            const res = await authApis(token).post(endpoints["survey-responses"](survey.id),
+                answers
+            )
+
+            if (res) {
+                Alert.alert("Bạn đã hoàn thành khảo sát")
+                nav.navigate("UserHome")
             }
+        } catch (ex) {
+            console.error(ex);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -76,7 +89,9 @@ const SurveyQuestions = ({ route }) => {
             setLoading(true)
 
             const token = await AsyncStorage.getItem("access-token")
-            const res = await authApis(token).get(endpoints["survey-responses"](survey.id))
+            let url = `${endpoints["survey-responses"](survey.id)}?student=${user._j.id}`
+
+            const res = await authApis(token).get(url)
             setAnswers(res.data.results)
         } catch (ex) {
             console.error(ex);
@@ -84,7 +99,6 @@ const SurveyQuestions = ({ route }) => {
             setLoading(false);
         }
     }
-
 
     useEffect(() => {
         loadQuestions()
@@ -139,12 +153,14 @@ const SurveyQuestions = ({ route }) => {
                 )}
             />
 
-            <HelperText style={{ fontSize: 18 }} type="error" visible={msg}>
-                {msg}
-            </HelperText>
+            {msg &&
+                <HelperText style={{ fontSize: 18 }} type="error" visible={msg}>
+                    {msg}
+                </HelperText>
+            }
 
             {(questions.length > 0 && !done) &&
-                <TouchableOpacity onPress={submitAnswer} style={[AccountStyles.button, { backgroundColor: '#376be3', margin: 7 }]} disabled={loading}>
+                <TouchableOpacity onPress={handleSubmit} style={[AccountStyles.button, { backgroundColor: '#376be3', margin: 7 }]} disabled={loading}>
                     {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>Hoàn thành</Text>}
                 </TouchableOpacity>
             }

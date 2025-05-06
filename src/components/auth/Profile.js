@@ -1,11 +1,10 @@
 import { use, useContext, useState } from "react";
 import { View, ActivityIndicator, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, HelperText, Text, TextInput } from "react-native-paper";
 import { MyDispatchContext, MyUserContext } from "../../config/MyContexts";
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from "@react-navigation/native";
-import { authApis } from "../../config/Apis";
+import { authApis, endpoints } from "../../config/Apis";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AccountStyles from "./AccountStyles";
 
@@ -50,7 +49,7 @@ const Profile = () => {
                     return false
                 }
             }
-            
+
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (f.field === "email" && !emailRegex.test(user[f.field])) {
                 setMsg("Email không hợp lệ!");
@@ -84,7 +83,7 @@ const Profile = () => {
                     }
                 }
 
-                const res = await authApis(token).patch("/users/current-user/", form, {
+                const res = await authApis(token).patch(endpoints["current-user"], form, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                         "Accept": "application/json",
@@ -109,9 +108,9 @@ const Profile = () => {
     }
 
     return (
-        <SafeAreaView style={[AccountStyles.container, {justifyContent: ''}]}>
+        <View style={[AccountStyles.container, { justifyContent: 'none', marginTop: 10 }]}>
             <ScrollView>
-                <View style={{ alignItems: 'center', marginBottom: 20 }}>
+                <View style={{ alignItems: 'center' }}>
                     <TouchableOpacity onPress={pick}>
                         <Avatar.Image
                             size={100}
@@ -147,7 +146,7 @@ const Profile = () => {
 
 
             </ScrollView>
-        </SafeAreaView>
+        </View>
     )
 }
 

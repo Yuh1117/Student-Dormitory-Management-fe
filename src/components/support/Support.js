@@ -1,38 +1,121 @@
-import { StyleSheet, View } from "react-native"
+import { ActivityIndicator, StyleSheet, View } from "react-native"
 import { FlatList, ScrollView } from "react-native-gesture-handler"
 import AccountStyles from "../auth/AccountStyles"
-import { Divider, Text } from "react-native-paper"
+import { Divider, Text, ToggleButton } from "react-native-paper"
 import MenuItem from "../auth/MenuItem"
-import { Feather } from "@expo/vector-icons"
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons"
 import { useNavigation } from "@react-navigation/native"
-import React from "react"
-
-const supports = [
-    {
-        id: 1,
-        title: 'Yêu cầu sữa chữa',
-        description: "abc",
-        status: 'Pending',
-        time: '21:05 - 08/02/2024',
-    },
-    {
-        id: 2,
-        title: 'Yêu cầu sữa chữa',
-        description: "abc",
-        status: 'Pending',
-        time: '21:05 - 08/02/2024',
-    },
-    {
-        id: 3,
-        title: 'Yêu cầu sữa chữa',
-        description: "abc",
-        status: 'Resolved',
-        time: '21:05 - 08/02/2024',
-    }
-];
+import React, { useEffect, useState } from "react"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { authApis, endpoints } from "../../config/Apis"
 
 const Support = () => {
     const nav = useNavigation()
+    const [loading, setLoading] = useState(false)
+    const [complaints, setComplaints] = useState([])
+    const [page, setPage] = useState(1)
+    const [roomLoading, setRoomLoading] = useState(false)
+    const [roomComplaints, setRoomComplaints] = useState([])
+    const [roomPage, setRoomPage] = useState(1)
+    const [viewType, setViewType] = useState("room")
+
+    const loadComplaints = async () => {
+        if (page > 0) {
+            try {
+                setLoading(true)
+
+                const token = await AsyncStorage.getItem("access-token")
+                let url = `${endpoints["my-complaints"]}?page=${page}`
+
+                console.info(url)
+
+                let res = await authApis(token).get(url)
+                setComplaints([...complaints, ...res.data.results])
+
+                if (res.data.next === null)
+                    setPage(0)
+            } catch (ex) {
+                console.error(ex)
+            } finally {
+                setLoading(false)
+            }
+        }
+    }
+
+    const loadMore = () => {
+        if (!loading && page > 0) {
+            setPage(page + 1)
+        }
+    }
+
+    const loadRoomComplaints = async () => {
+        if (roomPage > 0) {
+            try {
+                setRoomLoading(true)
+
+                const token = await AsyncStorage.getItem("access-token")
+                const url = `${endpoints["my-room-complaints"]}?page=${roomPage}`
+                console.info(url)
+
+                const res = await authApis(token).get(url)
+                setRoomComplaints([...roomComplaints, ...res.data.results])
+
+                if (res.data.next === null)
+                    setRoomPage(0)
+            } catch (ex) {
+                console.error(ex)
+            } finally {
+                setRoomLoading(false)
+            }
+        }
+    }
+
+    const loadRoomMore = () => {
+        if (!roomLoading && roomPage > 0) {
+            setRoomPage(roomPage + 1)
+        }
+    }
+
+    useEffect(() => {
+        if (viewType === "room") {
+            loadRoomComplaints();
+        }
+    }, [roomPage, viewType]);
+
+    useEffect(() => {
+        if (viewType === "mine") {
+            loadComplaints();
+        }
+    }, [page, viewType]);
+
+    useEffect(() => {
+        if (viewType === "room") {
+            setComplaints([])
+            setPage(1)
+        } else {
+            setRoomComplaints([])
+            setRoomPage(1)
+        }
+    }, [viewType])
+
+
+    const renderComplaintItem = ({ item, index }) => (
+        <View key={item.id}>
+            <View style={[styles.row, { padding: 7, marginVertical: 5 }]}>
+                <View style={styles.row}>
+                    <View style={{ marginLeft: 5 }}>
+                        <Text style={styles.label}>{item.title}</Text>
+                        <Text>{new Date(item.created_date).toLocaleDateString('vi-VN')}</Text>
+                    </View>
+                </View>
+                <View style={{ alignItems: 'flex-end' }}>
+                    {item.status === "Pending" ? <Text style={{ color: 'orange' }}>Đã gửi</Text> :
+                        <Text style={{ color: '#4CAF50' }}>Đã giải quyết</Text>}
+                </View>
+            </View>
+            <Divider />
+        </View>
+    )
 
     return (
         <View style={AccountStyles.container}>
@@ -46,32 +129,62 @@ const Support = () => {
             </View>
 
             <View style={[styles.row, { padding: 7 }]}>
-                <Text style={[styles.title, { marginHorizontal: 5 }]}>Yêu cầu của tôi</Text>
-                <Text style={{ color: '#376be3' }}>Xem thêm</Text>
+                <Text style={[styles.title, { marginHorizontal: 5 }]}>
+                    Yêu cầu của {viewType === "mine" ? "tôi" : "phòng"}
+                </Text>
+                <ToggleButton.Row
+                    onValueChange={value => {
+                        if (value) setViewType(value)
+                    }}
+                    value={viewType}
+                    style={{ justifyContent: 'center', marginVertical: 5 }}
+                >
+                    <ToggleButton
+                        value="room"
+                        icon={() => (
+                            <MaterialCommunityIcons name="account-group" size={25} color={viewType === "room" ? "#fff" : "#376be3"} />
+                        )}
+                        style={[viewType === "room" && styles.activeToggle, { borderRadius: 10 }]}
+                    >
+                        Phòng
+                    </ToggleButton>
+
+
+                    <ToggleButton
+                        value="mine"
+                        icon={() => (
+                            <MaterialCommunityIcons name="account" size={25} color={viewType === "mine" ? "#fff" : "#376be3"} />
+                        )}
+                        style={[viewType === "mine" && styles.activeToggle, { borderRadius: 10 }]}
+                    >
+                        Cá nhân
+                    </ToggleButton>
+                </ToggleButton.Row>
+
             </View>
 
-            <FlatList
-                data={supports}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item, index }) => (
-                    <View key={item.id}>
-                        <View style={[styles.row, { padding: 7, marginVertical: 5 }]}>
-                            <View style={styles.row}>
-                                <View style={{ marginLeft: 12 }}>
-                                    <Text style={styles.label}>{item.title}</Text>
-                                    <Text >{item.time}</Text>
-                                </View>
-                            </View>
-                            <View style={{ alignItems: 'flex-end' }} >
-                                {item.status === "Pending" ? <Text style={{ color: 'orange' }}>Đã gửi</Text> :
-                                    <Text style={{ color: '#4CAF50' }}>Đã giải quyết</Text>}
-                            </View>
-                        </View>
-                        {index < supports.length - 1 && <Divider />}
-                    </View>
-                )}
-                contentContainerStyle={{ paddingHorizontal: 7 }}
-            />
+            {viewType === "mine" ? (
+                <FlatList
+                    key={viewType}
+                    onEndReached={loadMore}
+                    ListFooterComponent={loading && <ActivityIndicator size={30} />}
+                    data={complaints}
+                    keyExtractor={(item) => `mine-${item.id}`}
+                    renderItem={renderComplaintItem}
+                    contentContainerStyle={{ paddingHorizontal: 7 }}
+                />
+            ) : (
+                <FlatList
+                    key={viewType}
+                    onEndReached={loadRoomMore}
+                    ListFooterComponent={roomLoading && <ActivityIndicator size={30} />}
+                    data={roomComplaints}
+                    keyExtractor={(item) => `room-${item.id}`}
+                    renderItem={renderComplaintItem}
+                    contentContainerStyle={{ paddingHorizontal: 7 }}
+                />
+            )}
+
 
         </View>
     )
@@ -88,10 +201,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-
     label: {
         fontSize: 16,
         fontWeight: '700',
+    },
+    activeToggle: {
+        backgroundColor: '#376be3',
     },
 })
 
