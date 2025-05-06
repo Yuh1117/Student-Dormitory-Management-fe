@@ -34,8 +34,8 @@ const UserManage = () => {
                     </View>
                     <View style ={[AdminStyles.flex_05]}>
 
-                        <TouchableOpacity style={[style.rightBtn, AdminStyles.btn,AdminStyles.flex_1]}>
-                            <Text style={style.text}>Tạo Thông báo</Text>
+                        <TouchableOpacity onPress={()=>{navigation.navigate("surveyStack")}} style={[style.rightBtn, AdminStyles.btn,AdminStyles.flex_1]}>
+                            <Text style={style.text}>Khảo Sát</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
