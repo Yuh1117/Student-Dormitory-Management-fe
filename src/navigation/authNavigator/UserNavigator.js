@@ -18,6 +18,7 @@ import RoomChange from '../../components/room/client/RoomChange';
 import SurveyQuestions from '../../components/surveys/SurveyQuestions';
 import { useNavigation } from '@react-navigation/native';
 import SurveyHistory from '../../components/surveys/SurveyHistory';
+import InvoiceDetails from '../../components/billing/client/InvoiceDetails';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -30,21 +31,30 @@ const StackHomeNavigator = () => {
                 component={UserHome}
                 options={{ headerShown: false, title: "Trang chủ" }}
             />
+
             <Stack.Screen
                 name="RoomDetails"
                 component={RoomDetails}
                 options={{ headerShown: true, title: "Thông tin phòng" }}
             />
+
             <Stack.Screen
                 name="RoomChange"
                 component={RoomChange}
                 options={{ headerShown: true, title: "Đổi phòng" }}
             />
+
             <Stack.Screen
                 name="RoomInvoice"
                 component={RoomInvoice}
                 options={{ headerShown: true, title: "Hóa đơn" }}
             />
+            <Stack.Screen
+                name="InvoiceDetail"
+                component={InvoiceDetails}
+                options={{ headerShown: true, title: "Thông tin hóa đơn" }}
+            />
+
             <Stack.Screen
                 name="Support"
                 component={Support}
@@ -55,6 +65,7 @@ const StackHomeNavigator = () => {
                 component={SendSupport}
                 options={{ headerShown: true, title: "Gửi yêu cầu hỗ trợ" }}
             />
+
             <Stack.Screen
                 name="Survey"
                 component={Survey}
@@ -81,6 +92,7 @@ const StackHomeNavigator = () => {
                 component={SurveyHistory}
                 options={{ headerShown: true, title: "Lịch sử khảo sát" }}
             />
+
             <Stack.Screen
                 name="Rules"
                 component={Rules}

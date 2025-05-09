@@ -3,12 +3,13 @@ import axios from "axios"
 BASE_URL = "http://10.0.2.2:8000/"
 export const endpoints = {
     "login": "/users/login/",
+    "users": "/users/",
+    "current-user": "/users/current-user/",
     "listRooms": "/rooms/",
     "buildings": "/buildings/",
     "rooms": "/rooms/",
-    "users": "/users/",
-    "current-user": "/users/current-user/",
     "invoices": "/invoices/",
+    "my-room-invoices": "/invoices/my-room-invoices",
     "available-student": "/users/available-students/",
     "room-assignments": "/room-assignments/",
     "remove-member": (id) => `/rooms/${id}/remove-member/`,
