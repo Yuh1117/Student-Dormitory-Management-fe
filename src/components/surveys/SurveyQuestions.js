@@ -23,9 +23,10 @@ const SurveyQuestions = ({ route }) => {
         try {
             setLoading(true)
 
-            // const token = await AsyncStorage.getItem("access-token")
-            // let res = await authApis(token).get(endpoints["survey-questions"](survey.id))
-            setQuestions(survey.questions)
+            const token = await AsyncStorage.getItem("access-token")
+            let res = await authApis(token).get(endpoints["survey-questions"](survey.id))
+
+            setQuestions(res.data.results)
         } catch (ex) {
             console.error(ex)
         } finally {

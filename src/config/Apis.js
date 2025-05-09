@@ -14,7 +14,7 @@ export const endpoints = {
     "remove-member": (id) => `/rooms/${id}/remove-member/`,
     "notifications": "/notifications/",
     "surveys": "/surveys/",
-    // "survey-questions": (id) => `/surveys/${id}/survey-questions/`,
+    "survey-questions": (id) => `/surveys/${id}/survey-questions/`,
     "survey-responses": (id) => `/surveys/${id}/survey-responses/`,
     "surveys-history": "/surveys/survey-history",
     "complaints": "/complaints/",
