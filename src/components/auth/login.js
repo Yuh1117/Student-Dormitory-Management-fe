@@ -47,9 +47,13 @@ const LoginScreen = ({ navigation }) => {
       } else {
         Alert.alert('Error', response.data);
       }
-    } catch (error) {
-      console.log(error.response ? error.response.data : error);
-      Alert.alert('Error', error.response?.data?.error_description || 'Đăng nhập thất bại');
+    } catch (ex) {
+      if (ex.response?.status === 401) {
+        const errs = ex.response.data.error;
+        Alert.alert(errs)
+      } else {
+        Alert.alert("Lỗi hệ thống hoặc kết nối.");
+      }
     } finally {
       setLoading(false);
     }

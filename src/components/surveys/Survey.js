@@ -61,41 +61,55 @@ const Survey = () => {
 
     return (
         <View style={AccountStyles.container}>
-            <Searchbar
-                style={{ backgroundColor: 'white', margin: 7, borderRadius: 20 }}
-                placeholder="Tìm kiếm"
-                onChangeText={t => search(t, setQ)}
-                value={q}
-            />
+            {loading && surveys.length === 0 ? (
+                <View style={{ padding: 20, alignItems: 'center', justifyContent: 'center' }}>
+                    <ActivityIndicator size={40} />
+                </View>
+            ) : surveys.length > 0 ? (
+                <>
+                    <Searchbar
+                        style={{ backgroundColor: 'white', margin: 7, borderRadius: 20 }}
+                        placeholder="Tìm kiếm"
+                        onChangeText={t => search(t, setQ)}
+                        value={q}
+                    />
 
-            <FlatList
-                onEndReached={loadMore} ListFooterComponent={loading && <ActivityIndicator size={30} />}
-                data={surveys}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => nav.navigate('SurveyQuestions', { 'survey': item })}>
-                        <Card style={[AccountStyles.card, { padding: 5 }]}>
-                            <Card.Content>
-                                <View style={styles.row}>
-                                    <View>
-                                        <Text style={styles.title}>{item.title}</Text>
-                                        <Text style={styles.description}>
-                                            {item.description.length > 30
-                                                ? `${item.description.substring(0, 30)}...`
-                                                : item.description}
-                                        </Text>
-                                    </View>
-                                    <View style={{ alignItems: 'flex-end' }}>
-                                        <Text style={styles.description}>
-                                            {new Date(item.created_date).toLocaleDateString('vi-VN')}
-                                        </Text>
-                                    </View>
-                                </View>
-                            </Card.Content>
-                        </Card>
-                    </TouchableOpacity>
-                )}
-            />
+                    <FlatList
+                        contentContainerStyle={{ paddingBottom: 20 }}
+                        onEndReached={loadMore}
+                        ListFooterComponent={loading && <ActivityIndicator size={30} />}
+                        data={surveys}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity onPress={() => nav.navigate('SurveyQuestions', { survey: item })}>
+                                <Card style={[AccountStyles.card, { padding: 5 }]}>
+                                    <Card.Content>
+                                        <View style={styles.row}>
+                                            <View>
+                                                <Text style={styles.title}>{item.title}</Text>
+                                                <Text style={styles.description}>
+                                                    {item.description.length > 30
+                                                        ? `${item.description.substring(0, 30)}...`
+                                                        : item.description}
+                                                </Text>
+                                            </View>
+                                            <View style={{ alignItems: 'flex-end' }}>
+                                                <Text style={styles.description}>
+                                                    {new Date(item.created_date).toLocaleDateString('vi-VN')}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </Card.Content>
+                                </Card>
+                            </TouchableOpacity>
+                        )}
+                    />
+                </>
+            ) : (
+                <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text>Không có khảo sát nào</Text>
+                </View>
+            )}
         </View>
     );
 };

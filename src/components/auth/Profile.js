@@ -19,7 +19,6 @@ const Profile = () => {
     const fields = [
         { label: "Tên", field: "first_name", secureTextEntry: false, icon: "text" },
         { label: "Họ", field: "last_name", secureTextEntry: false, icon: "text" },
-        { label: "Tên đăng nhập", field: "username", secureTextEntry: false, icon: "text" },
         { label: "Email", field: "email", secureTextEntry: false, icon: "email" },
         { label: "Số điện thoại", field: "phone_number", secureTextEntry: false, icon: "phone" },
         { label: "Mã số sinh viên", field: "student_code", secureTextEntry: false, icon: "identifier", disabled: true },
@@ -129,7 +128,7 @@ const Profile = () => {
                         <TextInput
                             key={f.field}
                             mode="outlined"
-                            style={[AccountStyles.input, { padding: 0, borderWidth: 0 }]}
+                            style={[AccountStyles.input, { padding: 0, borderWidth: 0, backgroundColor: 'white' }]}
                             value={user[f.field]}
                             onChangeText={(text) => setState(text, f.field)}
                             label={f.label}

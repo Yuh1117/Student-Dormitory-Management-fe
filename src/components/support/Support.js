@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native"
 import React, { useEffect, useState } from "react"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { authApis, endpoints } from "../../config/Apis"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 const Support = () => {
     const nav = useNavigation()
@@ -118,7 +119,7 @@ const Support = () => {
     )
 
     return (
-        <View style={AccountStyles.container}>
+        <View style={[AccountStyles.container, {justifyContent: 'none'}]}>
             <Text style={styles.title}>Yêu cầu</Text>
             <View style={AccountStyles.card}>
                 <MenuItem
@@ -164,27 +165,46 @@ const Support = () => {
             </View>
 
             {viewType === "mine" ? (
-                <FlatList
-                    key={viewType}
-                    onEndReached={loadMore}
-                    ListFooterComponent={loading && <ActivityIndicator size={30} />}
-                    data={complaints}
-                    keyExtractor={(item) => `mine-${item.id}`}
-                    renderItem={renderComplaintItem}
-                    contentContainerStyle={{ paddingHorizontal: 7 }}
-                />
+                loading && complaints.length === 0 ? (
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+                        <ActivityIndicator size={40} />
+                    </View>
+                ) : complaints.length > 0 ? (
+                    <FlatList
+                        key={viewType}
+                        onEndReached={loadMore}
+                        ListFooterComponent={loading && <ActivityIndicator size={30} />}
+                        data={complaints}
+                        keyExtractor={(item) => `mine-${item.id}`}
+                        renderItem={renderComplaintItem}
+                        contentContainerStyle={{ paddingHorizontal: 7, paddingBottom: 20 }}
+                    />
+                ) : (
+                    <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
+                        <Text>Không có yêu cầu</Text>
+                    </View>
+                )
             ) : (
-                <FlatList
-                    key={viewType}
-                    onEndReached={loadRoomMore}
-                    ListFooterComponent={roomLoading && <ActivityIndicator size={30} />}
-                    data={roomComplaints}
-                    keyExtractor={(item) => `room-${item.id}`}
-                    renderItem={renderComplaintItem}
-                    contentContainerStyle={{ paddingHorizontal: 7 }}
-                />
+                roomLoading && roomComplaints.length === 0 ? (
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+                        <ActivityIndicator size={40} />
+                    </View>
+                ) : roomComplaints.length > 0 ? (
+                    <FlatList
+                        key={viewType}
+                        onEndReached={loadRoomMore}
+                        ListFooterComponent={roomLoading && <ActivityIndicator size={30} />}
+                        data={roomComplaints}
+                        keyExtractor={(item) => `room-${item.id}`}
+                        renderItem={renderComplaintItem}
+                        contentContainerStyle={{ paddingHorizontal: 7, paddingBottom: 20 }}
+                    />
+                ) : (
+                    <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
+                        <Text>Không có yêu cầu</Text>
+                    </View>
+                )
             )}
-
 
         </View>
     )
