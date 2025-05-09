@@ -25,11 +25,9 @@ const LoginScreen = ({ navigation }) => {
 
       if (response.status === 200) {
 
-        //lấy các thông tin token và user
         const accessToken = response.data.access_token;
         const user = response.data.user;
 
-        //lưu lại vào AsyncStorage để cần thì gọi
         await AsyncStorage.setItem("access-token", accessToken);
 
         dispatch({
@@ -39,12 +37,9 @@ const LoginScreen = ({ navigation }) => {
 
         const is_staff = response.data.user.is_staff
         const is_first_access = response.data.user.is_first_access
-        // nếu là admin thì chuyển đến admin home, nếu là user thường thì chuyển đến trang user
 
         if (is_first_access) {
-          console.log("lan dau")
           navigation.navigate('ChangePass', { user: user })
-
         } else {
           is_staff ? navigation.navigate("AdminHome") : navigation.navigate('UserHome')
         }
