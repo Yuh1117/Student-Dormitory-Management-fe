@@ -1,16 +1,57 @@
-import { useNavigation } from "@react-navigation/native"
-import AccountStyles from "../../auth/AccountStyles"
-import { useEffect, useState } from "react"
-import { StyleSheet, TouchableOpacity, View } from "react-native"
-import { ScrollView } from "react-native-gesture-handler"
-import { ActivityIndicator, Avatar, RadioButton, Text } from "react-native-paper"
-import InvoiceItem from "./InvoiceItem"
+import { useNavigation } from "@react-navigation/native";
+import AccountStyles from "../../auth/AccountStyles";
+import { useEffect, useState } from "react";
+import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { ActivityIndicator, Avatar, RadioButton, Text } from "react-native-paper";
+import InvoiceItem from "./InvoiceItem";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { authApis, endpoints } from "../../../config/Apis";
+import VNPayScreen from "./VNPayScreen";
 
 const InvoiceDetails = ({ route }) => {
-    const invoice = route.params?.invoice
-    const [loading, setLoading] = useState(false)
+    const invoice = route.params?.invoice;
+    const [loading, setLoading] = useState(false);
     const [payment, setPayment] = useState('vnpay');
-    const nav = useNavigation()
+    const [showWebView, setShowWebView] = useState(false);
+    const [paymentUrl, setPaymentUrl] = useState(null);
+    const nav = useNavigation();
+
+    const pay = async () => {
+        try {
+            setLoading(true);
+            const token = await AsyncStorage.getItem("access-token");
+            const res = await authApis(token).get(endpoints['invoice-payment'](invoice.id));
+            const url = res.data.payment_url;
+
+            setPaymentUrl(url);
+            setShowWebView(true);
+        } catch (error) {
+            console.error(error);
+            alert("Không thể tạo thanh toán");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (showWebView && paymentUrl) {
+        return (
+            <VNPayScreen
+                paymentUrl={paymentUrl}
+                onPaymentComplete={(status) => {
+                    setShowWebView(false);
+                    if (status === true) {
+                        Alert.alert("Thanh toán thành công!")
+                        nav.navigate('UserHome')
+                    } else if (status === 'canceled') {
+                        Alert.alert("Hủy thanh toán!")
+                    } else {
+                        Alert.alert("Thanh toán thất bại!")
+                    }
+                }}
+            />
+        );
+    }
 
     return (
         <ScrollView contentContainerStyle={[AccountStyles.container, { justifyContent: '' }]}>
@@ -27,7 +68,7 @@ const InvoiceDetails = ({ route }) => {
                     </View>
 
                     <View>
-                        <Text style={[styles.label, {marginVertical: 10}]}>
+                        <Text style={[styles.label, { marginVertical: 10 }]}>
                             Chi tiết:
                         </Text>
 
@@ -39,11 +80,13 @@ const InvoiceDetails = ({ route }) => {
 
                 <View style={AccountStyles.card}>
                     <View style={[styles.row]}>
-                        <View style={{flex: 1}}>
+                        <View style={{ flex: 1 }}>
                             <Text style={styles.label}>Tổng tiền</Text>
                         </View>
                         <View>
-                            <Text style={[styles.label, {fontSize: 25, color: '#376be3'}]}>{invoice.total_amount} VNĐ</Text>
+                            <Text style={[styles.label, { fontSize: 25, color: '#376be3' }]}>
+                                {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(invoice.total_amount)}
+                            </Text>
                         </View>
                     </View>
                 </View>
@@ -57,16 +100,15 @@ const InvoiceDetails = ({ route }) => {
                         </View>
                     </RadioButton.Group>
                 </View>
-
             </View>
 
             <TouchableOpacity style={[AccountStyles.button, { backgroundColor: '#376be3', margin: 7 }]} disabled={loading}
-                onPress={() => console.log('ok')}>
+                onPress={pay}>
                 {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>Thanh toán</Text>}
             </TouchableOpacity>
         </ScrollView>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     title: {
@@ -76,12 +118,12 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     label: {
         fontSize: 18,
         fontWeight: '800',
     },
-})
+});
 
-export default InvoiceDetails
+export default InvoiceDetails;

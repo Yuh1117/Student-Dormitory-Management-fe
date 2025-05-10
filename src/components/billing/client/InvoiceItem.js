@@ -8,7 +8,9 @@ const InvoiceItem = ({ item }) => (
             <Text style={styles.name}>{item.description}</Text>
         </View>
         <View>
-            <Text style={styles.label}>{item.amount} VNĐ</Text>
+            <Text style={styles.label}>
+                {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.amount)}
+            </Text>
         </View>
     </View>
 );
