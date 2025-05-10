@@ -94,7 +94,9 @@ const RoomInvoice = () => {
                                             </View>
                                         </View>
                                         <View style={{ alignItems: 'flex-end' }}>
-                                            <Text style={styles.unpaid}>{item.total_amount} VNĐ</Text>
+                                            <Text style={styles.unpaid}>
+                                                {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.total_amount)}
+                                            </Text>
                                             <Text style={[styles.unpaid, { fontSize: 13 }]}>
                                                 Chưa thanh toán
                                             </Text>
@@ -148,7 +150,9 @@ const RoomInvoice = () => {
                                     </View>
                                 </View>
                                 <View style={{ alignItems: 'flex-end' }}>
-                                    <Text style={styles.label}>{item.total_amount} VNĐ</Text>
+                                    <Text style={styles.label}>
+                                        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.total_amount)}
+                                    </Text>
                                     <Text style={{ color: '#4CAF50' }}>
                                         Đã thanh toán
                                     </Text>

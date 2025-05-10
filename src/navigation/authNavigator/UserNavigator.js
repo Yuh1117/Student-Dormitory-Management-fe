@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createStackNavigator } from '@react-navigation/stack';
 import Account from '../../components/auth/Account';
 import StudentChatScreen from '../../services/user/ChatScreen';
-import UserHome from '../../components/home/user/UserHome';
+import UserHome from '../../components/home/user/userHome';
 import Profile from '../../components/auth/Profile';
 import RoomDetails from '../../components/room/client/RoomDetails';
 import RoomInvoice from '../../components/billing/client/RoomInvoice';
