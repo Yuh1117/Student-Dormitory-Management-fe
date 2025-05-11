@@ -10,7 +10,7 @@ export const endpoints = {
     "rooms": "/rooms/",
     "invoices": "/invoices/",
     "my-room-invoices": "/invoices/my-room-invoices",
-    "invoice-payment": (id) => `/invoices/${id}/vnpay_payment_url`,
+    "invoice-payment": (id) => `/invoices/${id}/vnpay_payment_url/`,
     "available-student": "/users/available-students/",
     "room-assignments": "/room-assignments/",
     "remove-member": (id) => `/rooms/${id}/remove-member/`,

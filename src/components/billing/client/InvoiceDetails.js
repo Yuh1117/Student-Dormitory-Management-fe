@@ -21,7 +21,7 @@ const InvoiceDetails = ({ route }) => {
         try {
             setLoading(true);
             const token = await AsyncStorage.getItem("access-token");
-            const res = await authApis(token).get(endpoints['invoice-payment'](invoice.id));
+            const res = await authApis(token).post(endpoints['invoice-payment'](invoice.id));
             const url = res.data.payment_url;
 
             setPaymentUrl(url);
