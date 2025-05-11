@@ -89,21 +89,6 @@ const AdminChatScreen = ({route}) => {
     
         return unsubscribe;
       }, []);
-//   useEffect(() => {
-//     getID();
-//     console.log(currentUser)
-//     const unsubscribe = listenMessages(chatId, async (msgs) => {
-//       setMessages(msgs);
-
-//       const unreadIds = msgs
-//         .filter(m => !m.isRead && m.senderId === otherId)
-//         .map(m => m.id);
-
-//       if (unreadIds.length) await markMessagesAsRead(chatId, unreadIds);
-//     });
-
-//     return unsubscribe;
-//   }, []);
 
   const handleSend = async () => {
       if (!input.trim()){

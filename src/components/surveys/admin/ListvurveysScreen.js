@@ -15,11 +15,9 @@ const SurveyList = ({ navigation }) => {
 
   const loadSurveys = async () => {
     if (page > 0){
-      const data = await fetchWithToken({ url: endpoints['surveys'] });
+      const data = await fetchWithToken({ url: `${endpoints['surveys']}?page=${page}` });
       if (data?.results) setSurveys([...surveys, ...data.results]); 
-      console.log(data.results)
       if(data.next===null) setPage(0);
-      console.log(page)
     }
   };
 

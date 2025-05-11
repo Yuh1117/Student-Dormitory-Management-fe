@@ -14,7 +14,7 @@ const SurveyResponses = ({ route }) => {
   const fetchResponses = async () => {
     if(page>0){
       const data = await fetchWithToken({
-        url: `${endpoints['survey-responses'](surveyId)}?question=${question.id}`,
+        url: `${endpoints['survey-responses'](surveyId)}?page=${page}&question=${question.id}`,
       });
       if (data?.results) setResponses([...responses,...data.results]);
       if(data.next===null) setPage(0);

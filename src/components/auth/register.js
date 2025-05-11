@@ -111,6 +111,37 @@ const RegisterScreen = ({navigation}) => {
       />
       {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
 
+      <Controller
+        control={control}
+        name="student_code"
+        rules={{ required: 'Cần nhập mã sinh viên' }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.input}
+            placeholder="Mã số sinh viên"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
+      />
+      {errors.student_code && <Text style={styles.error}>{errors.student_code.message}</Text>}
+      <Controller
+        control={control}
+        name="university"
+        rules={{ required: 'Cần nhập tên trường đại học' }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.input}
+            placeholder="Tên trường"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
+      />
+      {errors.student_code && <Text style={styles.error}>{errors.student_code.message}</Text>}
+
       {loading ?<ActivityIndicator/>:<TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.buttonText}>Đăng Kí</Text>
       </TouchableOpacity>}

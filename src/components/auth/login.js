@@ -31,6 +31,7 @@ const LoginScreen = ({ navigation }) => {
 
         //lưu lại vào AsyncStorage để cần thì gọi
         await AsyncStorage.setItem("access-token", accessToken);
+        await AsyncStorage.setItem("user", JSON.stringify(user));
 
         dispatch({
           "type": "login",

@@ -1,16 +1,25 @@
 import { StyleSheet, Text, TouchableOpacity, View, FlatList, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { RoomContext } from "./roomContext";
 import AdminStyles from "../../../styles/AdminStyles";
 import useFetchWithToken from '../../../config/UseFetchWithToken';
 import { endpoints } from "../../../config/Apis";
 
 
-export default function RoomMember({ navigation }) {
+export default function RoomMember({ navigation ,route}) {
   const { selectedRoom,setSelectedRoom } = useContext(RoomContext);
   const{loading,fetchWithToken} = useFetchWithToken();
+  const [roomAssignments,setRoomAssignments] = useState([]);
+  // const tempRoom = route?.params?.tempRoom;
 
+
+  // useEffect(() => {
+  //   // Nếu tempRoom tồn tại thì set lại selectedRoom, nếu không thì giữ nguyên
+  //   if (tempRoom) {
+  //     setSelectedRoom(tempRoom);
+  //   }
+  // }, [tempRoom, setSelectedRoom]);
   const handleRemoveMember = async (item) => {
     try {
       const student = item.student_detail;
@@ -42,10 +51,8 @@ export default function RoomMember({ navigation }) {
         method: 'GET',
         url: `${endpoints['rooms']}/${selectedRoom.id}/`
       });
-
-      const oldLength = selectedRoom.room_assignments?.length || 0;
-      const newLength = updatedRoom.room_assignments?.length || 0;
-      if (newLength < oldLength) {
+      
+      if (updatedRoom) {
         setSelectedRoom(updatedRoom);
         Alert.alert("Đã xóa thành viên khỏi phòng");
       } else {
@@ -81,7 +88,20 @@ export default function RoomMember({ navigation }) {
       </View>
     );
   };
+
+  const loadRoomMembers = async () =>{
+    const data = await fetchWithToken({
+      url:endpoints['get-room-assignments'](selectedRoom.id),
+      method:"GET"
+    })
+    if(data) {
+      // console.log(data)
+      setRoomAssignments(data)
+      console.log("daay lad roomassignment: ",roomAssignments)
+    }
+  };
   useEffect(() => {
+    loadRoomMembers();
   }, [selectedRoom])
   return (
     <SafeAreaView style={[AdminStyles.container, { flex: 1 }]}>
@@ -89,7 +109,7 @@ export default function RoomMember({ navigation }) {
         <Text style={styles.header}>Danh sách thành viên phòng {selectedRoom?.room_number}</Text>
 
         <FlatList
-          data={selectedRoom?.room_assignments || []}
+          data={roomAssignments}
           renderItem={renderMember}
           keyExtractor={(item, index) => index.toString()}
         />
