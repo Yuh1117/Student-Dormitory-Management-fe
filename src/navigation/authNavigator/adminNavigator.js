@@ -27,6 +27,10 @@ import CreateSurvey from '../../components/surveys/admin/CreateSurveyScreen'
 import SurveyList from '../../components/surveys/admin/ListvurveysScreen';
 import SurveyDetail from '../../components/surveys/admin/SurveyDetail.Screen';
 import SurveyResponses from '../../components/surveys/admin/ResponseSurveysScreen';
+import ComplaintList from '../../components/support/admin/ComplaintListScreen';
+import ComplaintDetail from '../../components/support/admin/ComplaintDetailScreen';
+import RoomChangeRequest from '../../components/room/admin/RoomChangeRequestScreen';
+import RoomChangeDetail from '../../components/room/admin/RequestDetailScreen';
 
 
 
@@ -178,6 +182,76 @@ const StackSurveysNavigator =() =>{
     );
 }
 
+const StackComplaintNavigator =() =>{
+    return(
+        <Stack.Navigator initialRouteName="complaintsList">
+                
+                <Stack.Screen name="complaintsList" component={ComplaintList} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="complaintDetail" component={ComplaintDetail} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                
+                
+              
+            </Stack.Navigator>
+    );
+}
+
+const StackRoomChangeRequestNavigator =() =>{
+    return(
+        <RoomProvider>
+
+        <Stack.Navigator initialRouteName="requestsList">
+                
+                <Stack.Screen name="requestsList" component={RoomChangeRequest} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="requestDetail" component={RoomChangeDetail} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="roomMember" component={RoomMember} options={
+                    {
+                        headerShown: false,
+                        title: "Hóa Đơn",
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                
+              
+            </Stack.Navigator>
+        </RoomProvider>
+    );
+}
+
 const StackUserNavigater = () =>{
     return(
         <Stack.Navigator initialRouteName="userManageMainScreen">
@@ -209,6 +283,24 @@ const StackUserNavigater = () =>{
                     }
                 } />
                 <Stack.Screen name="surveyStack" component={StackSurveysNavigator} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="complaintsStack" component={StackComplaintNavigator} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="roomChangeRequestStack" component={StackRoomChangeRequestNavigator} options={
                     {
                         headerShown: false,
                         tabBarIcon: ({ color, size }) => (

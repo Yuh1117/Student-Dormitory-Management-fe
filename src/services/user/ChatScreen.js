@@ -14,22 +14,10 @@ const StudentChatScreen = () => {
   const [senderId,setSenderId] = useState('')
   const flatListRef = useRef(null);
 
-//   const { currentUser } = getAuth();
-// const currentUser = await AsyncStorage.getItem('user')
-//   const senderId = currentUser?.uid;
-//   const chatId = `admin_${senderId}`;
-//   const chatId = ChatAdminId(senderId);
-//   const otherId = 'admin';
-    const getID=async ()=>{
-        const currentUserTemp = await AsyncStorage.getItem('user'); 
-        setCurrentUser(currentUserTemp);
-        const senderId = currentUser ? currentUser.id : null; 
-        setChatId(ChatAdminId(senderId));
-    }
-
     useEffect(() => {
         const init = async () => {
           const userData = await AsyncStorage.getItem('user');
+          console.log(userData)
           if (userData) {
             const user = JSON.parse(userData);
             setCurrentUser(user);
@@ -61,21 +49,6 @@ const StudentChatScreen = () => {
     
         return unsubscribe;
       }, [chatId, currentUser]);
-//   useEffect(() => {
-//     getID();
-//     console.log(currentUser)
-//     const unsubscribe = listenMessages(chatId, async (msgs) => {
-//       setMessages(msgs);
-
-//       const unreadIds = msgs
-//         .filter(m => !m.isRead && m.senderId === otherId)
-//         .map(m => m.id);
-
-//       if (unreadIds.length) await markMessagesAsRead(chatId, unreadIds);
-//     });
-
-//     return unsubscribe;
-//   }, []);
 
   const handleSend = async () => {
       if (!input.trim()){

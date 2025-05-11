@@ -13,6 +13,7 @@ export const endpoints = {
     "invoice-payment": (id) => `/invoices/${id}/vnpay_payment_url`,
     "available-student": "/users/available-students/",
     "room-assignments": "/room-assignments/",
+    "get-room-assignments":(id)=>`/rooms/${id}/room-assignments/`,
     "remove-member": (id) => `/rooms/${id}/remove-member/`,
     "notifications": "/notifications/",
     "surveys": "/surveys/",
@@ -21,7 +22,11 @@ export const endpoints = {
     "surveys-history": "/surveys/survey-history",
     "complaints": "/complaints/",
     "my-complaints": "/complaints/my-complaints",
-    "my-room-complaints": "/complaints/my-room-complaints"
+    "my-room-complaints": "/complaints/my-room-complaints",
+
+    "complaints-resolve":(id) =>`/complaints/${id}/resolve/`,
+    "complaints-responses":(id) => `/complaints/${id}/complaints-responses/`,
+    "room-change-requests":"/room-change-requests/"
 
 }
 
