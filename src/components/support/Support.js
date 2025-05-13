@@ -121,7 +121,7 @@ const Support = () => {
     return (
         <View style={[AccountStyles.container, {justifyContent: 'none'}]}>
             <Text style={styles.title}>Yêu cầu</Text>
-            <View style={AccountStyles.card}>
+            <View style={{}}>
                 <MenuItem
                     icon={<Feather name="send" size={22} color="#333" />}
                     title="Gửi yêu cầu hỗ trợ"

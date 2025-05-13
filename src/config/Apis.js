@@ -14,6 +14,7 @@ export const endpoints = {
     "available-student": "/users/available-students/",
     "room-assignments": "/room-assignments/",
     "remove-member": (id) => `/rooms/${id}/remove-member/`,
+    'my-room': `/rooms/my-room/`,
     "notifications": "/notifications/",
     "surveys": "/surveys/",
     "survey-questions": (id) => `/surveys/${id}/survey-questions/`,
