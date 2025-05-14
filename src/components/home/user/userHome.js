@@ -20,15 +20,14 @@ const UserHome = () => {
       <ScrollView>
         <View style={styles.grid}>
 
-          <View style={styles.card}>
+          <View style={{ width: '50%' }}>
             <MenuItem
               icon={<Feather name="home" size={22} color="#333" />}
               title="Phòng"
               onPress={() => nav.navigate("RoomDetails")}
             />
           </View>
-
-          <View style={styles.card}>
+          <View style={{ width: '50%' }}>
             <MenuItem
               icon={<MaterialIcons name="swap-horiz" size={22} color="#333" />}
               title="Đổi phòng"
@@ -36,7 +35,7 @@ const UserHome = () => {
             />
           </View>
 
-          <View style={styles.card}>
+          <View style={{ width: '50%' }}>
             <MenuItem
               icon={<MaterialIcons name="receipt-long" size={22} color="#333" />}
               title="Hóa đơn"
@@ -44,7 +43,8 @@ const UserHome = () => {
             />
           </View>
 
-          <View style={styles.card}>
+          <View style={{ width: '50%' }}>
+
             <MenuItem
               icon={<Ionicons name="megaphone-outline" size={22} color="#333" />}
               title="Hỗ trợ"
@@ -52,13 +52,14 @@ const UserHome = () => {
             />
           </View>
 
-          <View style={styles.card}>
+          <View style={{ width: '50%' }}>
             <MenuItem
               icon={<Feather name="clipboard" size={22} color="#333" />}
               title="Khảo sát"
               onPress={() => nav.navigate("Survey")}
             />
           </View>
+
         </View>
 
         <PricingList />
@@ -73,22 +74,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    paddingHorizontal: 7,
   },
-
-  card: {
-    width: '48%',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    marginVertical: 7,
-    padding: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2
-  },
-
 });
 
 export default UserHome;

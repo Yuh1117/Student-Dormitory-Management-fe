@@ -81,7 +81,7 @@ const Survey = () => {
                         data={surveys}
                         keyExtractor={(item) => item.id}
                         renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => nav.navigate('SurveyQuestions', { survey: item })}>
+                            <TouchableOpacity activeOpacity={0.8} onPress={() => nav.navigate('SurveyQuestions', { survey: item })}>
                                 <Card style={[AccountStyles.card, { padding: 5 }]}>
                                     <Card.Content>
                                         <View style={styles.row}>

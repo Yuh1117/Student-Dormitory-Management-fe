@@ -73,7 +73,7 @@ const AccountStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingVertical: 12,
+        paddingVertical: 25,
     },
     menuItemLeft: {
         flexDirection: 'row',
