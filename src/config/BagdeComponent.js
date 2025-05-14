@@ -3,28 +3,28 @@ import { useCallback, useEffect, useState } from "react";
 import useFetchWithToken from '../config/UseFetchWithToken';
 import { useFocusEffect } from "@react-navigation/native";
 
-const CountBadge = ({ url}) => {
-    const [count, setCount] = useState(0);
-    const { fetchWithToken } = useFetchWithToken();
+const CountBadge = ({ count}) => {
+    // const [count, setCount] = useState(0);
+    // const { fetchWithToken } = useFetchWithToken();
 
-    const loadData = async () => {
-        try {
-            const data = await fetchWithToken({ url });
-            if (data?.results) {
-                setCount(data.results.length);
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
-    useEffect(() => {
-        loadData();
-    }, [])
-    useFocusEffect(
-        useCallback(() => {
-            loadData()
-        }, [])
-    );
+    // const loadData = async () => {
+    //     try {
+    //         const data = await fetchWithToken({ url });
+    //         if (data?.results) {
+    //             setCount(data.results.length);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error fetching data:", error);
+    //     }
+    // };
+    // useEffect(() => {
+    //     loadData();
+    // }, [])
+    // useFocusEffect(
+    //     useCallback(() => {
+    //         loadData()
+    //     }, [])
+    // );
 
     if (count === 0 ) return null;
     return (

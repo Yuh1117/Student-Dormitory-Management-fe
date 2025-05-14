@@ -11,15 +11,7 @@ export default function RoomMember({ navigation ,route}) {
   const { selectedRoom,setSelectedRoom } = useContext(RoomContext);
   const{loading,fetchWithToken} = useFetchWithToken();
   const [roomAssignments,setRoomAssignments] = useState([]);
-  // const tempRoom = route?.params?.tempRoom;
 
-
-  // useEffect(() => {
-  //   // Nếu tempRoom tồn tại thì set lại selectedRoom, nếu không thì giữ nguyên
-  //   if (tempRoom) {
-  //     setSelectedRoom(tempRoom);
-  //   }
-  // }, [tempRoom, setSelectedRoom]);
   const handleRemoveMember = async (item) => {
     try {
       const student = item.student_detail;
@@ -97,7 +89,6 @@ export default function RoomMember({ navigation ,route}) {
     if(data) {
       // console.log(data)
       setRoomAssignments(data)
-      console.log("daay lad roomassignment: ",roomAssignments)
     }
   };
   useEffect(() => {

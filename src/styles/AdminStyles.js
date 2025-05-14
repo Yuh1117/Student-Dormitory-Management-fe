@@ -18,6 +18,9 @@ export default StyleSheet.create({
     mb:{
         marginBottom:10
     },
+    mt:{
+        marginTop:10
+    },
     bgc:{
         backgroundColor :"#fff"
     },
@@ -75,7 +78,8 @@ export default StyleSheet.create({
         color:"#e23737"
     }, dangerColor:{
         color:"#e23737"
-    }
+    },
+    
 
 
 });

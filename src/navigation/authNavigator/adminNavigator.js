@@ -363,14 +363,14 @@ export function AdminHomeMain() {
             <Tab.Screen name="Sinh Viên" component={StackUserNavigater} options={
                 {
                     headerShown: false,
-                    tabBarIcon: getTabBarIcon('home'),
+                    tabBarIcon: getTabBarIcon('account-multiple'),
 
                 }
             }></Tab.Screen>
             <Tab.Screen name="chat" component={AdminChatStack} options={
                 {
                     headerShown: false,
-                    tabBarIcon: getTabBarIcon('home'),
+                    tabBarIcon: getTabBarIcon('chat'),
 
                 }
             }></Tab.Screen>

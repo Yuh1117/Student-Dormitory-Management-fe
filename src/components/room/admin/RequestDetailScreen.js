@@ -13,8 +13,10 @@ const RoomChangeDetail = ({ route, navigation }) => {
     const [currentRoom, setCurrentRoom] = useState({});
     const [requestedRoom, setRequestedRoom] = useState({});
     const { setSelectedRoom } = useContext(RoomContext);
+    const [isHandle, setIsHandle] =useState(false);
 
     const loadRequestDetail = async () => {
+        if(request.status.toLowerCase() !='pending') setIsHandle(true)
         try {
             const currentRoomData = await fetchWithToken({
                 url: `${endpoints['rooms']}/${request.current_room}/`,
@@ -92,8 +94,7 @@ const RoomChangeDetail = ({ route, navigation }) => {
                         <Text style={styles.value}>Giường: {requestedRoom.total_beds}</Text>
                         <Text style={styles.value}>Tình trạng: {requestedRoom.status}</Text>
                     </TouchableOpacity>
-
-                    <View style={styles.buttonGroup}>
+                    {isHandle ? <Text>Đã Giải Quyết</Text>: (<View style={styles.buttonGroup}>
                         <TouchableOpacity
                             style={[styles.button, styles.approveButton]}
                             onPress={() => handleUpdateStatus('Approved')}
@@ -107,7 +108,8 @@ const RoomChangeDetail = ({ route, navigation }) => {
                         >
                             <Text style={styles.buttonText}>Từ chối</Text>
                         </TouchableOpacity>
-                    </View>
+                    </View>)
+                    }
                 </View>
             </ScrollView>
         </SafeAreaView>

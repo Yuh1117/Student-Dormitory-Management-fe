@@ -49,7 +49,7 @@ const RoomInvoiceList = () => {
                 ListFooterComponent={loading && <ActivityIndicator />}
                 data={roomInvoiceList}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity key={item.id}  onPress={() => {
                         setSelectedInvoice(item)
                         
                         navigation.navigate('updateInvoice');
@@ -58,17 +58,11 @@ const RoomInvoiceList = () => {
                             <Card.Content style={AdminStyles.unPaid}>
                                 <View style={AdminStyles.row}>
 
-                                    <View>
-                                        {/* {item.items.map((i) =>{
-                                            return(
-                                                <View key={i.id}>
-                                                    <Text>{i.description} : {parseFloat(i.amount).toLocaleString('vi-VN')}VND</Text>
-                                                </View>
-                                            );
-                                        })} */}
+                                    <View style={AdminStyles.flex_05}>
+                                        
                                         <Text>{item.description}</Text>
                                     </View>
-                                    <View>
+                                    <View style={AdminStyles.flex_05}>
                                         <Text>Tổng Cộng: {parseFloat(item.total_amount).toLocaleString('vi-VN')}VND</Text>
                                     </View>
                                 </View>
@@ -85,7 +79,6 @@ const RoomInvoiceList = () => {
                         <View style={AdminStyles.row}>
 
                             <View >
-                                <Text>tieenf nhaf</Text>
                                 <Text>tieenf nhaf</Text>
                             </View>
                             <View>

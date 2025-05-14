@@ -6,6 +6,7 @@ import { Badge } from 'react-native-paper';
 import useFetchWithToken from '../../../config/UseFetchWithToken';
 import { endpoints } from '../../../config/Apis';
 import { useFocusEffect } from '@react-navigation/native';
+import AdminStyles from '../../../styles/AdminStyles'
 
 const RoomChangeRequest = ({ navigation }) => {
   const { loading, fetchWithToken } = useFetchWithToken();
@@ -51,18 +52,30 @@ const RoomChangeRequest = ({ navigation }) => {
           return '#999999';
       }
     };
+    const getStatusName = (status) => {
+      switch (status.toLowerCase()) {
+        case 'pending':
+          return 'Đang chờ';
+        case 'approved':
+          return 'Chấp nhận';
+        case 'rejected':
+          return 'Từ chối';
+        default:
+          return '#999999';
+      }
+    };
 
     return (
       <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => navigation.navigate('requestDetail', { request: item })}
       >
-        <View style={styles.statusContainer}>
+        <View style={[styles.statusContainer,{backgroundColor: getStatusColor(item.status)}]}>
           <Badge
             size={24}
             style={{ backgroundColor: getStatusColor(item.status) }}
           >
-            {item.status}
+            {getStatusName(item.status)}
           </Badge>
         </View>
         <View style={{ flex: 1 }}>

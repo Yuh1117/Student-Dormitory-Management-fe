@@ -1,7 +1,8 @@
+
+
 import React, { useEffect, useState, useRef } from 'react';
 import { View, TextInput, FlatList, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { sendMessage, listenMessages, markMessagesAsRead, ChatAdminId } from '../../config/Chat';
-import { useRoute } from '@react-navigation/native';
 import { getAuth } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,53 +10,54 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const StudentChatScreen = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
-  const [chatId,setChatId] = useState('')
-  const [currentUser,setCurrentUser] = useState(null)
-  const [senderId,setSenderId] = useState('')
+  const [chatId, setChatId] = useState('');
+  const [currentUser, setCurrentUser] = useState(null);
+  const [senderId, setSenderId] = useState('');
+  const [fullName, setFullName] = useState('')
   const flatListRef = useRef(null);
 
-    useEffect(() => {
-        const init = async () => {
-          const userData = await AsyncStorage.getItem('user');
-          console.log(userData)
-          if (userData) {
-            const user = JSON.parse(userData);
-            setCurrentUser(user);
-            setSenderId(user.id)
-            const id = ChatAdminId(user.id); // Tạo chatId từ user.id
-            setChatId(id);
-          }
-        };
+  useEffect(() => {
+    const init = async () => {
+      const userData = await AsyncStorage.getItem('user');
+      if (userData) {
+        const user = JSON.parse(userData);
+        console.log(user)
+        setCurrentUser(user);
+        setSenderId(user.id);
+        const id = ChatAdminId(user.id);
+        setChatId(id);
+        setFullName(`${user.first_name} ${user.last_name}`)
+      }
+      console.log(fullName)
+
+    };
+    init();
+  }, []);
+  const fetchMessages = async () => {
+    const unsubscribe = listenMessages(chatId, async (msgs) => {
+      setMessages(msgs);
+      // console.log(unsubscribe)
+      const unreadIds = msgs
+        .filter((m) => !m.isRead && m.senderId === 'admin')
+        .map((m) => m.id);
+
+      if (unreadIds.length) {
+        await markMessagesAsRead(chatId, unreadIds);
+      }
+    });
+
+    return unsubscribe;
+  }
+  useEffect(() => {
+    if (!chatId || !currentUser) return;
+    fetchMessages();
     
-        init();
-      }, []);
-    
-      // Lắng nghe tin nhắn khi đã có chatId và currentUser
-      useEffect(() => {
-        console.log(currentUser)
-        if (!chatId || !currentUser) return;
-    
-        const unsubscribe = listenMessages(chatId, async (msgs) => {
-          setMessages(msgs);
-    
-          const unreadIds = msgs
-            .filter(m => !m.isRead && m.senderId === 'admin') // admin là người còn lại
-            .map(m => m.id);
-    
-          if (unreadIds.length) {
-            await markMessagesAsRead(chatId, unreadIds);
-          }
-        });
-    
-        return unsubscribe;
-      }, [chatId, currentUser]);
+  }, [chatId, currentUser]);
 
   const handleSend = async () => {
-      if (!input.trim()){
-        console.log('vào')
-        return;
-    } 
-    await sendMessage(chatId, senderId, input);
+    if (!input.trim()) return;
+
+    await sendMessage(chatId, senderId, fullName, "admin", "Admin", input);
     setInput('');
     flatListRef.current?.scrollToEnd({ animated: true });
   };
@@ -68,7 +70,7 @@ const StudentChatScreen = () => {
         borderRadius: 10,
         padding: 10,
         marginVertical: 4,
-        maxWidth: '75%'
+        maxWidth: '75%',
       }}
     >
       <Text>{item.content}</Text>
@@ -81,17 +83,16 @@ const StudentChatScreen = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={100}
     >
-        <SafeAreaView style={{flex:1}}>
-
+      <SafeAreaView style={{ flex: 1 }}>
         <FlatList
-            ref={flatListRef}
-            data={messages}
-            keyExtractor={(item) => item.id}
-            renderItem={renderItem}
-            contentContainerStyle={{ paddingBottom: 10 }}
-            onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
+          ref={flatListRef}
+          data={messages}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={{ paddingBottom: 10 }}
+          onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
         />
-        </SafeAreaView>
+      </SafeAreaView>
 
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TextInput
@@ -109,3 +110,4 @@ const StudentChatScreen = () => {
 };
 
 export default StudentChatScreen;
+
