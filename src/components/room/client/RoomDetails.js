@@ -32,47 +32,49 @@ const RoomDetails = () => {
     }, [])
 
     return (
-        <ScrollView contentContainerStyle={[AccountStyles.container, { justifyContent: '' }]}>
-            {loading ? <View style={{ padding: 20, alignItems: 'center', justifyContent: 'center' }}>
-                <ActivityIndicator size={40} />
-            </View> : room !== null ?
-                <>
-                    <View style={AccountStyles.card}>
-                        <View style={styles.row}>
-                            <Text style={styles.title}>Toà {room.building} - </Text>
-                            <Text style={styles.title}>Tầng {room.floor} - </Text>
-                            <Text style={styles.title}>Phòng {room.room_number}</Text>
+        <View style={[AccountStyles.container, { justifyContent: '' }]}>
+            <ScrollView>
+                {loading ? <View style={{ padding: 20, alignItems: 'center', justifyContent: 'center' }}>
+                    <ActivityIndicator size={40} />
+                </View> : room !== null ?
+                    <>
+                        <View style={AccountStyles.card}>
+                            <View style={styles.row}>
+                                <Text style={styles.title}>Toà {room.building} - </Text>
+                                <Text style={styles.title}>Tầng {room.floor} - </Text>
+                                <Text style={styles.title}>Phòng {room.room_number}</Text>
+                            </View>
+
+
+
+                            <View style={styles.row}>
+                                <View style={[styles.capacityBox, { backgroundColor: '#FFF3E0' }]}>
+                                    <Text style={[styles.capacityText, { color: "#FF9800" }]}>{room.room_type}</Text>
+                                </View>
+                                <View style={styles.capacityBox}>
+                                    <Text style={styles.capacityText}>Số chỗ: {room.total_beds}</Text>
+                                </View>
+                                <View style={styles.availableBox}>
+                                    <Text style={styles.availableText}>Còn {room.available_beds} chỗ</Text>
+                                </View>
+                            </View>
                         </View>
 
-
-
-                        <View style={styles.row}>
-                            <View style={[styles.capacityBox, { backgroundColor: '#FFF3E0' }]}>
-                                <Text style={[styles.capacityText, { color: "#FF9800" }]}>{room.room_type}</Text>
-                            </View>
-                            <View style={styles.capacityBox}>
-                                <Text style={styles.capacityText}>Số chỗ: {room.total_beds}</Text>
-                            </View>
-                            <View style={styles.availableBox}>
-                                <Text style={styles.availableText}>Còn {room.available_beds} chỗ</Text>
-                            </View>
+                        <View style={AccountStyles.card}>
+                            <Text style={styles.title}>Bạn cùng phòng</Text>
+                            {roommates.length > 0 ? (
+                                roommates.map(r => <RoommateItem key={r.id} item={r.student_detail} />))
+                                : (
+                                    <Text style={{ color: '#999' }}>Chưa có bạn cùng phòng nào.</Text>
+                                )}
                         </View>
-                    </View>
-
-                    <View style={AccountStyles.card}>
-                        <Text style={styles.title}>Bạn cùng phòng</Text>
-                        {roommates.length > 0 ? (
-                            roommates.map(r => <RoommateItem key={r.id} item={r.student_detail} />))
-                            : (
-                                <Text style={{ color: '#999' }}>Chưa có bạn cùng phòng nào.</Text>
-                            )}
-                    </View>
-                </> : (
-                    <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text>Chưa có phòng</Text>
-                    </View>
-                )}
-        </ScrollView >
+                    </> : (
+                        <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
+                            <Text>Chưa có phòng</Text>
+                        </View>
+                    )}
+            </ScrollView >
+        </View>
     );
 };
 

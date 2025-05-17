@@ -51,11 +51,7 @@ const RoomInvoice = () => {
     }
 
     useEffect(() => {
-        let timer = setTimeout(() => {
-            loadInvoices()
-        }, 500);
-
-        return () => clearTimeout(timer)
+        loadInvoices()
     }, [page])
 
     return (

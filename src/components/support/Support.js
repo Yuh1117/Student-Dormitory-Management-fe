@@ -1,4 +1,4 @@
-import { ActivityIndicator, StyleSheet, View } from "react-native"
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from "react-native"
 import { FlatList, ScrollView } from "react-native-gesture-handler"
 import AccountStyles from "../auth/AccountStyles"
 import { Divider, Text, ToggleButton } from "react-native-paper"
@@ -101,25 +101,27 @@ const Support = () => {
 
 
     const renderComplaintItem = ({ item, index }) => (
-        <View key={item.id}>
-            <View style={[styles.row, { padding: 7, marginVertical: 5 }]}>
-                <View style={styles.row}>
-                    <View style={{ marginLeft: 5 }}>
-                        <Text style={styles.label}>{item.title}</Text>
-                        <Text>{new Date(item.created_date).toLocaleDateString('vi-VN')}</Text>
+        <TouchableOpacity onPress={() => nav.navigate('SupportDetail', { support: item })}>
+            <View key={item.id}>
+                <View style={[styles.row, { padding: 7, marginVertical: 5 }]}>
+                    <View style={styles.row}>
+                        <View style={{ marginLeft: 5 }}>
+                            <Text style={styles.label}>{item.title}</Text>
+                            <Text>{new Date(item.created_date).toLocaleDateString('vi-VN')}</Text>
+                        </View>
+                    </View>
+                    <View style={{ alignItems: 'flex-end' }}>
+                        {item.status === "Pending" ? <Text style={{ color: 'orange' }}>Đã gửi</Text> :
+                            <Text style={{ color: '#4CAF50' }}>Đã giải quyết</Text>}
                     </View>
                 </View>
-                <View style={{ alignItems: 'flex-end' }}>
-                    {item.status === "Pending" ? <Text style={{ color: 'orange' }}>Đã gửi</Text> :
-                        <Text style={{ color: '#4CAF50' }}>Đã giải quyết</Text>}
-                </View>
+                <Divider />
             </View>
-            <Divider />
-        </View>
+        </TouchableOpacity >
     )
 
     return (
-        <View style={[AccountStyles.container, {justifyContent: 'none'}]}>
+        <View style={[AccountStyles.container, { justifyContent: 'none' }]}>
             <Text style={styles.title}>Yêu cầu</Text>
             <View style={{}}>
                 <MenuItem

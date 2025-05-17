@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import AccountStyles from "../../auth/AccountStyles";
 import { useEffect, useState } from "react";
-import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, Modal, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { ActivityIndicator, Avatar, RadioButton, Text } from "react-native-paper";
 import InvoiceItem from "./InvoiceItem";
@@ -36,20 +36,22 @@ const InvoiceDetails = ({ route }) => {
 
     if (showWebView && paymentUrl) {
         return (
-            <VNPayScreen
-                paymentUrl={paymentUrl}
-                onPaymentComplete={(status) => {
-                    setShowWebView(false);
-                    if (status === true) {
-                        Alert.alert("Thanh toán thành công!")
-                        nav.navigate('UserHome')
-                    } else if (status === 'canceled') {
-                        Alert.alert("Hủy thanh toán!")
-                    } else {
-                        Alert.alert("Thanh toán thất bại!")
-                    }
-                }}
-            />
+            <Modal visible={showWebView} animationType="slide" presentationStyle="fullScreen">
+                <VNPayScreen
+                    paymentUrl={paymentUrl}
+                    onPaymentComplete={(status) => {
+                        setShowWebView(false);
+                        if (status === true) {
+                            Alert.alert("Thanh toán thành công!")
+                            nav.navigate('UserHome')
+                        } else if (status === 'canceled') {
+                            Alert.alert("Hủy thanh toán!")
+                        } else {
+                            Alert.alert("Thanh toán thất bại!")
+                        }
+                    }}
+                />
+            </Modal>
         );
     }
 

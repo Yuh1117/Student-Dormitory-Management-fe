@@ -19,6 +19,8 @@ import SurveyQuestions from '../../components/surveys/SurveyQuestions';
 import { useNavigation } from '@react-navigation/native';
 import SurveyHistory from '../../components/surveys/SurveyHistory';
 import InvoiceDetails from '../../components/billing/client/InvoiceDetails';
+import SupportDetail from '../../components/support/SupportDetail';
+import NotiDetail from '../../components/notifications/client/NotiDetail';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -64,6 +66,11 @@ const StackHomeNavigator = () => {
                 name="SendSupport"
                 component={SendSupport}
                 options={{ headerShown: true, title: "Gửi yêu cầu hỗ trợ" }}
+            />
+            <Stack.Screen
+                name="SupportDetail"
+                component={SupportDetail}
+                options={{ headerShown: true, title: "Thông tin yêu cầu" }}
             />
 
             <Stack.Screen

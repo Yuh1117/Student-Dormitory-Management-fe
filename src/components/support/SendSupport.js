@@ -99,57 +99,59 @@ const SendSupport = () => {
     }
 
     return (
-        <ScrollView contentContainerStyle={[AccountStyles.container, { justifyContent: '' }]}>
-            <Text style={styles.title}>Nội dung yêu cầu</Text>
+        <View style={[AccountStyles.container, { justifyContent: '' }]}>
+            <ScrollView>
+                <Text style={styles.title}>Nội dung yêu cầu</Text>
 
-            <View style={{ padding: 7, flex: 1 }}>
-                <TextInput
-                    label="Tiêu đề"
-                    mode="outlined"
-                    style={[AccountStyles.input, { padding: 0, borderWidth: 0, backgroundColor: 'white' }]}
-                    theme={{
-                        roundness: 8,
-                    }}
-                    value={complaint["title"]}
-                    onChangeText={(text) => setState(text, "title")}
-                />
-
-                <TextInput
-                    label="Nội dung"
-                    mode="outlined"
-                    style={[AccountStyles.input, { padding: 0, borderWidth: 0, height: 100, backgroundColor: 'white' }]}
-                    multiline
-                    numberOfLines={4}
-                    theme={{
-                        roundness: 8,
-                    }}
-                    value={complaint["description"]}
-                    onChangeText={(text) => setState(text, "description")}
-                />
-
-                <TouchableOpacity onPress={pick}>
-                    <MaterialIcons name="add-photo-alternate" size={30} color="#888" />
-                    <Image
-                        style={styles.image}
-                        resizeMode="contain"
-                        source={complaint.image && { uri: complaint.image.uri }}
+                <View style={{ padding: 7, flex: 1 }}>
+                    <TextInput
+                        label="Tiêu đề"
+                        mode="outlined"
+                        style={[AccountStyles.input, { padding: 0, borderWidth: 0, backgroundColor: 'white' }]}
+                        theme={{
+                            roundness: 8,
+                        }}
+                        value={complaint["title"]}
+                        onChangeText={(text) => setState(text, "title")}
                     />
+
+                    <TextInput
+                        label="Nội dung"
+                        mode="outlined"
+                        style={[AccountStyles.input, { padding: 0, borderWidth: 0, height: 100, backgroundColor: 'white' }]}
+                        multiline
+                        numberOfLines={4}
+                        theme={{
+                            roundness: 8,
+                        }}
+                        value={complaint["description"]}
+                        onChangeText={(text) => setState(text, "description")}
+                    />
+
+                    <TouchableOpacity onPress={pick}>
+                        <MaterialIcons name="add-photo-alternate" size={30} color="#888" />
+                        <Image
+                            style={styles.image}
+                            resizeMode="contain"
+                            source={complaint.image && { uri: complaint.image.uri }}
+                        />
+                    </TouchableOpacity>
+
+                    {msg &&
+                        <HelperText style={{ fontSize: 18 }} type="error" visible={msg}>
+                            {msg}
+                        </HelperText>
+                    }
+
+
+                </View>
+                <TouchableOpacity style={[AccountStyles.button, { backgroundColor: '#376be3', margin: 7 }]} disabled={loading}
+                    onPress={handleSubmit}>
+                    {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>Gửi yêu cầu</Text>}
                 </TouchableOpacity>
 
-                {msg &&
-                    <HelperText style={{ fontSize: 18 }} type="error" visible={msg}>
-                        {msg}
-                    </HelperText>
-                }
-
-
-            </View>
-            <TouchableOpacity style={[AccountStyles.button, { backgroundColor: '#376be3', margin: 7 }]} disabled={loading}
-                onPress={handleSubmit}>
-                {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>Gửi yêu cầu</Text>}
-            </TouchableOpacity>
-
-        </ScrollView>
+            </ScrollView>
+        </View>
     )
 }
 
