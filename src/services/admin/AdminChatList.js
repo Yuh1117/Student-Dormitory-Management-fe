@@ -4,80 +4,6 @@ import { listenToChatList } from '../../config/Chat';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-// const ChatListScreen = ({ currentUser }) => {
-//   const [chats, setChats] = useState([]);
-//   const navigation = useNavigation();
-
-//   useEffect(() => {
-//     const unsubscribe = listenToChatList(setChats);
-//     return () => unsubscribe();
-//   }, []);
-
-//   const renderItem = ({ item }) => {
-//     // const otherId = item.participants.find(id => id !== currentUser.id);
-//     const otherId = item.participants[1];
-//     const lastMsg = item.lastMessage?.content || "Bắt đầu cuộc trò chuyện...";
-//     return (
-//       <TouchableOpacity
-//         onPress={() => navigation.navigate('pesonalChat', { chatId: item.id, senderId:"admin" })}
-//         style={{ padding: 16, borderBottomWidth: 1, borderBottomColor: '#ddd' }}
-//       >
-//         <Text style={{ fontWeight: 'bold' }}>{otherId}</Text>
-//         <Text numberOfLines={1}>{lastMsg}</Text>
-//       </TouchableOpacity>
-//     );
-//   };
-
-//   return (
-//     <SafeAreaView style={{ flex: 1 }}>
-
-//     <View style={{ flex: 1 }}>
-//       <FlatList
-//         data={chats}
-//         keyExtractor={item => item.id}
-//         renderItem={renderItem}
-//       />
-//     </View>
-//     </SafeAreaView>
-//   );
-// };
-
-// export default ChatListScreen;
-
-
-
-
-// import { View, Text, TouchableOpacity, FlatList } from 'react-native';
-// import { listenToChatList } from './FirebaseService'; // Import hàm vừa tạo
-// import { useEffect, useState } from 'react';
-
-// const ChatListScreen = ({ navigation }) => {
-//   const [chats, setChats] = useState([]);
-  
-//   useEffect(() => {
-//     const unsubscribe = listenToChatList('admin', setChats); // admin là ID của admin
-//     return () => unsubscribe();
-//   }, []);
-
-//   const renderItem = ({ item }) => (
-//     <TouchableOpacity onPress={() => navigation.navigate('ChatScreen', { chatId: item.id })}>
-//       <View style={{ padding: 10, borderBottomWidth: 1, borderColor: '#ccc' }}>
-//         <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{item.otherUserName}</Text>
-//         <Text>{item.lastMessage.content}</Text>
-//       </View>
-//     </TouchableOpacity>
-//   );
-
-//   return (
-//     <FlatList
-//       data={chats}
-//       keyExtractor={(item) => item.id}
-//       renderItem={renderItem}
-//     />
-//   );
-// };
-
-// export default ChatListScreen;
 
 
 
@@ -97,7 +23,7 @@ const ChatListScreen = ({ navigation }) => {
   const renderItem = ({ item }) => {
     return (
 
-    <TouchableOpacity onPress={() => navigation.navigate('pesonalChat', { chatId: item.id,senderId:"admin" ,receiverId: item.otherUserId})}>
+    <TouchableOpacity style = {{padding:10,paddingTop:20,paddingBottom:20}} onPress={() => navigation.navigate('pesonalChat', { chatId: item.id,senderId:"admin" ,receiverId: item.otherUserId})}>
       <View style={styles.chatItem}>
         <View style={styles.chatInfo}>
           <Text style={styles.chatName}>{item.otherUserName}</Text>

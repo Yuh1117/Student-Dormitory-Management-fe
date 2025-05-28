@@ -20,20 +20,20 @@ const UserManage = () => {
     
     
 
-  // Tạo một Animated Value để điều khiển vị trí theo trục X
+ 
   const shakeAnimation = useRef(new Animated.Value(0)).current;
 
-  // Hàm xử lý animation rung lắc
+  
   const startShakeAnimation = () => {
     Animated.loop(
       Animated.sequence([
         Animated.timing(shakeAnimation, {
-          toValue: 2, // Dịch chuyển sang phải 5px
+          toValue: 2,
           duration: 100,
           useNativeDriver: true,
         }),
         Animated.timing(shakeAnimation, {
-          toValue: -2, // Dịch chuyển sang trái 5px
+          toValue: -2, 
           duration: 100,
           useNativeDriver: true,
         }),
@@ -48,7 +48,7 @@ const UserManage = () => {
           useNativeDriver: true,
         }),
         Animated.timing(shakeAnimation, {
-          toValue: 0, // Trở về vị trí ban đầu
+          toValue: 0, 
           duration: 100,
           useNativeDriver: true,
         }),
@@ -97,11 +97,6 @@ const UserManage = () => {
         if (count > 0) {
             return (
             <Animated.View style={[AdminStyles.flex_1, { transform: [{ translateX: shakeAnimation }] }]}>
-                {/* <TouchableOpacity onPress={() => { navigation.navigate("roomChangeRequestStack") }} style={[style.rightBtn, AdminStyles.btn, AdminStyles.flex_1]}>
-                <CountBadge url={`${endpoints['room-change-requests']}?status=Pending`} />
-                <MaterialCommunityIcons name='account-plus' style={style.text} />
-                <Text style={style.text}>Yêu cầu đổi phòng</Text>
-                </TouchableOpacity> */}
                 <TouchableOpacity onPress={() => { navigation.navigate(navigationTarget) }} style={[customStyle, AdminStyles.btn, AdminStyles.flex_1]}>
                 <CountBadge count={count} />
                 <MaterialCommunityIcons name={icon} style={style.text} />
@@ -139,12 +134,9 @@ const UserManage = () => {
             <View style={AdminStyles.flex_025}>
                 <View style={[AdminStyles.row,AdminStyles.flex_1]}>
                     <View style ={[AdminStyles.flex_05]}>
-
-                        
                         <ShakeCard count={0} navigationTarget={"createNoti"} customStyle={style.leftTopBtn} icon={"pen"} lable={"Tạo thông báo"}/>
                     </View>
                     <View style ={[AdminStyles.flex_05]}>
-
                         <ShakeCard count={0} navigationTarget={"surveyStack"} customStyle={style.rightTopBtn} icon={"file-document-edit"} lable={"Khảo sát"}/>
                     </View>
                 </View>

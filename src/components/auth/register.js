@@ -4,26 +4,12 @@ import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import useFetchWithToken from '../../config/UseFetchWithToken';
 import { endpoints } from '../../config/Apis';
+import AdminStyles from '../../styles/AdminStyles';
 
 const RegisterScreen = ({navigation}) => {
   const { control, handleSubmit, formState: { errors } } = useForm();
   const {loading,fetchWithToken} = useFetchWithToken();
   const onSubmit = async (data) => {
-    // try {
-    //   const response = await axios.post('https://vovanhuy.pythonanywhere.com/users/', data);
-    //   if (response.status === 201) {
-    //     Alert.alert('Success', 'User registered successfully');
-    //   } else {
-    //     Alert.alert('Error', data);
-    //   }
-    // } catch (error) {
-    //     console.log(error.response ? error.response.data : error); // Xem lỗi đầy đủ trong console
-    //     if (error.response && error.response.data) {
-    //       Alert.alert('Error', JSON.stringify(error.response.data)); // Hiển thị lỗi chính xác
-    //     } else {
-    //       Alert.alert('Error', 'Network error or server issue');
-    //     }
-    // }
     data = {
       ...data,
       role:"Student",
@@ -46,37 +32,6 @@ const RegisterScreen = ({navigation}) => {
     <View style={styles.container}>
       <Text style={styles.title}>Đăng Kí Sinh Viên</Text>
 
-      {/* <Controller
-        control={control}
-        name="first_name"
-        rules={{ required: 'First name is required' }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.input}
-            placeholder="First Name"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
-        )}
-      /> */}
-      {/* {errors.first_name && <Text style={styles.error}>{errors.first_name.message}</Text>} */}
-
-      {/* <Controller
-        control={control}
-        name="last_name"
-        rules={{ required: 'Last name is required' }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.input}
-            placeholder="Last Name"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
-        )}
-      />
-      {errors.last_name && <Text style={styles.error}>{errors.last_name.message}</Text>} */}
 
       <Controller
         control={control}
@@ -142,7 +97,7 @@ const RegisterScreen = ({navigation}) => {
       />
       {errors.student_code && <Text style={styles.error}>{errors.student_code.message}</Text>}
 
-      {loading ?<ActivityIndicator/>:<TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+      {loading ?<ActivityIndicator/>:<TouchableOpacity style={[styles.button,AdminStyles.successColor]} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.buttonText}>Đăng Kí</Text>
       </TouchableOpacity>}
     </View>

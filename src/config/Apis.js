@@ -25,10 +25,11 @@ export const endpoints = {
     "complaints": "/complaints/",
     "my-complaints": "/complaints/my-complaints",
     "my-room-complaints": "/complaints/my-room-complaints",
-
     "complaints-resolve":(id) =>`/complaints/${id}/resolve/`,
     "complaints-responses":(id) => `/complaints/${id}/complaints-responses/`,
-    "room-change-requests":"/room-change-requests/"
+    "room-change-requests":"/room-change-requests/",
+    "/statistics-sumamary/":"/statistics/summary/",
+    "/statistics-detail/":"/statistics/detail/"
 
 }
 
