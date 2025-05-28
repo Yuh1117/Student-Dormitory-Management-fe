@@ -59,56 +59,74 @@ const RoomChangeDetail = ({ route, navigation }) => {
             <ScrollView contentContainerStyle={[styles.contentContainer]}>
                 <View style={AdminStyles.flex_1}>
 
-                    <View style={styles.section}>
+                    <View style={[styles.section,{backgroundColor:"#7AE2CF"}]}>
                         <Text style={styles.sectionTitle}>Thông Tin Yêu Cầu</Text>
-                        <Text style={styles.label}>Lý do thay đổi:</Text>
-                        <Text style={styles.value}>{request.reason}</Text>
-                        <Text style={styles.label}>Người yêu cầu:</Text>
-                        <Text style={styles.value}>{request.student?.first_name || request.student?.last_name 
-              ? `${request.student?.first_name || ''} ${request.student?.last_name || ''}`.trim() 
-              : request.student?.username || 'Không rõ'}</Text>
+                        
+                        <View style ={[AdminStyles.col,AdminStyles.center_start]}>
+
+                            <Text style={styles.label}>Lý do: </Text>
+                            <Text  style={[styles.value,AdminStyles.flex_1]}>{request.reason}</Text>
+                        </View>
+                        <View style ={[AdminStyles.row,{justifyContent:"flex-start",alignItems:"center"}]}>
+                            <Text style={styles.label}>Người yêu cầu:</Text>
+                            <Text style={[styles.value,AdminStyles.flex_1]}>{request.student?.first_name || request.student?.last_name 
+                            ? `${request.student?.first_name || ''} ${request.student?.last_name || ''}`.trim() 
+                            : request.student?.username || 'Không rõ'}</Text>
+                        </View>
                     </View>
 
-                    <TouchableOpacity style={styles.section} onPress={()=>{
+                    <TouchableOpacity style={[styles.section,{backgroundColor:"#94B4C1"},AdminStyles.row,AdminStyles.center_space_between]} onPress={()=>{
                                 setSelectedRoom(currentRoom)
                                 navigation.navigate("roomMember")
                             
                             }
                         }>
-                        <Text style={styles.sectionTitle}>Phòng Hiện Tại</Text>
-                        <Text style={styles.value}>Số phòng: {currentRoom.room_number}</Text>
-                        <Text style={styles.value}>Loại phòng: {currentRoom.room_type}</Text>
-                        <Text style={styles.value}>Giường: {currentRoom.total_beds}</Text>
-                        <Text style={styles.value}>Tình trạng: {currentRoom.status}</Text>
+                        <View>
+                            
+                            <Text style={styles.sectionTitle}>Phòng Hiện Tại</Text>
+                            <Text style={styles.value}>Số phòng: {currentRoom.room_number}</Text>
+                            <Text style={styles.value}>Loại phòng: {currentRoom.room_type}</Text>
+                            <Text style={styles.value}>Giường: {currentRoom.total_beds}</Text>
+                            <Text style={styles.value}>Tình trạng: {currentRoom.status}</Text>
+                        </View>
+                        <Ionicons name="chevron-forward-outline" size={24} color="#000" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.section} onPress={()=>{
+                    <TouchableOpacity style={[styles.section,AdminStyles.roomBgColor,AdminStyles.row,AdminStyles.center_space_between]} onPress={()=>{
                                 setSelectedRoom(requestedRoom)
                                 navigation.navigate("roomMember")
                             
                             }
                         }>
-                        <Text style={styles.sectionTitle}>Phòng Yêu Cầu</Text>
-                        <Text style={styles.value}>Số phòng: {requestedRoom.room_number}</Text>
-                        <Text style={styles.value}>Loại phòng: {requestedRoom.room_type}</Text>
-                        <Text style={styles.value}>Giường: {requestedRoom.total_beds}</Text>
-                        <Text style={styles.value}>Tình trạng: {requestedRoom.status}</Text>
+                        <View>
+                            <Text style={styles.sectionTitle}>Phòng Yêu Cầu</Text>
+                            <Text style={styles.value}>Số phòng: {requestedRoom.room_number}</Text>
+                            <Text style={styles.value}>Loại phòng: {requestedRoom.room_type}</Text>
+                            <Text style={styles.value}>Giường: {requestedRoom.total_beds}</Text>
+                            <Text style={styles.value}>Tình trạng: {requestedRoom.status}</Text>
+                        </View>
+                        <Ionicons name="chevron-forward-outline" size={24} color="#000" />
                     </TouchableOpacity>
-                    {isHandle ? <Text>Đã Giải Quyết</Text>: (<View style={styles.buttonGroup}>
-                        <TouchableOpacity
-                            style={[styles.button, styles.approveButton]}
-                            onPress={() => handleUpdateStatus('Approved')}
-                        >
-                            <Text style={styles.buttonText}>Chấp nhận</Text>
-                        </TouchableOpacity>
+                    {isHandle ? 
+                        <View style ={[AdminStyles.row,AdminStyles.flex_1,AdminStyles.center]}>
+                            <Text style = {{fontSize:15}}>Đã Giải Quyết</Text>
+                        </View>
+                        : 
+                        (<View style={styles.buttonGroup}>
+                            <TouchableOpacity
+                                style={[styles.button, styles.approveButton]}
+                                onPress={() => handleUpdateStatus('Approved')}
+                            >
+                                <Text style={styles.buttonText}>Chấp nhận</Text>
+                            </TouchableOpacity>
 
-                        <TouchableOpacity
-                            style={[styles.button, styles.rejectButton]}
-                            onPress={() => handleUpdateStatus('Rejected')}
-                        >
-                            <Text style={styles.buttonText}>Từ chối</Text>
-                        </TouchableOpacity>
-                    </View>)
+                            <TouchableOpacity
+                                style={[styles.button, styles.rejectButton]}
+                                onPress={() => handleUpdateStatus('Rejected')}
+                            >
+                                <Text style={styles.buttonText}>Từ chối</Text>
+                            </TouchableOpacity>
+                        </View>)
                     }
                 </View>
             </ScrollView>
@@ -128,9 +146,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 8,
         shadowColor: '#000',
-        shadowOpacity: 0.1,
+        shadowOpacity: 0.3,
         shadowRadius: 4,
-        elevation: 2,
+        elevation: 4,
+        borderWidth:1
     },
     sectionTitle: {
         fontSize: 18,

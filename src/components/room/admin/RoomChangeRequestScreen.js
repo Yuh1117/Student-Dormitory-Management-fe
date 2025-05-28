@@ -67,19 +67,22 @@ const RoomChangeRequest = ({ navigation }) => {
 
     return (
       <TouchableOpacity
-        style={styles.itemContainer}
+        style={[styles.itemContainer,AdminStyles.invoiceCard]}
         onPress={() => navigation.navigate('requestDetail', { request: item })}
       >
-        <View style={[styles.statusContainer,{backgroundColor: getStatusColor(item.status)}]}>
-          <Badge
+        <View style={[styles.statusContainer,{backgroundColor: getStatusColor(item.status)},AdminStyles.flex_025,AdminStyles.center]}>
+          <View style={[{backgroundColor: getStatusColor(item.status)},AdminStyles.flex_1,AdminStyles.center]}>
+            <Badge
             size={24}
             style={{ backgroundColor: getStatusColor(item.status) }}
           >
             {getStatusName(item.status)}
           </Badge>
+          </View>
+          
         </View>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.title}>Lý do: {item.reason}</Text>
+        <View style={{ flex: 0.75 }}>
+          <Text numberOfLines={2} style={styles.title}>Lý do: {item.reason}</Text>
           <Text style={styles.subtitle}>Người yêu cầu: {item.student?.first_name || item.student?.last_name 
               ? `${item.student?.first_name || ''} ${item.student?.last_name || ''}`.trim() 
               : item.student?.username || 'Không rõ'}</Text>
@@ -92,7 +95,7 @@ const RoomChangeRequest = ({ navigation }) => {
   if (loading) return <ActivityIndicator style={{ marginTop: 50 }} />;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container,AdminStyles.container]}>
       <FlatList
         data={requests}
         keyExtractor={(item) => item.id.toString()}
@@ -122,7 +125,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   statusContainer: {
-    marginRight: 16,
+    padding:10,
+    marginRight:5,
+    borderRadius:6
   },
   title: {
     fontWeight: 'bold',

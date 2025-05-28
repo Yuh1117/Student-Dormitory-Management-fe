@@ -1,5 +1,5 @@
 import React, { useState,useEffect, useContext } from 'react';
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import AdminStyles from '../../../styles/AdminStyles';
 import useFetchWithToken from '../../../config/UseFetchWithToken';
@@ -63,7 +63,7 @@ export default  function UpdateRoom() {
     return (
         // <SafeAreaView>
             
-        <SafeAreaView style={[styles.container, AdminStyles.roomBgColor]}>
+        <SafeAreaView style={[styles.container]}>
             <Text>Tên phòng</Text>
             <TextInput style={styles.input} value={formData.room_number} onChangeText={(text) => setFormData({ ...formData, room_number: text })} />
             
@@ -82,13 +82,23 @@ export default  function UpdateRoom() {
             <Text>Tiền phòng</Text>
             <TextInput style={styles.input} value={formData.monthly_fee} onChangeText={(text) => setFormData({ ...formData, monthly_fee: text })} keyboardType="decimal-pad" />
 
-            {loading ? <ActivityIndicator/>:<Button title="Cập nhật" onPress={handleUpdate} />}
+            {loading ? <ActivityIndicator/>:
+            <TouchableOpacity onPress={handleUpdate} style={[styles.button, AdminStyles.successColor,]}>
+                        <Text >Cập nhật</Text>
+                      </TouchableOpacity>}
         </SafeAreaView>
         // </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { padding: 20 },
+    container: { padding: 20, flex:1,backgroundColor:"#fff" },
     input: { borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 6 },
+    button: {
+    backgroundColor: '#aed1fc',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 10,
+    alignItems: "center"
+  },
 });

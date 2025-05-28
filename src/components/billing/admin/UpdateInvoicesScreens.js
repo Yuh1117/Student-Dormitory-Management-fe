@@ -113,7 +113,6 @@ export default function UpdateInvoice({ route, navigation }) {
         setStatus(selectedInvoice.status)
         setDescription(selectedInvoice.description)
         setItems(selectedInvoice.items)
-
     }, [selectedInvoice])
     return (
         <ScrollView style={styles.container}>

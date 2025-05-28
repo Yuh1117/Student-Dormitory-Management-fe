@@ -31,6 +31,7 @@ import ComplaintList from '../../components/support/admin/ComplaintListScreen';
 import ComplaintDetail from '../../components/support/admin/ComplaintDetailScreen';
 import RoomChangeRequest from '../../components/room/admin/RoomChangeRequestScreen';
 import RoomChangeDetail from '../../components/room/admin/RequestDetailScreen';
+import Statistics from '../../components/surveys/admin/statistics/StatisticsScreen';
 
 
 
@@ -371,6 +372,13 @@ export function AdminHomeMain() {
                 {
                     headerShown: false,
                     tabBarIcon: getTabBarIcon('chat'),
+
+                }
+            }></Tab.Screen>
+            <Tab.Screen name="Thống kê" component={Statistics} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: getTabBarIcon('chart-box-outline'),
 
                 }
             }></Tab.Screen>

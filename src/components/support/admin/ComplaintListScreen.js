@@ -46,6 +46,7 @@ const renderItem = ({ item }) => {
       <TouchableOpacity
         style={[
           styles.itemContainer,
+          AdminStyles.invoiceCard,
           isPending && styles.pendingBackground,
           isResolved && styles.resolvedBackground,
         ]}
@@ -58,7 +59,7 @@ const renderItem = ({ item }) => {
           style={styles.icon}
         />
         <View style={{ flex: 1 }}>
-          <Text style={styles.title}>{item.description}</Text>
+          <Text numberOfLines={1} style={styles.title}>{item.description}</Text>
           <Text style={styles.subtitle}>
             Người gửi: {item.student?.first_name || item.student?.last_name 
               ? `${item.student?.last_name || ''} ${item.student?.first_name || ''}`.trim() 
