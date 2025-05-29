@@ -1,6 +1,7 @@
 import axios from "axios"
 
-BASE_URL = "http://10.0.2.2:8000/"
+// BASE_URL = "http://10.0.2.2:8000/"
+BASE_URL = "https://vovanhuy.pythonanywhere.com/"
 export const endpoints = {
     "login": "/users/login/",
     "users": "/users/",
@@ -13,7 +14,7 @@ export const endpoints = {
     "invoice-payment": (id) => `/invoices/${id}/vnpay_payment_url/`,
     "available-student": "/users/available-students/",
     "room-assignments": "/room-assignments/",
-    "room-assignments-student": (id) => `/rooms/${id}/room-assignments/`,
+    "get-room-assignments":(id)=>`/rooms/${id}/room-assignments/`,
     "remove-member": (id) => `/rooms/${id}/remove-member/`,
     'my-room': `/rooms/my-room/`,
     "notifications": "/notifications/",
@@ -24,7 +25,11 @@ export const endpoints = {
     "complaints": "/complaints/",
     "my-complaints": "/complaints/my-complaints",
     "my-room-complaints": "/complaints/my-room-complaints",
-    "complaint-detail-responses": (id) => `/complaints/${id}/complaints-responses`,
+    "complaints-resolve":(id) =>`/complaints/${id}/resolve/`,
+    "complaints-responses":(id) => `/complaints/${id}/complaints-responses/`,
+    "room-change-requests":"/room-change-requests/",
+    "/statistics-sumamary/":"/statistics/summary/",
+    "/statistics-detail/":"/statistics/detail/"
 
 }
 

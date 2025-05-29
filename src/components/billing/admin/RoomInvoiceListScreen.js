@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Card, Drawer } from 'react-native-paper'
 import useFetchWithToken from '../../../config/UseFetchWithToken'
 import { endpoints } from "../../../config/Apis";
@@ -32,6 +32,7 @@ const RoomInvoiceList = () => {
     useFocusEffect(
         useCallback(()=>{
             setRoomInvoiceList([])
+            setPage(1)
             loadInvoice()
         },[])
     )
@@ -40,36 +41,37 @@ const RoomInvoiceList = () => {
         if(!loading && roomInvoiceList.length > 0 && page>0)
         setPage(page+1)
       }
+
+    const getColor=(status)=>{
+        if (status=="Paid") 
+            return "#B5FCCD"
+        return "#ffdada"
+    }
     return (
 
-        <View>
+        <View style={[AdminStyles.container,{flex:1}]}>
 
             <FlatList
                 onEndReached={loadMore}
                 ListFooterComponent={loading && <ActivityIndicator />}
                 data={roomInvoiceList}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity key={item.id}  onPress={() => {
                         setSelectedInvoice(item)
                         
                         navigation.navigate('updateInvoice');
                       }}>
-                        <Card key={item.id} style={[AdminStyles.mb]}>
-                            <Card.Content style={AdminStyles.unPaid}>
+                        <Card key={item.id} style={[AdminStyles.mb,AdminStyles.invoiceCard,{backgroundColor:getColor(item.status)}]}>
+                            <Card.Content >
+                                <Text style={styles.date}>{new Date(item.created_date).toLocaleDateString()}</Text>
                                 <View style={AdminStyles.row}>
 
-                                    <View>
-                                        {/* {item.items.map((i) =>{
-                                            return(
-                                                <View key={i.id}>
-                                                    <Text>{i.description} : {parseFloat(i.amount).toLocaleString('vi-VN')}VND</Text>
-                                                </View>
-                                            );
-                                        })} */}
+                                    <View style={[AdminStyles.flex_05,AdminStyles.center_start]}>
+                                        
                                         <Text>{item.description}</Text>
                                     </View>
-                                    <View>
-                                        <Text>Tổng Cộng: {parseFloat(item.total_amount).toLocaleString('vi-VN')}VND</Text>
+                                    <View style={AdminStyles.flex_05}>
+                                        <Text>{parseFloat(item.total_amount).toLocaleString('vi-VN')}VND</Text>
                                     </View>
                                 </View>
                             </Card.Content>
@@ -79,24 +81,33 @@ const RoomInvoiceList = () => {
                 )}
             />
             
-            <View>
-                <Card>
-                    <Card.Content style={AdminStyles.paid}>
-                        <View style={AdminStyles.row}>
+            <View >
+                <Card  style={[AdminStyles.mb,AdminStyles.invoiceCard,{backgroundColor:getColor("Paid")}]}>
+                            <Card.Content >
+                                <View style={AdminStyles.row}>
 
-                            <View >
-                                <Text>tieenf nhaf</Text>
-                                <Text>tieenf nhaf</Text>
-                            </View>
-                            <View>
-                                <Text>Tổng Cộng:</Text>
-                            </View>
-                        </View>
-                    </Card.Content>
-                </Card>
+                                    <View style={[AdminStyles.flex_05,AdminStyles.center_start]}>
+                                        
+                                        <Text>nhà</Text>
+                                    </View>
+                                    <View style={AdminStyles.flex_05}>
+                                        <Text>VND</Text>
+                                    </View>
+                                </View>
+                            </Card.Content>
+                        </Card>
             </View>
         </View>
 
     );
 }
 export default RoomInvoiceList
+const styles = StyleSheet.create({
+    date:{
+        position:"absolute",
+        right:1,
+        top:0.2,
+        fontSize:11,
+        opacity:0.7
+    }
+})

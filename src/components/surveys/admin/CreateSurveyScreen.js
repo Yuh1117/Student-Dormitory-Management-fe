@@ -22,24 +22,57 @@ const CreateSurvey = ({ navigation }) => {
     setQuestions(updated);
   };
 
+  // const submitSurvey = async () => {
+  //   const data = await fetchWithToken({
+  //     url: endpoints['surveys'],
+  //     method: "POST",
+  //     data: {
+  //       title,
+  //       description,
+  //       questions,
+  //     },
+  //   });
+  
+  //   if (data) {
+  //     Alert.alert('Tạo khảo sát thành công!');
+  //     navigation.goBack();
+  //   } else {
+  //     Alert.alert('Có lỗi xảy ra khi tạo khảo sát.');
+  //   }
+  // };
   const submitSurvey = async () => {
-    const data = await fetchWithToken({
+    // Tạo survey trước
+    const surveyData = await fetchWithToken({
       url: endpoints['surveys'],
       method: "POST",
       data: {
         title,
         description,
-        questions,
       },
     });
   
-    if (data) {
-      Alert.alert('Tạo khảo sát thành công!');
+    if (!surveyData) {
+      Alert.alert('Có lỗi xảy ra khi tạo khảo sát.');
+      return;
+    }
+  
+    const surveyId = surveyData.id;
+  
+    // Gửi API để tạo các câu hỏi
+    const questionsData = await fetchWithToken({
+      url: `${endpoints['surveys']}${surveyId}/survey-questions/`,
+      method: "POST",
+      data: questions,
+    });
+  
+    if (questionsData) {
+      Alert.alert('Tạo khảo sát và câu hỏi thành công!');
       navigation.goBack();
     } else {
-      Alert.alert('Có lỗi xảy ra khi tạo khảo sát.');
+      Alert.alert('Có lỗi xảy ra khi tạo câu hỏi.');
     }
   };
+  
 
   const handleSubmit = () => {
     // Validate tiêu đề và mô tả

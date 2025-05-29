@@ -19,7 +19,7 @@ const RoomDetails = () => {
 
             const token = await AsyncStorage.getItem("access-token");
             const res = await authApis(token).get(endpoints['my-room']);
-            const res1 = await authApis(token).get(endpoints["room-assignments-student"](res.data.id));
+            const res1 = await authApis(token).get(endpoints["get-room-assignments"](res.data.id));
 
             setRoom(res.data);
             setRoommates(res1.data);

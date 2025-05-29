@@ -1,6 +1,9 @@
+
+
 import React, { useEffect, useState, useRef } from 'react';
 import { View, TextInput, FlatList, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { sendMessage, listenMessages, markMessagesAsRead, ChatAdminId } from '../../config/Chat';
+import { getAuth } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -8,51 +11,37 @@ import { useTranslation } from 'react-i18next';
 const StudentChatScreen = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
-  const [chatId, setChatId] = useState('')
-  const [currentUser, setCurrentUser] = useState(null)
-  const [senderId, setSenderId] = useState('')
+  const [chatId, setChatId] = useState('');
+  const [currentUser, setCurrentUser] = useState(null);
+  const [senderId, setSenderId] = useState('');
+  const [fullName, setFullName] = useState('')
   const flatListRef = useRef(null);
   const { t } = useTranslation()
-
-  //   const { currentUser } = getAuth();
-  // const currentUser = await AsyncStorage.getItem('user')
-  //   const senderId = currentUser?.uid;
-  //   const chatId = `admin_${senderId}`;
-  //   const chatId = ChatAdminId(senderId);
-  //   const otherId = 'admin';
-  const getID = async () => {
-    const currentUserTemp = await AsyncStorage.getItem('user');
-    setCurrentUser(currentUserTemp);
-    const senderId = currentUser ? currentUser.id : null;
-    setChatId(ChatAdminId(senderId));
-  }
 
   useEffect(() => {
     const init = async () => {
       const userData = await AsyncStorage.getItem('user');
       if (userData) {
         const user = JSON.parse(userData);
+        console.log(user)
         setCurrentUser(user);
-        setSenderId(user.id)
-        const id = ChatAdminId(user.id); // Tạo chatId từ user.id
+        setSenderId(user.id);
+        const id = ChatAdminId(user.id);
         setChatId(id);
+        setFullName(`${user.first_name} ${user.last_name}`)
       }
-    };
+      console.log(fullName)
 
+    };
     init();
   }, []);
-
-  // Lắng nghe tin nhắn khi đã có chatId và currentUser
-  useEffect(() => {
-    console.log(currentUser)
-    if (!chatId || !currentUser) return;
-
+  const fetchMessages = async () => {
     const unsubscribe = listenMessages(chatId, async (msgs) => {
       setMessages(msgs);
-
+      // console.log(unsubscribe)
       const unreadIds = msgs
-        .filter(m => !m.isRead && m.senderId === 'admin') // admin là người còn lại
-        .map(m => m.id);
+        .filter((m) => !m.isRead && m.senderId === 'admin')
+        .map((m) => m.id);
 
       if (unreadIds.length) {
         await markMessagesAsRead(chatId, unreadIds);
@@ -60,29 +49,17 @@ const StudentChatScreen = () => {
     });
 
     return unsubscribe;
+  }
+  useEffect(() => {
+    if (!chatId || !currentUser) return;
+    fetchMessages();
+    
   }, [chatId, currentUser]);
-  //   useEffect(() => {
-  //     getID();
-  //     console.log(currentUser)
-  //     const unsubscribe = listenMessages(chatId, async (msgs) => {
-  //       setMessages(msgs);
-
-  //       const unreadIds = msgs
-  //         .filter(m => !m.isRead && m.senderId === otherId)
-  //         .map(m => m.id);
-
-  //       if (unreadIds.length) await markMessagesAsRead(chatId, unreadIds);
-  //     });
-
-  //     return unsubscribe;
-  //   }, []);
 
   const handleSend = async () => {
-    if (!input.trim()) {
-      console.log('vào')
-      return;
-    }
-    await sendMessage(chatId, senderId, input);
+    if (!input.trim()) return;
+
+    await sendMessage(chatId, senderId, fullName, "admin", "Admin", input);
     setInput('');
     flatListRef.current?.scrollToEnd({ animated: true });
   };
@@ -95,7 +72,7 @@ const StudentChatScreen = () => {
         borderRadius: 10,
         padding: 10,
         marginVertical: 4,
-        maxWidth: '75%'
+        maxWidth: '75%',
       }}
     >
       <Text>{item.content}</Text>
@@ -109,7 +86,6 @@ const StudentChatScreen = () => {
       keyboardVerticalOffset={100}
     >
       <SafeAreaView style={{ flex: 1 }}>
-
         <FlatList
           ref={flatListRef}
           data={messages}
@@ -136,3 +112,4 @@ const StudentChatScreen = () => {
 };
 
 export default StudentChatScreen;
+

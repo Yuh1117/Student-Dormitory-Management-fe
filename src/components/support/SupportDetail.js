@@ -18,7 +18,7 @@ const SupportDetail = ({ route }) => {
             setLoading(true);
 
             const token = await AsyncStorage.getItem("access-token");
-            const res = await authApis(token).get(endpoints["complaint-detail-responses"](support.id));
+            const res = await authApis(token).get(endpoints["complaints-responses"](support.id));
 
             setResponses(res.data.results);
         } catch (ex) {

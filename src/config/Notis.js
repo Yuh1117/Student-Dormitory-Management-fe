@@ -14,8 +14,6 @@ export const registerForPushNotificationsAsync = async () => {
       return;
     }
     const token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log('Expo push token:', token);
-    // Gửi token này lên Django backend để lưu
     return token; 
   }
 };

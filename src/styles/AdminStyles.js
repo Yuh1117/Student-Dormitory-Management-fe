@@ -18,6 +18,9 @@ export default StyleSheet.create({
     mb:{
         marginBottom:10
     },
+    mt:{
+        marginTop:10
+    },
     bgc:{
         backgroundColor :"#fff"
     },
@@ -41,6 +44,18 @@ export default StyleSheet.create({
         justifyContent: "center",
         alignItems : "center"
     },
+    center_start:{
+        justifyContent: "center",
+        alignItems : "flex-start"
+    },
+    center_space_between:{
+        justifyContent:"space-between",
+        alignItems:"center"
+    },
+    row_center_start:{
+        alignItems: "center",
+        justifyContent : "flex-start"
+    },
     btn :{
         padding: 30,
         margin:6,
@@ -56,6 +71,9 @@ export default StyleSheet.create({
     },
     flex_025:{
         flex: 0.25
+    },
+    flex_075:{
+        flex: 0.75
     },
     title:{
         fontSize: 16,
@@ -75,7 +93,13 @@ export default StyleSheet.create({
         color:"#e23737"
     }, dangerColor:{
         color:"#e23737"
-    }
+    },
+    invoiceCard:{
+        padding: 10,
+        borderWidth:1,
+        borderRadius:10
+        
+    },
 
 
 });
