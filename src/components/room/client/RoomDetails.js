@@ -5,74 +5,96 @@ import RoommateItem from './RoommateItem';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApis, endpoints } from '../../../config/Apis';
 import { ActivityIndicator } from 'react-native-paper';
+import { useTranslation } from 'react-i18next';
 
 const RoomDetails = () => {
-    const [room, setRoom] = useState(null)
-    const [roommates, setRoommates] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [room, setRoom] = useState(null);
+    const [roommates, setRoommates] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const { t } = useTranslation();
 
     const loadRoom = async () => {
         try {
-            setLoading(true)
+            setLoading(true);
 
-            const token = await AsyncStorage.getItem("access-token")
-            const res = await authApis(token).get(endpoints['my-room'])
+            const token = await AsyncStorage.getItem("access-token");
+            const res = await authApis(token).get(endpoints['my-room']);
+            const res1 = await authApis(token).get(endpoints["get-room-assignments"](res.data.id));
 
-            setRoom(res.data)
-            setRoommates(res.data.room_assignments)
+            setRoom(res.data);
+            setRoommates(res1.data);
         } catch (ex) {
-            console.error(ex)
+            console.error(ex);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
-        loadRoom()
-    }, [])
+        loadRoom();
+    }, []);
 
     return (
-        <ScrollView contentContainerStyle={[AccountStyles.container, { justifyContent: '' }]}>
-            {loading ? <View style={{ padding: 20, alignItems: 'center', justifyContent: 'center' }}>
-                <ActivityIndicator size={40} />
-            </View> : room !== null ?
-                <>
-                    <View style={AccountStyles.card}>
-                        <View style={styles.row}>
-                            <Text style={styles.title}>Toà {room.building} - </Text>
-                            <Text style={styles.title}>Tầng {room.floor} - </Text>
-                            <Text style={styles.title}>Phòng {room.room_number}</Text>
-                        </View>
-
-
-
-                        <View style={styles.row}>
-                            <View style={[styles.capacityBox, { backgroundColor: '#FFF3E0' }]}>
-                                <Text style={[styles.capacityText, { color: "#FF9800" }]}>{room.room_type}</Text>
-                            </View>
-                            <View style={styles.capacityBox}>
-                                <Text style={styles.capacityText}>Số chỗ: {room.total_beds}</Text>
-                            </View>
-                            <View style={styles.availableBox}>
-                                <Text style={styles.availableText}>Còn {room.available_beds} chỗ</Text>
-                            </View>
-                        </View>
+        <View style={[AccountStyles.container, { justifyContent: '' }]}>
+            <ScrollView>
+                {loading ? (
+                    <View style={{ padding: 20, alignItems: 'center', justifyContent: 'center' }}>
+                        <ActivityIndicator size={40} />
                     </View>
+                ) : room !== null ? (
+                    <>
+                        <View style={AccountStyles.card}>
+                            <View style={styles.row}>
+                                <Text style={styles.title}>
+                                    {t('roomDetails.building')} {room.building} - {}
+                                </Text>
+                                <Text style={styles.title}>
+                                    {t('roomDetails.floor')} {room.floor} - {}
+                                </Text>
+                                <Text style={styles.title}>
+                                    {t('roomDetails.room_number')} {room.room_number}
+                                </Text>
+                            </View>
 
-                    <View style={AccountStyles.card}>
-                        <Text style={styles.title}>Bạn cùng phòng</Text>
-                        {roommates.length > 0 ? (
-                            roommates.map(r => <RoommateItem key={r.id} item={r.student_detail} />))
-                            : (
-                                <Text style={{ color: '#999' }}>Chưa có bạn cùng phòng nào.</Text>
+                            <View style={styles.row}>
+                                <View style={[styles.capacityBox, { backgroundColor: '#FFF3E0' }]}>
+                                    <Text style={[styles.capacityText, { color: "#FF9800" }]}>
+                                        {room.room_type}
+                                    </Text>
+                                </View>
+                                <View style={styles.capacityBox}>
+                                    <Text style={styles.capacityText}>
+                                        {t('roomDetails.total_beds')}: {room.total_beds}
+                                    </Text>
+                                </View>
+                                <View style={styles.availableBox}>
+                                    <Text style={styles.availableText}>
+                                        {t('roomDetails.available_beds', { count: room.available_beds })}
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+
+                        <View style={AccountStyles.card}>
+                            <Text style={styles.title}>{t('roomDetails.roommates_title')}</Text>
+                            {roommates.length > 0 ? (
+                                roommates.map(r => (
+                                    <RoommateItem key={r.id} item={r.student_detail} />
+                                ))
+                            ) : (
+                                <Text style={{ color: '#999' }}>
+                                    {t('roomDetails.no_roommates')}
+                                </Text>
                             )}
-                    </View>
-                </> : (
+                        </View>
+                    </>
+                ) : (
                     <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text>Chưa có phòng</Text>
+                        <Text>{t('roomDetails.no_room')}</Text>
                     </View>
                 )}
-        </ScrollView >
+            </ScrollView>
+        </View>
     );
 };
 
@@ -85,14 +107,14 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         marginBottom: 5,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     capacityBox: {
         backgroundColor: '#E6EEFF',
         paddingVertical: 5,
         paddingHorizontal: 12,
         borderRadius: 6,
-        marginRight: 10
+        marginRight: 10,
     },
     capacityText: {
         color: '#3366CC',
@@ -113,7 +135,7 @@ const styles = StyleSheet.create({
     subtitle: {
         fontSize: 14,
         color: '#666',
-    }
+    },
 });
 
-export default RoomDetails
+export default RoomDetails;

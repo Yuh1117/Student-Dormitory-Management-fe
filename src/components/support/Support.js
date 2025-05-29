@@ -1,81 +1,81 @@
-import { ActivityIndicator, StyleSheet, View } from "react-native"
-import { FlatList, ScrollView } from "react-native-gesture-handler"
-import AccountStyles from "../auth/AccountStyles"
-import { Divider, Text, ToggleButton } from "react-native-paper"
-import MenuItem from "../auth/MenuItem"
-import { Feather, MaterialCommunityIcons } from "@expo/vector-icons"
-import { useNavigation } from "@react-navigation/native"
-import React, { useEffect, useState } from "react"
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import { authApis, endpoints } from "../../config/Apis"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
+import AccountStyles from "../auth/AccountStyles";
+import { Divider, Text, ToggleButton } from "react-native-paper";
+import MenuItem from "../auth/MenuItem";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { authApis, endpoints } from "../../config/Apis";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
 
 const Support = () => {
-    const nav = useNavigation()
-    const [loading, setLoading] = useState(false)
-    const [complaints, setComplaints] = useState([])
-    const [page, setPage] = useState(1)
-    const [roomLoading, setRoomLoading] = useState(false)
-    const [roomComplaints, setRoomComplaints] = useState([])
-    const [roomPage, setRoomPage] = useState(1)
-    const [viewType, setViewType] = useState("room")
+    const nav = useNavigation();
+    const [loading, setLoading] = useState(false);
+    const [complaints, setComplaints] = useState([]);
+    const [page, setPage] = useState(1);
+    const [roomLoading, setRoomLoading] = useState(false);
+    const [roomComplaints, setRoomComplaints] = useState([]);
+    const [roomPage, setRoomPage] = useState(1);
+    const [viewType, setViewType] = useState("room");
+    const { t } = useTranslation();
 
     const loadComplaints = async () => {
         if (page > 0) {
             try {
-                setLoading(true)
+                setLoading(true);
 
-                const token = await AsyncStorage.getItem("access-token")
-                let url = `${endpoints["my-complaints"]}?page=${page}`
+                const token = await AsyncStorage.getItem("access-token");
+                let url = `${endpoints["my-complaints"]}?page=${page}`;
 
-                console.info(url)
+                console.info(url);
 
-                let res = await authApis(token).get(url)
-                setComplaints([...complaints, ...res.data.results])
+                let res = await authApis(token).get(url);
+                setComplaints([...complaints, ...res.data.results]);
 
-                if (res.data.next === null)
-                    setPage(0)
+                if (res.data.next === null) setPage(0);
             } catch (ex) {
-                console.error(ex)
+                console.error(ex);
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
         }
-    }
+    };
 
     const loadMore = () => {
         if (!loading && page > 0) {
-            setPage(page + 1)
+            setPage(page + 1);
         }
-    }
+    };
 
     const loadRoomComplaints = async () => {
         if (roomPage > 0) {
             try {
-                setRoomLoading(true)
+                setRoomLoading(true);
 
-                const token = await AsyncStorage.getItem("access-token")
-                const url = `${endpoints["my-room-complaints"]}?page=${roomPage}`
-                console.info(url)
+                const token = await AsyncStorage.getItem("access-token");
+                const url = `${endpoints["my-room-complaints"]}?page=${roomPage}`;
+                console.info(url);
 
-                const res = await authApis(token).get(url)
-                setRoomComplaints([...roomComplaints, ...res.data.results])
+                const res = await authApis(token).get(url);
+                setRoomComplaints([...roomComplaints, ...res.data.results]);
 
-                if (res.data.next === null)
-                    setRoomPage(0)
+                if (res.data.next === null) setRoomPage(0);
             } catch (ex) {
-                console.error(ex)
+                console.error(ex);
             } finally {
-                setRoomLoading(false)
+                setRoomLoading(false);
             }
         }
-    }
+    };
 
     const loadRoomMore = () => {
         if (!roomLoading && roomPage > 0) {
-            setRoomPage(roomPage + 1)
+            setRoomPage(roomPage + 1);
         }
-    }
+    };
 
     useEffect(() => {
         if (viewType === "room") {
@@ -91,51 +91,55 @@ const Support = () => {
 
     useEffect(() => {
         if (viewType === "room") {
-            setComplaints([])
-            setPage(1)
+            setComplaints([]);
+            setPage(1);
         } else {
-            setRoomComplaints([])
-            setRoomPage(1)
+            setRoomComplaints([]);
+            setRoomPage(1);
         }
-    }, [viewType])
-
+    }, [viewType]);
 
     const renderComplaintItem = ({ item, index }) => (
-        <View key={item.id}>
-            <View style={[styles.row, { padding: 7, marginVertical: 5 }]}>
-                <View style={styles.row}>
-                    <View style={{ marginLeft: 5 }}>
-                        <Text style={styles.label}>{item.title}</Text>
-                        <Text>{new Date(item.created_date).toLocaleDateString('vi-VN')}</Text>
+        <TouchableOpacity onPress={() => nav.navigate('SupportDetail', { support: item })}>
+            <View key={item.id}>
+                <View style={[styles.row, { padding: 7, marginVertical: 5 }]}>
+                    <View style={styles.row}>
+                        <View style={{ marginLeft: 5 }}>
+                            <Text style={styles.label}>{item.title}</Text>
+                            <Text>{new Date(item.created_date).toLocaleDateString('vi-VN')}</Text>
+                        </View>
+                    </View>
+                    <View style={{ alignItems: 'flex-end' }}>
+                        {item.status === "Pending" ? (
+                            <Text style={{ color: 'orange' }}>{t('support.status.pending')}</Text>
+                        ) : (
+                            <Text style={{ color: '#4CAF50' }}>{t('support.status.resolved')}</Text>
+                        )}
                     </View>
                 </View>
-                <View style={{ alignItems: 'flex-end' }}>
-                    {item.status === "Pending" ? <Text style={{ color: 'orange' }}>Đã gửi</Text> :
-                        <Text style={{ color: '#4CAF50' }}>Đã giải quyết</Text>}
-                </View>
+                <Divider />
             </View>
-            <Divider />
-        </View>
-    )
+        </TouchableOpacity>
+    );
 
     return (
-        <View style={[AccountStyles.container, {justifyContent: 'none'}]}>
-            <Text style={styles.title}>Yêu cầu</Text>
-            <View style={{}}>
+        <View style={[AccountStyles.container, { justifyContent: 'none' }]}>
+            <Text style={styles.title}>{t('support.title')}</Text>
+            <View>
                 <MenuItem
                     icon={<Feather name="send" size={22} color="#333" />}
-                    title="Gửi yêu cầu hỗ trợ"
+                    title={t('sendSupport.title')}
                     onPress={() => nav.navigate('SendSupport')}
                 />
             </View>
 
             <View style={[styles.row, { padding: 7 }]}>
                 <Text style={[styles.title, { marginHorizontal: 5 }]}>
-                    Yêu cầu của {viewType === "mine" ? "tôi" : "phòng"}
+                    {t('support.view_type.' + viewType)}
                 </Text>
                 <ToggleButton.Row
                     onValueChange={value => {
-                        if (value) setViewType(value)
+                        if (value) setViewType(value);
                     }}
                     value={viewType}
                     style={{ justifyContent: 'center', marginVertical: 5 }}
@@ -147,9 +151,8 @@ const Support = () => {
                         )}
                         style={[viewType === "room" && styles.activeToggle, { borderRadius: 10 }]}
                     >
-                        Phòng
+                        {t('support.view_type.room')}
                     </ToggleButton>
-
 
                     <ToggleButton
                         value="mine"
@@ -158,10 +161,9 @@ const Support = () => {
                         )}
                         style={[viewType === "mine" && styles.activeToggle, { borderRadius: 10 }]}
                     >
-                        Cá nhân
+                        {t('support.view_type.mine')}
                     </ToggleButton>
                 </ToggleButton.Row>
-
             </View>
 
             {viewType === "mine" ? (
@@ -181,7 +183,7 @@ const Support = () => {
                     />
                 ) : (
                     <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text>Không có yêu cầu</Text>
+                        <Text>{t('support.no_requests')}</Text>
                     </View>
                 )
             ) : (
@@ -201,14 +203,13 @@ const Support = () => {
                     />
                 ) : (
                     <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text>Không có yêu cầu</Text>
+                        <Text>{t('support.no_requests')}</Text>
                     </View>
                 )
             )}
-
         </View>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     title: {
@@ -228,6 +229,6 @@ const styles = StyleSheet.create({
     activeToggle: {
         backgroundColor: '#376be3',
     },
-})
+});
 
-export default Support
+export default Support;

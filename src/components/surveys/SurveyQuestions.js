@@ -120,6 +120,26 @@ const SurveyQuestions = ({ route }) => {
         }
     }, [])
 
+    // useEffect(() => {
+    //     const backAction = () => {
+    //         // Prevent back navigation
+    //         Alert.alert(
+    //             "Thông báo",
+    //             "Bạn không thể quay lại sau khi hoàn thành khảo sát!",
+    //             [{ text: "OK" }]
+    //         );
+    //         return true;  // Returning true prevents the default back action
+    //     };
+
+    //     // Add back handler when the component mounts
+    //     BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    //     // Cleanup the event listener when the component unmounts
+    //     return () => {
+    //         BackHandler.removeEventListener('hardwareBackPress', backAction);
+    //     };
+    // }, []); // Empty dependency array so it runs once when the component mounts
+
     return (
         <View style={AccountStyles.container}>
             <View style={{ margin: 10 }}>

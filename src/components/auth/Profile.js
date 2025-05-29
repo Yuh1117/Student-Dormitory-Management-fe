@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { authApis, endpoints } from "../../config/Apis";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AccountStyles from "./AccountStyles";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
     const userData = useContext(MyUserContext)
@@ -15,14 +16,15 @@ const Profile = () => {
     const [loading, setLoading] = useState(false)
     const nav = useNavigation()
     const [msg, setMsg] = useState()
+    const { t } = useTranslation()
 
     const fields = [
-        { label: "Tên", field: "first_name", secureTextEntry: false, icon: "text" },
-        { label: "Họ", field: "last_name", secureTextEntry: false, icon: "text" },
-        { label: "Email", field: "email", secureTextEntry: false, icon: "email" },
-        { label: "Số điện thoại", field: "phone_number", secureTextEntry: false, icon: "phone" },
-        { label: "Mã số sinh viên", field: "student_code", secureTextEntry: false, icon: "identifier", disabled: true },
-        { label: "Trường", field: "university", secureTextEntry: false, icon: "school", disabled: true },
+        { label: t('profile.fields.first_name'), field: "first_name", secureTextEntry: false, icon: "text" },
+        { label: t('profile.fields.last_name'), field: "last_name", secureTextEntry: false, icon: "text" },
+        { label: t('profile.fields.email'), field: "email", secureTextEntry: false, icon: "email" },
+        { label: t('profile.fields.phone_number'), field: "phone_number", secureTextEntry: false, icon: "phone" },
+        { label: t('profile.fields.student_code'), field: "student_code", secureTextEntry: false, icon: "identifier", disabled: true },
+        { label: t('profile.fields.university'), field: "university", secureTextEntry: false, icon: "school", disabled: true },
     ];
 
     const setState = (value, field) => {
@@ -96,7 +98,7 @@ const Profile = () => {
                     });
 
                     Alert.alert("Cập nhật thông tin thành công")
-                    nav.navigate("Account")
+                    nav.navigate("AccountMain")
                 }
             } catch (ex) {
                 console.error(ex);
@@ -139,7 +141,7 @@ const Profile = () => {
                     )}
 
                     < TouchableOpacity style={AccountStyles.button} onPress={saveInfor} disabled={loading} >
-                        {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>Cập nhật</Text>}
+                        {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>{t('update')}</Text>}
                     </TouchableOpacity >
                 </View>
 

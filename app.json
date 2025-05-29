@@ -30,6 +30,9 @@
         "projectId": "19956ef5-37eb-4136-9939-f82f7be8f16e"
       }
     },
-    "owner": "vovanhuy123"
+    "owner": "vovanhuy123",
+    "plugins": [
+      "expo-localization"
+    ]
   }
 }

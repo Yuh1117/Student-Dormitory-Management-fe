@@ -6,6 +6,7 @@ import { sendMessage, listenMessages, markMessagesAsRead, ChatAdminId } from '..
 import { getAuth } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 const StudentChatScreen = () => {
   const [messages, setMessages] = useState([]);
@@ -15,6 +16,7 @@ const StudentChatScreen = () => {
   const [senderId, setSenderId] = useState('');
   const [fullName, setFullName] = useState('')
   const flatListRef = useRef(null);
+  const { t } = useTranslation()
 
   useEffect(() => {
     const init = async () => {
@@ -99,10 +101,10 @@ const StudentChatScreen = () => {
           style={{ flex: 1, borderWidth: 1, borderColor: '#CCC', borderRadius: 20, padding: 10, marginRight: 8 }}
           value={input}
           onChangeText={setInput}
-          placeholder="Nhắn tin..."
+          placeholder={t('chat')}
         />
         <TouchableOpacity onPress={handleSend} style={{ padding: 10, backgroundColor: '#2196F3', borderRadius: 20 }}>
-          <Text style={{ color: '#FFF' }}>Gửi</Text>
+          <Text style={{ color: '#FFF' }}>{t('send')}</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

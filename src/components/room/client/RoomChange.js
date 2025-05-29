@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { Button } from 'react-native-paper';
+import { ActivityIndicator, Button, TextInput } from 'react-native-paper';
 import BuildingSelector from './BuildingSelector';
+import AccountStyles from '../../auth/AccountStyles';
 
 const allRooms = [
     { id: '1-1', number: '101', type: 'abc', floor: 1, building: 'A', available: false },
@@ -26,6 +27,8 @@ const floors = [...new Set(
 const RoomChange = () => {
     const [selectedBuilding, setSelectedBuilding] = useState('A');
     const [selectedFloor, setSelectedFloor] = useState(1);
+    const [loading, setLoading] = useState(false)
+
 
     const filteredRooms = allRooms.filter(
         room => room.floor === selectedFloor && room.building === selectedBuilding
@@ -38,47 +41,70 @@ const RoomChange = () => {
         </TouchableOpacity>
     );
 
+    const handleSubmit = () => {
+
+    }
+
     return (
-        <View style={styles.container}>
+        <View style={[AccountStyles.container, { justifyContent: '' }]}>
             <Text style={styles.header}>Chọn phòng muốn đổi</Text>
 
-            <BuildingSelector onSelect={(value) => setSelectedBuilding(value)} />
+            <View style={{ padding: 7, flex: 1 }}>
+                <BuildingSelector onSelect={(value) => setSelectedBuilding(value)} />
 
-            <View style={styles.floorRow}>
-                <View style={styles.floorList}>
-                    {floors.map(floor => (
-                        <Button
-                            key={floor}
-                            mode={selectedFloor === floor ? 'contained' : 'outlined'}
-                            onPress={() => setSelectedFloor(floor)}
-                            style={styles.floorButton}
-                        >
-                            Tầng {floor}
-                        </Button>
-                    ))}
+                <View style={styles.floorRow}>
+                    <View style={styles.floorList}>
+                        {floors.map(floor => (
+                            <Button
+                                key={floor}
+                                mode={selectedFloor === floor ? 'contained' : 'outlined'}
+                                onPress={() => setSelectedFloor(floor)}
+                                style={styles.floorButton}
+                            >
+                                Tầng {floor}
+                            </Button>
+                        ))}
+                    </View>
+
+                    <FlatList
+                        data={filteredRooms}
+                        numColumns={3}
+                        keyExtractor={item => item.id}
+                        renderItem={renderRoom}
+                        scrollEnabled={true}
+                        contentContainerStyle={styles.roomGrid}
+                    />
                 </View>
 
-                <FlatList
-                    data={filteredRooms}
-                    numColumns={3}
-                    keyExtractor={item => item.id}
-                    renderItem={renderRoom}
-                    scrollEnabled={true}
-                    contentContainerStyle={styles.roomGrid}
-                />
+                <View>
+                    <Text style={styles.header}>Lý do đổi phòng</Text>
+
+                    <TextInput
+                        label="Lý do"
+                        mode="outlined"
+                        style={[AccountStyles.input, { padding: 0, borderWidth: 0, height: 150, backgroundColor: 'white' }]}
+                        multiline
+                        numberOfLines={4}
+                        theme={{
+                            roundness: 8,
+                        }}
+                    />
+                </View>
             </View>
+
+            <TouchableOpacity style={[AccountStyles.button, { backgroundColor: '#376be3', margin: 7 }]} disabled={loading}
+                onPress={handleSubmit}>
+                {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>Gửi</Text>}
+            </TouchableOpacity>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 17,
-    },
     header: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 10,
+        margin: 10,
     },
     floorRow: {
         flexDirection: 'row',

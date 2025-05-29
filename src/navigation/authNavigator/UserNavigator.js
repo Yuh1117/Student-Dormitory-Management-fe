@@ -16,54 +16,63 @@ import SendSupport from '../../components/support/SendSupport';
 import Survey from '../../components/surveys/Survey';
 import RoomChange from '../../components/room/client/RoomChange';
 import SurveyQuestions from '../../components/surveys/SurveyQuestions';
-import { useNavigation } from '@react-navigation/native';
 import SurveyHistory from '../../components/surveys/SurveyHistory';
 import InvoiceDetails from '../../components/billing/client/InvoiceDetails';
+import SupportDetail from '../../components/support/SupportDetail';
+import NotiDetail from '../../components/notifications/client/NotiDetail';
+import Settings from '../../components/settings/Settings';
+import Language from '../../components/settings/Language';
+import { useTranslation } from 'react-i18next';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const StackHomeNavigator = () => {
+const StackHomeNavigator = ({ t }) => {
     return (
         <Stack.Navigator initialRouteName="UserHome">
             <Stack.Screen
                 name="UserHome"
                 component={UserHome}
-                options={{ headerShown: false, title: "Trang chủ" }}
+                options={{ headerShown: false, title: `${t('home')}` }}
             />
 
             <Stack.Screen
                 name="RoomDetails"
                 component={RoomDetails}
-                options={{ headerShown: true, title: "Thông tin phòng" }}
+                options={{ headerShown: true, title: `${t('roomDetails.title')}` }}
             />
 
             <Stack.Screen
                 name="RoomChange"
                 component={RoomChange}
-                options={{ headerShown: true, title: "Đổi phòng" }}
+                options={{ headerShown: true, title: `${t('roomChange')}`}}
             />
 
             <Stack.Screen
                 name="RoomInvoice"
                 component={RoomInvoice}
-                options={{ headerShown: true, title: "Hóa đơn" }}
+                options={{ headerShown: true, title: `${t('invoice')}` }}
             />
             <Stack.Screen
                 name="InvoiceDetail"
                 component={InvoiceDetails}
-                options={{ headerShown: true, title: "Thông tin hóa đơn" }}
+                options={{ headerShown: true, title: `${t('invoiceDetails.title')}` }}
             />
 
             <Stack.Screen
                 name="Support"
                 component={Support}
-                options={{ headerShown: true, title: "Hỗ trợ" }}
+                options={{ headerShown: true, title: `${t('support.title')}` }}
             />
             <Stack.Screen
                 name="SendSupport"
                 component={SendSupport}
-                options={{ headerShown: true, title: "Gửi yêu cầu hỗ trợ" }}
+                options={{ headerShown: true, title: `${t('sendSupport.title')}` }}
+            />
+            <Stack.Screen
+                name="SupportDetail"
+                component={SupportDetail}
+                options={{ headerShown: true, title: `${t('supportDetail')}` }}
             />
 
             <Stack.Screen
@@ -71,7 +80,7 @@ const StackHomeNavigator = () => {
                 component={Survey}
                 options={({ navigation }) => ({
                     headerShown: true,
-                    title: "Khảo sát",
+                    title: `${t('survey.title')}`,
                     headerRight: () => (
                         <TouchableOpacity
                             style={{ marginRight: 20 }}
@@ -85,35 +94,47 @@ const StackHomeNavigator = () => {
             <Stack.Screen
                 name="SurveyQuestions"
                 component={SurveyQuestions}
-                options={{ headerShown: true, title: "Câu hỏi khảo sát" }}
+                options={{ headerShown: true, title: `${t('surveyQuestions')}` }}
             />
             <Stack.Screen
                 name="SurveyHistory"
                 component={SurveyHistory}
-                options={{ headerShown: true, title: "Lịch sử khảo sát" }}
+                options={{ headerShown: true, title: `${t('surveyHistory')}` }}
             />
 
             <Stack.Screen
                 name="Rules"
                 component={Rules}
-                options={{ headerShown: true, title: "Nội quy ký túc xá" }}
+                options={{ headerShown: true, title: `${t('rules')}` }}
             />
         </Stack.Navigator>
     )
 }
 
-const StackAccountNavigator = () => {
+const StackAccountNavigator = ({ t }) => {
     return (
-        <Stack.Navigator initialRouteName="Account">
+        <Stack.Navigator initialRouteName="AccountMain">
             <Stack.Screen
-                name="Account"
+                name="AccountMain"
                 component={Account}
                 options={{ headerShown: false, title: "Tài khoản" }}
             />
+
             <Stack.Screen
                 name="Profile"
                 component={Profile}
                 options={{ headerShown: true, title: "Thông tin cá nhân" }}
+            />
+
+            <Stack.Screen
+                name="Settings"
+                component={Settings}
+                options={{ headerShown: true, title: "Cài đặt" }}
+            />
+            <Stack.Screen
+                name="Language"
+                component={Language}
+                options={{ headerShown: true, title: `${t('language')}` }}
             />
         </Stack.Navigator>
     )
@@ -142,6 +163,8 @@ const customTheme = {
 };
 
 export function UserHomeMain() {
+    const { t } = useTranslation()
+
     return (
         <PaperProvider theme={customTheme}>
             <Tab.Navigator ScreenOptions={
@@ -151,7 +174,7 @@ export function UserHomeMain() {
                     tabBarInactiveTintColor: "gray",
                 }
             }>
-                <Tab.Screen name="Trang chủ" component={StackHomeNavigator} options={
+                <Tab.Screen name={t('home')} children={() => <StackHomeNavigator t={t} />} options={
                     {
                         headerShown: false,
                         tabBarIcon: ({ color, size }) => (
@@ -160,7 +183,7 @@ export function UserHomeMain() {
                     }
                 }></Tab.Screen>
 
-                <Tab.Screen name="Thông Báo" component={StackNotiNavigator} options={
+                <Tab.Screen name={t('notifications.title')} children={() => <StackNotiNavigator t={t} />} options={
                     {
                         headerShown: false,
                         tabBarIcon: ({ color, size }) => (
@@ -169,7 +192,7 @@ export function UserHomeMain() {
                     }
                 }></Tab.Screen>
 
-                <Tab.Screen name="chat" component={StudentChatScreen} options={
+                <Tab.Screen name="Chat" component={StudentChatScreen} options={
                     {
                         headerShown: false,
                         tabBarIcon: ({ color, size }) => (
@@ -179,7 +202,7 @@ export function UserHomeMain() {
                     }
                 }></Tab.Screen>
 
-                <Tab.Screen name="Tài khoản" component={StackAccountNavigator} options={
+                <Tab.Screen name={t('account')} children={() => <StackAccountNavigator t={t} />} options={
                     {
                         headerShown: false,
                         tabBarIcon: ({ color, size }) => (
@@ -192,11 +215,3 @@ export function UserHomeMain() {
         </PaperProvider>
     )
 }
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});

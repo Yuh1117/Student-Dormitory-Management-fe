@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 import LoginNavigator from './navigation/authNavigator/loginNavigator';
+import './i18n';
 import * as Notifications from 'expo-notifications';
 import { useEffect, useRef } from 'react';
 import { Platform } from 'react-native';
@@ -37,15 +36,6 @@ export default function App() {
   }, []);
   
   return (
-    <LoginNavigator/>
+    <LoginNavigator />
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
