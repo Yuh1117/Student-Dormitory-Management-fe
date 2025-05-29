@@ -1,0 +1,130 @@
+{
+  "home": "Home",
+  "notifications": {
+    "title": "Notifications",
+    "types": {
+      "all": "All",
+      "Maintenance": "Maintenance",
+      "Billing": "Billing"
+    },
+    "no_notifications": "No notifications available"
+  },
+  "chat": "Chat",
+  "account": "Account",
+  "settings": "Settings",
+  "language": "Language",
+  "security": "Security",
+  "preferences": "Preferences",
+  "logout": "Log out",
+  "paymentMethod": "Payment method",
+  "policy": "Terms & Policies",
+
+  "profile": {
+    "title": "Profile",
+    "fields": {
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "email": "Email",
+      "phone_number": "Phone Number",
+      "student_code": "Student Code",
+      "university": "University"
+    },
+    "avatar_placeholder": "Choose an avatar",
+    "permissions_denied": "Permissions denied!"
+  },
+
+  "room": "Room",
+  "roomDetails": {
+    "title": "Room details",
+    "building": "Building",
+    "floor": "Floor",
+    "room_number": "Room",
+    "room_type": "Room Type",
+    "total_beds": "Total Beds",
+    "available_beds": "{{count}} beds available",
+    "roommates_title": "Roommates",
+    "no_roommates": "No roommates yet.",
+    "no_room": "No room assigned."
+  },
+  "roomChange": "Change room",
+
+  "support": {
+    "title": "Support",
+    "view_type": {
+      "mine": "Personal support",
+      "room": "Room support"
+    },
+    "no_requests": "No requests",
+    "status": {
+      "pending": "Pending",
+      "resolved": "Resolved"
+    }
+  },
+  "sendSupport": {
+    "title": "Send support request",
+    "image_placeholder": "Add Image"
+  },
+  "supportDetail": "Support details",
+
+  "survey": {
+    "title": "Survey",
+    "no_surveys": "No surveys available"
+  },
+  "surveyQuestions": "Survey questions",
+  "surveyHistory": "Survey history",
+
+  "invoice": "Invoice",
+  "roomInvoice": {
+    "unpaid_title": "Unpaid Invoices",
+    "unpaid_status": "Unpaid",
+    "paid_status": "Paid",
+    "no_unpaid_invoices": "No unpaid invoices",
+    "my_invoices_title": "My Invoices",
+    "view_more": "View More",
+    "check_button": "Check"
+  },
+  "invoiceDetails": {
+    "title": "Invoice details",
+    "description": "Description",
+    "created_date": "Created Date",
+    "details": "Details:",
+    "total_amount": "Total Amount",
+    "payment_method": "Payment Method",
+    "payment_methods": {
+      "vnpay": "VNPay"
+    },
+    "pay_button": "Pay",
+    "payment_success": "Payment successful!",
+    "payment_failed": "Payment failed!",
+    "payment_canceled": "Payment canceled!",
+    "payment_error": "Unable to create payment"
+  },
+
+  "rules": "Dormitory rules",
+
+  "pricingListTitle": "Pricing List",
+  "pricingItems": {
+    "home": "Rent",
+    "electricity": "Electricity",
+    "water": "Water",
+    "trash": "Trash",
+    "wifi": "Wi-Fi"
+  },
+  "pricingValues": {
+    "home": "1,000,000đ",
+    "electricity": "3,500đ/KWh",
+    "electricitySub": "Calculated by meter",
+    "water": "20,000đ/Cubic meter",
+    "waterSub": "Calculated by meter",
+    "trash": "25,000đ/Month",
+    "wifi": "50,000đ/Month"
+  },
+
+  "save": "Save",
+  "send": "Send",
+  "update": "Update",
+  "title": "Title",    
+  "description": "Description",
+  "search": "Search",
+  "close": "Close"
+}

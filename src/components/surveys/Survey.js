@@ -5,13 +5,15 @@ import { useNavigation } from '@react-navigation/native';
 import AccountStyles from '../auth/AccountStyles';
 import Apis, { authApis, endpoints } from '../../config/Apis';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from 'react-i18next';
 
 const Survey = () => {
     const [surveys, setSurveys] = useState([])
     const [loading, setLoading] = useState(false)
     const [page, setPage] = useState(1)
     const [q, setQ] = useState()
-    const nav = useNavigation();
+    const nav = useNavigation()
+    const { t } = useTranslation()
 
     const loadSurveys = async () => {
         if (page > 0) {
@@ -46,10 +48,10 @@ const Survey = () => {
     }
 
     const search = (value, callback) => {
-        setSurveys([])
         callback(value)
+        setSurveys([])
         setTimeout(() => setPage(1), 100);
-    }
+    };
 
     useEffect(() => {
         let timer = setTimeout(() => {
@@ -60,20 +62,20 @@ const Survey = () => {
     }, [q, page])
 
     return (
-        <View style={AccountStyles.container}>
+        <View style={[AccountStyles.container, { justifyContent: '' }]}>
+            <Searchbar
+                style={{ backgroundColor: 'white', margin: 7, borderRadius: 20 }}
+                placeholder={t('search')}
+                onChangeText={(text) => search(text, setQ)}
+                value={q}
+            />
+
             {loading && surveys.length === 0 ? (
                 <View style={{ padding: 20, alignItems: 'center', justifyContent: 'center' }}>
                     <ActivityIndicator size={40} />
                 </View>
             ) : surveys.length > 0 ? (
                 <>
-                    <Searchbar
-                        style={{ backgroundColor: 'white', margin: 7, borderRadius: 20 }}
-                        placeholder="Tìm kiếm"
-                        onChangeText={t => search(t, setQ)}
-                        value={q}
-                    />
-
                     <FlatList
                         contentContainerStyle={{ paddingBottom: 20 }}
                         onEndReached={loadMore}
@@ -107,7 +109,7 @@ const Survey = () => {
                 </>
             ) : (
                 <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text>Không có khảo sát nào</Text>
+                    <Text>{t('survey.no_surveys')}</Text>
                 </View>
             )}
         </View>

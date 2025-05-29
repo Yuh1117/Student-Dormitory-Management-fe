@@ -7,11 +7,13 @@ import MenuItem from './MenuItem';
 import styles from './AccountStyles';
 import { useContext } from 'react';
 import { MyDispatchContext, MyUserContext } from '../../config/MyContexts';
+import { useTranslation } from 'react-i18next';
 
 const Account = () => {
   const nav = useNavigation()
   const user = useContext(MyUserContext)
   const dispatch = useContext(MyDispatchContext)
+  const { t } = useTranslation()
 
   const logout = () => {
     dispatch({
@@ -22,7 +24,7 @@ const Account = () => {
 
   return (
     <SafeAreaView style={[styles.container, { padding: 12 }]}>
-      <Text style={styles.headerTitle}>Tài khoản</Text>
+      <Text style={styles.headerTitle}>{t('account')}</Text>
 
       <ScrollView>
 
@@ -35,36 +37,33 @@ const Account = () => {
         <View style={[styles.card, { paddingHorizontal: 0 }]}>
           <MenuItem custom={{ elevation: 0, paddingVertical: 7, }}
             icon={<Feather name="home" size={22} color="#333" />}
-            title="Phòng"
+            title={t('room')}
           />
-          <MenuItem custom={{ elevation: 0, paddingVertical: 8,  }}
+          <MenuItem custom={{ elevation: 0, paddingVertical: 10, }}
             icon={<MaterialIcons name="payment" size={24} color="black" />}
-            title="Phương thức thanh toán"
-          />
-          <MenuItem custom={{ elevation: 0, paddingVertical: 8 }}
-            icon={<MaterialIcons name="receipt-long" size={22} color="#333" />}
-            title="Lịch sử thanh toán"
+            title={t('paymentMethod')}
           />
         </View>
 
         <View style={[styles.card, { paddingHorizontal: 0 }]}>
-          <MenuItem custom={{ elevation: 0, paddingVertical: 8 }}
+          <MenuItem custom={{ elevation: 0, paddingVertical: 10 }}
             icon={<Ionicons name="headset" size={22} color="#333" />}
-            title="Hỗ trợ"
+            title={t('support.title')}
           />
-          <MenuItem custom={{ elevation: 0, paddingVertical: 8 }}
+          <MenuItem custom={{ elevation: 0, paddingVertical: 10 }}
             icon={<Ionicons name="settings-outline" size={22} color="#333" />}
-            title="Cài đặt"
+            title={t('settings')}
+            onPress={() => nav.navigate('Settings')}
           />
-          <MenuItem custom={{ elevation: 0, paddingVertical: 8 }}
+          <MenuItem custom={{ elevation: 0, paddingVertical: 10 }}
             icon={<Feather name="file-text" size={22} color="#333" />}
-            title="Thời hạn & chính sách"
+            title={t('policy')}
           />
         </View>
 
         <MenuItem
           icon={<Feather name="log-out" size={22} color="#FF3B30" />}
-          title="Đăng xuất"
+          title={t('logout')}
           titleColor="#FF3B30"
           onPress={logout}
         />

@@ -8,6 +8,8 @@ import { MaterialIcons } from "@expo/vector-icons"
 import { useNavigation } from "@react-navigation/native"
 import { authApis, endpoints } from "../../config/Apis"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { useTranslation } from "react-i18next"
+import { capitalizeFirstWord } from "../../utils/utils"
 
 
 const SendSupport = () => {
@@ -15,6 +17,7 @@ const SendSupport = () => {
     const [complaint, setComplaint] = useState({})
     const [msg, setMsg] = useState()
     const nav = useNavigation()
+    const { t } = useTranslation()
 
     const setState = (value, field) => {
         setComplaint({ ...complaint, [field]: value });
@@ -101,11 +104,11 @@ const SendSupport = () => {
     return (
         <View style={[AccountStyles.container, { justifyContent: '' }]}>
             <ScrollView>
-                <Text style={styles.title}>Nội dung yêu cầu</Text>
+                <Text style={styles.title}>{t('title')}</Text>
 
                 <View style={{ padding: 7, flex: 1 }}>
                     <TextInput
-                        label="Tiêu đề"
+                        label={t('title')}
                         mode="outlined"
                         style={[AccountStyles.input, { padding: 0, borderWidth: 0, backgroundColor: 'white' }]}
                         theme={{
@@ -116,7 +119,7 @@ const SendSupport = () => {
                     />
 
                     <TextInput
-                        label="Nội dung"
+                        label={t('description')}
                         mode="outlined"
                         style={[AccountStyles.input, { padding: 0, borderWidth: 0, height: 100, backgroundColor: 'white' }]}
                         multiline
@@ -147,7 +150,7 @@ const SendSupport = () => {
                 </View>
                 <TouchableOpacity style={[AccountStyles.button, { backgroundColor: '#376be3', margin: 7 }]} disabled={loading}
                     onPress={handleSubmit}>
-                    {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>Gửi yêu cầu</Text>}
+                    {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>{capitalizeFirstWord(`${t('send')} ${t('support.title')}`)}</Text>}
                 </TouchableOpacity>
 
             </ScrollView>

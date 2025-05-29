@@ -1,19 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 import LoginNavigator from './navigation/authNavigator/loginNavigator';
-
+import './i18n';
 
 export default function App() {
   return (
-    <LoginNavigator/>
+    <LoginNavigator />
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });

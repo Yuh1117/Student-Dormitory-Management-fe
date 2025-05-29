@@ -1,25 +1,27 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Card, Button, Avatar } from 'react-native-paper';
-import { MaterialIcons, Feather } from '@expo/vector-icons';
 import AccountStyles from '../../auth/AccountStyles';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
-const pricingData = [
-    { icon: 'home', label: 'Tiền nhà', value: '1.000.000 VNĐ' },
-    { icon: 'bolt', label: 'Tiền điện', value: '3.500đ/KWh', sub: 'Tính theo đồng hồ' },
-    { icon: 'water', label: 'Tiền nước', value: '20.000đ/Khối', sub: 'Tính theo đồng hồ' },
-    { icon: 'delete', label: 'Tiền rác', value: '25.000đ/Tháng' },
-    { icon: 'wifi', label: 'Tiền wifi', value: '50.000đ/Tháng' },
-];
 
 const PricingList = () => {
     const nav = useNavigation()
+    const { t } = useTranslation()
+
+    const pricingData = [
+        { icon: 'home', label: t('pricingItems.home'), value: t('pricingValues.home') },
+        { icon: 'bolt', label: t('pricingItems.electricity'), value: t('pricingValues.electricity'), sub: t('pricingValues.electricitySub') },
+        { icon: 'water', label: t('pricingItems.water'), value: t('pricingValues.water'), sub: t('pricingValues.waterSub') },
+        { icon: 'delete', label: t('pricingItems.trash'), value: t('pricingValues.trash') },
+        { icon: 'wifi', label: t('pricingItems.wifi'), value: t('pricingValues.wifi') },
+    ];
 
     return (
         <View>
             <View style={AccountStyles.card}>
-                <Text style={styles.title}>Danh mục tính tiền</Text>
+                <Text style={styles.title}>{t('pricingListTitle')}</Text>
 
                 {pricingData.map((item, index) => (
                     <View key={index} style={styles.row}>
@@ -42,7 +44,7 @@ const PricingList = () => {
                     labelStyle={[{ color: '#376be3' }, styles.label]}
                     onPress={() => nav.navigate('Rules')}
                 >
-                    Nội quy ký túc xá
+                    {t('rules')}
                 </Button>
             </View>
         </View>

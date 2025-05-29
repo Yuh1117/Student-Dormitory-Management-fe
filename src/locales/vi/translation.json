@@ -1,0 +1,130 @@
+{
+  "home": "Trang chủ",
+  "notifications": {
+    "title": "Thông báo",
+    "types": {
+      "all": "Tất cả",
+      "Maintenance": "Bảo trì",
+      "Billing": "Hóa đơn"
+    },
+    "no_notifications": "Không có thông báo nào"
+  },
+  "chat": "Nhắn tin",
+  "account": "Tài khoản",
+  "settings": "Cài đặt",
+  "language": "Ngôn ngữ",
+  "security": "Bảo mật",
+  "preferences": "Giao diện",
+  "logout": "Đăng xuất",
+  "paymentMethod": "Phương thức thanh toán",
+  "policy": "Thời hạn & chính sách",
+
+  "profile": {
+    "title": "Thông tin cá nhân",
+    "fields": {
+      "first_name": "Tên",
+      "last_name": "Họ",
+      "email": "Email",
+      "phone_number": "Số điện thoại",
+      "student_code": "Mã số sinh viên",
+      "university": "Trường"
+    },
+    "avatar_placeholder": "Chọn ảnh đại diện",
+    "permissions_denied": "Quyền truy cập bị từ chối!"
+  },
+
+  "room": "Phòng",
+  "roomDetails": {
+    "title": "Room details",
+    "building": "Toà",
+    "floor": "Tầng",
+    "room_number": "Phòng",
+    "room_type": "Loại phòng",
+    "total_beds": "Số chỗ",
+    "available_beds": "Còn {{count}} chỗ",
+    "roommates_title": "Bạn cùng phòng",
+    "no_roommates": "Chưa có bạn cùng phòng nào.",
+    "no_room": "Chưa có phòng"
+  },
+  "roomChange": "Đổi phòng",
+
+  "support": {
+    "title": "Yêu cầu",
+    "view_type": {
+      "mine": "Yêu cầu của tôi",
+      "room": "Yêu cầu của phòng"
+    },
+    "no_requests": "Không có yêu cầu",
+    "status": {
+      "pending": "Đã gửi",
+      "resolved": "Đã giải quyết"
+    }
+  },
+  "sendSupport": {
+    "title": "Gửi yêu cầu hỗ trợ",
+    "image_placeholder": "Thêm hình ảnh"
+  },
+  "supportDetail": "Thông tin yêu cầu",
+
+  "survey": {
+    "title": "Khảo sát",
+    "no_surveys": "Không có khảo sát nào"
+  },
+  "surveyQuestions": "Câu hỏi khảo sát",
+  "surveyHistory": "Lịch sử khảo sát",
+
+  "invoice": "Hóa đơn",
+  "roomInvoice": {
+    "unpaid_title": "Hoá đơn chưa thanh toán",
+    "unpaid_status": "Chưa thanh toán",
+    "paid_status": "Đã thanh toán",
+    "no_unpaid_invoices": "Không có hóa đơn chưa thanh toán",
+    "my_invoices_title": "Hoá đơn của tôi",
+    "view_more": "Xem thêm",
+    "check_button": "Kiểm tra"
+  },
+  "invoiceDetails": {
+    "title": "Thông tin hóa đơn",
+    "description": "Mô tả",
+    "created_date": "Ngày tạo",
+    "details": "Chi tiết:",
+    "total_amount": "Tổng tiền",
+    "payment_method": "Phương thức thanh toán",
+    "payment_methods": {
+      "vnpay": "VNPay"
+    },
+    "pay_button": "Thanh toán",
+    "payment_success": "Thanh toán thành công!",
+    "payment_failed": "Thanh toán thất bại!",
+    "payment_canceled": "Hủy thanh toán!",
+    "payment_error": "Không thể tạo thanh toán"
+  },
+
+  "rules": "Nội quy ký túc xá",
+  
+  "pricingListTitle": "Danh mục tính tiền",
+  "pricingItems": {
+    "home": "Tiền nhà",
+    "electricity": "Tiền điện",
+    "water": "Tiền nước",
+    "trash": "Tiền rác",
+    "wifi": "Tiền wifi"
+  },
+  "pricingValues": {
+    "home": "1.000.000đ",
+    "electricity": "3.500đ/KWh",
+    "electricitySub": "Tính theo đồng hồ",
+    "water": "20.000đ/Khối",
+    "waterSub": "Tính theo đồng hồ",
+    "trash": "25.000đ/Tháng",
+    "wifi": "50.000đ/Tháng"
+  },  
+
+  "save": "Lưu",
+  "send": "Gửi",
+  "update": "Cập nhật",
+  "title": "Tiêu đề",
+  "description": "Nội dung",
+  "search": "Tìm kiếm",
+  "close": "Đóng"
+}

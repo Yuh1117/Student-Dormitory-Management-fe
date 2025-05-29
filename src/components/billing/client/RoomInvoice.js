@@ -6,63 +6,63 @@ import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApis, endpoints } from '../../../config/Apis';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const RoomInvoice = () => {
     const screenWidth = Dimensions.get('window').width;
-    const [loading, setLoading] = useState(false)
-    const [invoices, setInvoices] = useState([])
-    const [page, setPage] = useState(1)
+    const [loading, setLoading] = useState(false);
+    const [invoices, setInvoices] = useState([]);
+    const [page, setPage] = useState(1);
     const [paidInvoices, setPaidInvoices] = useState([]);
     const [unpaidInvoices, setUnpaidInvoices] = useState([]);
-    const nav = useNavigation()
+    const nav = useNavigation();
+    const { t } = useTranslation();
 
     const loadInvoices = async () => {
         if (page > 0) {
             try {
-                setLoading(true)
+                setLoading(true);
 
-                const token = await AsyncStorage.getItem("access-token")
-                let url = `${endpoints['my-room-invoices']}?page=${page}`
+                const token = await AsyncStorage.getItem("access-token");
+                let url = `${endpoints['my-room-invoices']}?page=${page}`;
 
-                console.info(url)
+                console.info(url);
 
                 let res = await authApis(token).get(url);
                 const newInvoices = [...invoices, ...res.data.results];
-                setInvoices(newInvoices)
+                setInvoices(newInvoices);
 
                 setPaidInvoices(newInvoices.filter(inv => inv.status === 'Paid'));
                 setUnpaidInvoices(newInvoices.filter(inv => inv.status == 'Unpaid'));
 
-
-                if (res.data.next === null)
-                    setPage(0)
+                if (res.data.next === null) setPage(0);
             } catch (ex) {
-                console.error(ex)
+                console.error(ex);
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
         }
-    }
+    };
 
     const loadMore = () => {
         if (!loading && page > 0) {
-            setPage(page + 1)
+            setPage(page + 1);
         }
-    }
+    };
 
     useEffect(() => {
-        loadInvoices()
-    }, [page])
+        loadInvoices();
+    }, [page]);
 
     return (
         <View style={[AccountStyles.container, { justifyContent: 'none' }]}>
-            <Text style={styles.title}>Hoá đơn chưa thanh toán</Text>
+            <Text style={styles.title}>{t('roomInvoice.unpaid_title')}</Text>
 
             {loading && unpaidInvoices.length === 0 ? (
                 <View style={{ padding: 20, alignItems: 'center', justifyContent: 'center' }}>
                     <ActivityIndicator size={40} />
                 </View>
-            ) : unpaidInvoices.length > 0 ?
+            ) : unpaidInvoices.length > 0 ? (
                 <View>
                     <FlatList
                         horizontal
@@ -94,7 +94,7 @@ const RoomInvoice = () => {
                                                 {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.total_amount)}
                                             </Text>
                                             <Text style={[styles.unpaid, { fontSize: 13 }]}>
-                                                Chưa thanh toán
+                                                {t('roomInvoice.unpaid_status')}
                                             </Text>
                                         </View>
                                     </View>
@@ -105,29 +105,30 @@ const RoomInvoice = () => {
                                         textColor="#376be3"
                                         onPress={() => nav.navigate('InvoiceDetail', { invoice: item })}
                                     >
-                                        Kiểm tra
+                                        {t('roomInvoice.check_button')}
                                     </Button>
                                 </Card.Content>
                             </Card>
                         )}
                         contentContainerStyle={{ paddingHorizontal: 10 }}
                     />
-                </View> : (
-                    <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text>Không có hóa đơn chưa thanh toán</Text>
-                    </View>
-                )}
+                </View>
+            ) : (
+                <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text>{t('roomInvoice.no_unpaid_invoices')}</Text>
+                </View>
+            )}
 
             <View style={[styles.row, { padding: 7 }]}>
-                <Text style={[styles.title, { margin: 3 }]}>Hoá đơn của tôi</Text>
-                <Text style={{ color: '#376be3' }}>Xem thêm</Text>
+                <Text style={[styles.title, { margin: 3 }]}>{t('roomInvoice.my_invoices_title')}</Text>
+                <Text style={{ color: '#376be3' }}>{t('roomInvoice.view_more')}</Text>
             </View>
 
             {loading && unpaidInvoices.length === 0 ? (
                 <View style={{ padding: 20, alignItems: 'center', justifyContent: 'center' }}>
                     <ActivityIndicator size={40} />
                 </View>
-            ) : paidInvoices.length > 0 ?
+            ) : paidInvoices.length > 0 ? (
                 <FlatList
                     onEndReached={loadMore}
                     ListFooterComponent={loading && <ActivityIndicator size={30} />}
@@ -150,7 +151,7 @@ const RoomInvoice = () => {
                                         {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.total_amount)}
                                     </Text>
                                     <Text style={{ color: '#4CAF50' }}>
-                                        Đã thanh toán
+                                        {t('roomInvoice.paid_status')}
                                     </Text>
                                 </View>
                             </View>
@@ -158,13 +159,12 @@ const RoomInvoice = () => {
                         </View>
                     )}
                     contentContainerStyle={{ paddingHorizontal: 10, paddingBottom: 20 }}
-                /> : (
-                    <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text>Không có hóa đơn nào</Text>
-                    </View>
-                )}
-
-
+                />
+            ) : (
+                <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text>{t('roomInvoice.no_unpaid_invoices')}</Text>
+                </View>
+            )}
         </View>
     );
 };
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
         borderColor: '#376be3',
         borderWidth: 1,
         marginTop: 10,
-        borderRadius: 10
+        borderRadius: 10,
     },
 });
 

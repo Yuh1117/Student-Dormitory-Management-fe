@@ -8,54 +8,57 @@ import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import AccountStyles from '../../auth/AccountStyles';
 import { useNavigation } from '@react-navigation/native';
 import PricingList from './PricingList';
+import { useTranslation } from 'react-i18next';
+import { capitalizeFirstWord } from '../../../utils/utils';
 
 
 const UserHome = () => {
   const nav = useNavigation()
+  const { t } = useTranslation()
 
   return (
     <SafeAreaView style={AccountStyles.container}>
-      <Text style={AccountStyles.headerTitle}>Trang chủ</Text>
+      <Text style={AccountStyles.headerTitle}>{t('home')}</Text>
 
       <ScrollView>
         <View style={styles.grid}>
 
-          <View style={{ width: '50%' }}>
+          <View style={styles.gridItem}>
             <MenuItem
               icon={<Feather name="home" size={22} color="#333" />}
-              title="Phòng"
+              title={t('room')}
               onPress={() => nav.navigate("RoomDetails")}
             />
           </View>
-          <View style={{ width: '50%' }}>
+          <View style={styles.gridItem}>
             <MenuItem
               icon={<MaterialIcons name="swap-horiz" size={22} color="#333" />}
-              title="Đổi phòng"
+              title={t('roomChange')}
               onPress={() => nav.navigate('RoomChange')}
             />
           </View>
 
-          <View style={{ width: '50%' }}>
+          <View style={styles.gridItem}>
             <MenuItem
               icon={<MaterialIcons name="receipt-long" size={22} color="#333" />}
-              title="Hóa đơn"
+              title={t('invoice')}
               onPress={() => nav.navigate("RoomInvoice")}
             />
           </View>
 
-          <View style={{ width: '50%' }}>
+          <View style={styles.gridItem}>
 
             <MenuItem
               icon={<Ionicons name="megaphone-outline" size={22} color="#333" />}
-              title="Hỗ trợ"
+              title={capitalizeFirstWord(`${t('send')} ${t('support.title')}`)}
               onPress={() => nav.navigate("Support")}
             />
           </View>
 
-          <View style={{ width: '50%' }}>
+          <View style={styles.gridItem}>
             <MenuItem
               icon={<Feather name="clipboard" size={22} color="#333" />}
-              title="Khảo sát"
+              title={t('survey.title')}
               onPress={() => nav.navigate("Survey")}
             />
           </View>
@@ -74,6 +77,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+  },
+  gridItem: {
+    width: '50%'
   },
 });
 

@@ -8,6 +8,7 @@ import InvoiceItem from "./InvoiceItem";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { authApis, endpoints } from "../../../config/Apis";
 import VNPayScreen from "./VNPayScreen";
+import { useTranslation } from "react-i18next";
 
 const InvoiceDetails = ({ route }) => {
     const invoice = route.params?.invoice;
@@ -16,6 +17,7 @@ const InvoiceDetails = ({ route }) => {
     const [showWebView, setShowWebView] = useState(false);
     const [paymentUrl, setPaymentUrl] = useState(null);
     const nav = useNavigation();
+    const { t } = useTranslation();
 
     const pay = async () => {
         try {
@@ -28,7 +30,7 @@ const InvoiceDetails = ({ route }) => {
             setShowWebView(true);
         } catch (error) {
             console.error(error);
-            alert("Không thể tạo thanh toán");
+            alert(t('invoiceDetails.payment_error'));
         } finally {
             setLoading(false);
         }
@@ -42,12 +44,12 @@ const InvoiceDetails = ({ route }) => {
                     onPaymentComplete={(status) => {
                         setShowWebView(false);
                         if (status === true) {
-                            Alert.alert("Thanh toán thành công!")
-                            nav.navigate('UserHome')
+                            Alert.alert(t('invoiceDetails.payment_success'));
+                            nav.navigate('UserHome');
                         } else if (status === 'canceled') {
-                            Alert.alert("Hủy thanh toán!")
+                            Alert.alert(t('invoiceDetails.payment_canceled'));
                         } else {
-                            Alert.alert("Thanh toán thất bại!")
+                            Alert.alert(t('invoiceDetails.payment_failed'));
                         }
                     }}
                 />
@@ -71,7 +73,7 @@ const InvoiceDetails = ({ route }) => {
 
                     <View>
                         <Text style={[styles.label, { marginVertical: 10 }]}>
-                            Chi tiết:
+                            {t('invoiceDetails.details')}
                         </Text>
 
                         {invoice.items.map(i =>
@@ -83,7 +85,7 @@ const InvoiceDetails = ({ route }) => {
                 <View style={AccountStyles.card}>
                     <View style={[styles.row]}>
                         <View style={{ flex: 1 }}>
-                            <Text style={styles.label}>Tổng tiền</Text>
+                            <Text style={styles.label}>{t('invoiceDetails.total_amount')}</Text>
                         </View>
                         <View>
                             <Text style={[styles.label, { fontSize: 25, color: '#376be3' }]}>
@@ -94,11 +96,11 @@ const InvoiceDetails = ({ route }) => {
                 </View>
 
                 <View style={AccountStyles.card}>
-                    <Text style={styles.title}>Phương thức thanh toán</Text>
+                    <Text style={styles.title}>{t('invoiceDetails.payment_method')}</Text>
                     <RadioButton.Group onValueChange={newValue => setPayment(newValue)} value={payment}>
                         <View style={styles.row}>
                             <RadioButton value="vnpay" />
-                            <Text>VNPay</Text>
+                            <Text>{t('invoiceDetails.payment_methods.vnpay')}</Text>
                         </View>
                     </RadioButton.Group>
                 </View>
@@ -106,7 +108,7 @@ const InvoiceDetails = ({ route }) => {
 
             <TouchableOpacity style={[AccountStyles.button, { backgroundColor: '#376be3', margin: 7 }]} disabled={loading}
                 onPress={pay}>
-                {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>Thanh toán</Text>}
+                {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>{t('invoiceDetails.pay_button')}</Text>}
             </TouchableOpacity>
         </ScrollView>
     );
