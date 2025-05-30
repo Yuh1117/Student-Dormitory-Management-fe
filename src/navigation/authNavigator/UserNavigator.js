@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import NotiMain from '../../components/notifications/client/NotiMain';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -11,7 +11,7 @@ import RoomDetails from '../../components/room/client/RoomDetails';
 import RoomInvoice from '../../components/billing/client/RoomInvoice';
 import Rules from '../../components/home/user/Rules';
 import Support from '../../components/support/Support';
-import { BottomNavigation, DefaultTheme, PaperProvider } from 'react-native-paper';
+import { DefaultTheme, PaperProvider } from 'react-native-paper';
 import SendSupport from '../../components/support/SendSupport';
 import Survey from '../../components/surveys/Survey';
 import RoomChange from '../../components/room/client/RoomChange';
@@ -19,10 +19,13 @@ import SurveyQuestions from '../../components/surveys/SurveyQuestions';
 import SurveyHistory from '../../components/surveys/SurveyHistory';
 import InvoiceDetails from '../../components/billing/client/InvoiceDetails';
 import SupportDetail from '../../components/support/SupportDetail';
-import NotiDetail from '../../components/notifications/client/NotiDetail';
 import Settings from '../../components/settings/Settings';
 import Language from '../../components/settings/Language';
 import { useTranslation } from 'react-i18next';
+import { useContext, useEffect } from 'react';
+import { MyRoomDispatchContext } from '../../config/MyContexts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { authApis, endpoints } from '../../config/Apis';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -45,7 +48,7 @@ const StackHomeNavigator = ({ t }) => {
             <Stack.Screen
                 name="RoomChange"
                 component={RoomChange}
-                options={{ headerShown: true, title: `${t('roomChange')}`}}
+                options={{ headerShown: true, title: `${t('roomChange')}` }}
             />
 
             <Stack.Screen
@@ -164,6 +167,26 @@ const customTheme = {
 
 export function UserHomeMain() {
     const { t } = useTranslation()
+    const roomDispatch = useContext(MyRoomDispatchContext)
+
+    useEffect(() => {
+        const fetchRoomData = async () => {
+            try {
+                const token = await AsyncStorage.getItem("access-token");
+                const res = await authApis(token).get(endpoints['my-room']);
+
+                roomDispatch({
+                    type: "login",
+                    payload: res.data,
+                })
+
+            } catch (err) {
+                Alert.alert(err.response?.data?.error || "Có lỗi xảy ra");
+            }
+        }
+
+        fetchRoomData()
+    }, [])
 
     return (
         <PaperProvider theme={customTheme}>

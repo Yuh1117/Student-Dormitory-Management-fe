@@ -111,7 +111,7 @@
     "wifi": "Wi-Fi"
   },
   "pricingValues": {
-    "home": "1,000,000đ",
+    "home": "Prices by room type",
     "electricity": "3,500đ/KWh",
     "electricitySub": "Calculated by meter",
     "water": "20,000đ/Cubic meter",

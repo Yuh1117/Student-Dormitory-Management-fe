@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import AccountStyles from '../../auth/AccountStyles';
 import RoommateItem from './RoommateItem';
@@ -6,9 +6,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApis, endpoints } from '../../../config/Apis';
 import { ActivityIndicator } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
+import { MyRoomContext } from '../../../config/MyContexts';
 
 const RoomDetails = () => {
-    const [room, setRoom] = useState(null);
+    const roomData = useContext(MyRoomContext)
+    const [room, setRoom] = useState(roomData._j);
     const [roommates, setRoommates] = useState([]);
     const [loading, setLoading] = useState(false);
     const { t } = useTranslation();
@@ -18,11 +20,9 @@ const RoomDetails = () => {
             setLoading(true);
 
             const token = await AsyncStorage.getItem("access-token");
-            const res = await authApis(token).get(endpoints['my-room']);
-            const res1 = await authApis(token).get(endpoints["get-room-assignments"](res.data.id));
+            const res = await authApis(token).get(endpoints["get-room-assignments"](room.id));
 
-            setRoom(res.data);
-            setRoommates(res1.data);
+            setRoommates(res.data);
         } catch (ex) {
             console.error(ex);
         } finally {
@@ -31,7 +31,9 @@ const RoomDetails = () => {
     };
 
     useEffect(() => {
-        loadRoom();
+        if (room) {
+            loadRoom();
+        }
     }, []);
 
     return (
@@ -46,15 +48,17 @@ const RoomDetails = () => {
                         <View style={AccountStyles.card}>
                             <View style={styles.row}>
                                 <Text style={styles.title}>
-                                    {t('roomDetails.building')} {room.building} - {}
+                                    {t('roomDetails.building')} {room.building.building_name} - { }
                                 </Text>
                                 <Text style={styles.title}>
-                                    {t('roomDetails.floor')} {room.floor} - {}
+                                    {t('roomDetails.floor')} {room.floor}
                                 </Text>
-                                <Text style={styles.title}>
-                                    {t('roomDetails.room_number')} {room.room_number}
-                                </Text>
+
                             </View>
+                            
+                            <Text style={styles.title}>
+                                {t('roomDetails.room_number')} {room.room_number}
+                            </Text>
 
                             <View style={styles.row}>
                                 <View style={[styles.capacityBox, { backgroundColor: '#FFF3E0' }]}>

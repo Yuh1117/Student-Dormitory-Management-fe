@@ -1,5 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 import LoginScreen from '../../components/auth/login';
 import { UserHomeMain } from './UserNavigator';
 import { AdminHomeMain } from './adminNavigator';
@@ -7,19 +5,33 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import ChangPasswordScreen from '../../components/auth/changePasswordScreen';
 import MyUserReducer from "../../reducers/MyUserReducer";
+import MyRoomReducer from "../../reducers/MyRoomReducer";
 import { useReducer } from 'react';
-import { MyDispatchContext, MyUserContext } from '../../config/MyContexts';
+import { MyDispatchContext, MyRoomContext, MyRoomDispatchContext, MyUserContext } from '../../config/MyContexts';
 
 const Stack = createStackNavigator();
 
 export default function LoginNavigator() {
   const [user, dispatch] = useReducer(MyUserReducer, null)
+  const [room, roomDispatch] = useReducer(MyRoomReducer, null)
 
   return (
     <MyUserContext.Provider value={user}>
       <MyDispatchContext.Provider value={dispatch}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen
+              name="UserHome"
+              options={{ headerShown: false }}
+            >
+              {() => (
+                <MyRoomContext.Provider value={room}>
+                  <MyRoomDispatchContext.Provider value={roomDispatch}>
+                    <UserHomeMain />
+                  </MyRoomDispatchContext.Provider>
+                </MyRoomContext.Provider>
+              )}
+            </Stack.Screen>
             <Stack.Screen
               name="Login"
               component={LoginScreen}
@@ -28,11 +40,6 @@ export default function LoginNavigator() {
             <Stack.Screen
               name="ChangePass"
               component={ChangPasswordScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="UserHome"
-              component={UserHomeMain}
               options={{ headerShown: false }}
             />
             <Stack.Screen
@@ -46,12 +53,3 @@ export default function LoginNavigator() {
     </MyUserContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

@@ -1,7 +1,6 @@
-import { View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { ActivityIndicator, Avatar, Divider, List, SegmentedButtons, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FlatList } from 'react-native-gesture-handler';
 import AccountStyles from '../../auth/AccountStyles';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,8 +14,9 @@ import NotiDetail from './NotiDetail';
 dayjs.extend(relativeTime);
 
 const NotiMain = () => {
-  const [selectedType, setSelectedType] = useState('all');
+  const [selectedType, setSelectedType] = useState('All');
   const [notifications, setNotifications] = useState([]);
+  const [filteredNoti, setFilteredNoti] = useState([])
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [selectedNoti, setSelectedNoti] = useState(null);
@@ -29,29 +29,30 @@ const NotiMain = () => {
   }, [i18n.language])
 
   const loadNotis = async () => {
-    if (loading || page === 0) return;
+    if (page > 0) {
+      try {
+        setLoading(true);
 
-    try {
-      setLoading(true);
+        const token = await AsyncStorage.getItem("access-token");
+        let url = `${endpoints['notifications']}?page=${page}`;
 
-      const token = await AsyncStorage.getItem("access-token");
-      let url = `${endpoints['notifications']}?page=${page}`;
+        if (selectedType !== 'All') {
+          url += `&q=${selectedType}`
+        }
 
-      const res = await authApis(token).get(url);
+        console.log(url + "lo")
 
-      setNotifications(prev => {
-        const newIds = new Set(prev.map(n => n.id));
-        const uniqueResults = res.data.results.filter(n => !newIds.has(n.id));
-        return [...prev, ...uniqueResults];
-      });
+        const res = await authApis(token).get(url);
+        setNotifications([...notifications, ...res.data.results]);
 
-      if (res.data.next === null) {
-        setPage(0);
+        if (res.data.next === null) {
+          setPage(0);
+        }
+      } catch (ex) {
+        console.error(ex);
+      } finally {
+        setLoading(false);
       }
-    } catch (ex) {
-      console.error(ex);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -65,13 +66,10 @@ const NotiMain = () => {
     try {
       setRefreshing(true);
 
-      const token = await AsyncStorage.getItem("access-token");
-      const url = `${endpoints['notifications']}?page=1`;
-
-      const res = await authApis(token).get(url);
-
-      setNotifications(res.data.results);
-      setPage(res.data.next ? 2 : 0);
+      setNotifications([])
+      setFilteredNoti([])
+      setPage(0);
+      setTimeout(() => setPage(1), 0);
 
     } catch (err) {
       console.error(err);
@@ -81,16 +79,25 @@ const NotiMain = () => {
   };
 
   useEffect(() => {
-    loadNotis()
-  }, [page, selectedType]);
-
-  useEffect(() => {
-    setPage(1);
+    setNotifications([]);
+    setFilteredNoti([])
+    setPage(0);
+    setTimeout(() => setPage(1), 0);
   }, [selectedType]);
 
-  const filtered = selectedType === 'all'
-    ? notifications
-    : notifications.filter(n => n.announcement_type === selectedType);
+  useEffect(() => {
+    if (page > 0) {
+      loadNotis();
+    }
+  }, [page]);
+
+  useEffect(() => {
+    if (notifications) {
+      setFilteredNoti(selectedType === 'All'
+        ? notifications
+        : notifications.filter(n => n.announcement_type === selectedType))
+    }
+  }, [notifications])
 
   return (
     <SafeAreaView style={[AccountStyles.container, { justifyContent: '' }]}>
@@ -100,7 +107,7 @@ const NotiMain = () => {
         value={selectedType}
         onValueChange={setSelectedType}
         buttons={[
-          { value: 'all', label: t('notifications.types.all') },
+          { value: 'All', label: t('notifications.types.all') },
           { value: 'Maintenance', label: t('notifications.types.Maintenance') },
           { value: 'Billing', label: t('notifications.types.Billing') }
         ]}
@@ -118,8 +125,8 @@ const NotiMain = () => {
           ListFooterComponent={loading && <ActivityIndicator size={30} />}
           onEndReached={loadMore}
           style={{ margin: 7, padding: 5 }}
-          data={filtered}
-          keyExtractor={(item, index) => `${item.id}-${index}`}
+          data={filteredNoti}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item, index }) => (
             <>
               <List.Item
@@ -141,7 +148,7 @@ const NotiMain = () => {
                   setShowDetail(true);
                 }}
               />
-              {index < filtered.length - 1 && <Divider />}
+              {index < filteredNoti.length - 1 && <Divider />}
             </>
           )}
         />
