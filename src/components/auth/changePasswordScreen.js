@@ -9,7 +9,6 @@ import { ActivityIndicator } from 'react-native-paper';
 import { MyDispatchContext, MyUserContext } from '../../config/MyContexts';
 
 const ChangPasswordScreen = () => {
-    const route = useRoute();
     const user = useContext(MyUserContext)
     const dispatch = useContext(MyDispatchContext)
     const navigation = useNavigation();

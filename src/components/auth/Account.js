@@ -6,19 +6,25 @@ import { useNavigation } from '@react-navigation/native';
 import MenuItem from './MenuItem';
 import styles from './AccountStyles';
 import { useContext } from 'react';
-import { MyDispatchContext, MyUserContext } from '../../config/MyContexts';
+import { MyDispatchContext, MyRoomDispatchContext, MyUserContext } from '../../config/MyContexts';
 import { useTranslation } from 'react-i18next';
 
 const Account = () => {
   const nav = useNavigation()
   const user = useContext(MyUserContext)
   const dispatch = useContext(MyDispatchContext)
+  const roomDispatch = useContext(MyRoomDispatchContext)
   const { t } = useTranslation()
 
   const logout = () => {
     dispatch({
       "type": "logout"
     });
+
+    roomDispatch({
+      "type": "logout"
+    })
+    
     nav.navigate("Login");
   }
 

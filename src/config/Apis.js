@@ -1,7 +1,8 @@
 import axios from "axios"
 
-// BASE_URL = "http://10.0.2.2:8000/"
-BASE_URL = "https://vovanhuy.pythonanywhere.com/"
+BASE_URL = "http://10.0.2.2:8000/"
+// BASE_URL = "https://vovanhuy.pythonanywhere.com/"
+
 export const endpoints = {
     "login": "/users/login/",
     "users": "/users/",

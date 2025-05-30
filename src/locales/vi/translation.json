@@ -111,7 +111,7 @@
     "wifi": "Tiền wifi"
   },
   "pricingValues": {
-    "home": "1.000.000đ",
+    "home": "Theo loại phòng",
     "electricity": "3.500đ/KWh",
     "electricitySub": "Tính theo đồng hồ",
     "water": "20.000đ/Khối",
