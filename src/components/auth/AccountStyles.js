@@ -25,7 +25,7 @@ const AccountStyles = StyleSheet.create({
         marginBottom: 10,
     },
     button: {
-        backgroundColor: 'blue',
+        backgroundColor: '#376be3',
         padding: 15,
         borderRadius: 8,
         alignItems: 'center',

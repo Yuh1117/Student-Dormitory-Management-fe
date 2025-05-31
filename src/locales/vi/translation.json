@@ -35,7 +35,7 @@
 
   "room": "Phòng",
   "roomDetails": {
-    "title": "Room details",
+    "title": "Thông tin phòng",
     "building": "Toà",
     "floor": "Tầng",
     "room_number": "Phòng",
@@ -46,7 +46,21 @@
     "no_roommates": "Chưa có bạn cùng phòng nào.",
     "no_room": "Chưa có phòng"
   },
-  "roomChange": "Đổi phòng",
+  "roomChange": {
+    "title": "Đổi phòng",
+    "room_selector": "Chọn phòng muốn đổi",
+    "building_selector": "Chọn tòa nhà",
+    "floor_selector": "Chọn tầng",
+    "current_room": "Phòng hiện tại",
+    "monthly_fee": "Giá",
+    "modal": {
+      "title": "Yêu cầu đổi phòng",
+      "close_button": "Đóng",
+      "send_button": "Gửi"
+    },
+    "no_rooms": "Không có phòng nào phù hợp.",
+    "reason": "Lý do đổi phòng"
+  },
 
   "support": {
     "title": "Yêu cầu",

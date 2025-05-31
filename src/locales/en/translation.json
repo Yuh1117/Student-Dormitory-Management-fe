@@ -41,12 +41,26 @@
     "room_number": "Room",
     "room_type": "Room Type",
     "total_beds": "Total Beds",
-    "available_beds": "{{count}} beds available",
+    "available_beds": "Beds available: {{count}} ",
     "roommates_title": "Roommates",
     "no_roommates": "No roommates yet.",
     "no_room": "No room assigned."
   },
-  "roomChange": "Change room",
+  "roomChange": {
+    "title": "Change room",
+    "room_selector": "Select a room to change",
+    "building_selector": "Select building",
+    "floor_selector": "Select floor",
+    "current_room": "Current room",
+    "monthly_fee": "Price",
+    "modal": {
+      "title": "Room change request",
+      "close_button": "Close",
+      "send_button": "Send"
+    },
+    "no_rooms": "No rooms available.",
+    "reason": "Reason for room change"
+  },
 
   "support": {
     "title": "Support",
@@ -87,7 +101,7 @@
     "title": "Invoice details",
     "description": "Description",
     "created_date": "Created Date",
-    "details": "Details:",
+    "details": "Details",
     "total_amount": "Total Amount",
     "payment_method": "Payment Method",
     "payment_methods": {

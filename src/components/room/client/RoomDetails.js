@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApis, endpoints } from '../../../config/Apis';
 import { ActivityIndicator } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
-import { MyRoomContext } from '../../../config/MyContexts';
+import { MyRoomContext, MyUserContext } from '../../../config/MyContexts';
 
 const RoomDetails = () => {
     const roomData = useContext(MyRoomContext)
@@ -14,6 +14,7 @@ const RoomDetails = () => {
     const [roommates, setRoommates] = useState([]);
     const [loading, setLoading] = useState(false);
     const { t } = useTranslation();
+    const user = useContext(MyUserContext)
 
     const loadRoom = async () => {
         try {
@@ -46,33 +47,33 @@ const RoomDetails = () => {
                 ) : room !== null ? (
                     <>
                         <View style={AccountStyles.card}>
-                            <View style={styles.row}>
-                                <Text style={styles.title}>
+                            <View style={roomStyles.row}>
+                                <Text style={roomStyles.title}>
                                     {t('roomDetails.building')} {room.building.building_name} - { }
                                 </Text>
-                                <Text style={styles.title}>
+                                <Text style={roomStyles.title}>
                                     {t('roomDetails.floor')} {room.floor}
                                 </Text>
 
                             </View>
-                            
-                            <Text style={styles.title}>
+
+                            <Text style={roomStyles.subtitle}>
                                 {t('roomDetails.room_number')} {room.room_number}
                             </Text>
 
-                            <View style={styles.row}>
-                                <View style={[styles.capacityBox, { backgroundColor: '#FFF3E0' }]}>
-                                    <Text style={[styles.capacityText, { color: "#FF9800" }]}>
+                            <View style={[roomStyles.row, {gap: 5}]}>
+                                <View style={[roomStyles.capacityBox, { backgroundColor: '#FFF3E0' }]}>
+                                    <Text style={[roomStyles.capacityText, { color: "#FF9800" }]}>
                                         {room.room_type}
                                     </Text>
                                 </View>
-                                <View style={styles.capacityBox}>
-                                    <Text style={styles.capacityText}>
+                                <View style={roomStyles.capacityBox}>
+                                    <Text style={roomStyles.capacityText}>
                                         {t('roomDetails.total_beds')}: {room.total_beds}
                                     </Text>
                                 </View>
-                                <View style={styles.availableBox}>
-                                    <Text style={styles.availableText}>
+                                <View style={roomStyles.availableBox}>
+                                    <Text style={roomStyles.availableText}>
                                         {t('roomDetails.available_beds', { count: room.available_beds })}
                                     </Text>
                                 </View>
@@ -80,10 +81,10 @@ const RoomDetails = () => {
                         </View>
 
                         <View style={AccountStyles.card}>
-                            <Text style={styles.title}>{t('roomDetails.roommates_title')}</Text>
+                            <Text style={roomStyles.title}>{t('roomDetails.roommates_title')}</Text>
                             {roommates.length > 0 ? (
                                 roommates.map(r => (
-                                    <RoommateItem key={r.id} item={r.student_detail} />
+                                    r.student_detail.id !== user?._j?.id && <RoommateItem key={r.id} item={r.student_detail} />
                                 ))
                             ) : (
                                 <Text style={{ color: '#999' }}>
@@ -102,11 +103,11 @@ const RoomDetails = () => {
     );
 };
 
-const styles = StyleSheet.create({
+export const roomStyles = StyleSheet.create({
     title: {
         fontWeight: 'bold',
         fontSize: 20,
-        marginBottom: 10,
+        marginBottom: 5,
     },
     row: {
         flexDirection: 'row',
@@ -118,7 +119,6 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 12,
         borderRadius: 6,
-        marginRight: 10,
     },
     capacityText: {
         color: '#3366CC',
@@ -137,8 +137,9 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     subtitle: {
-        fontSize: 14,
-        color: '#666',
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 10
     },
 });
 

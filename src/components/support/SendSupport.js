@@ -148,12 +148,11 @@ const SendSupport = () => {
 
 
                 </View>
-                <TouchableOpacity style={[AccountStyles.button, { backgroundColor: '#376be3', margin: 7 }]} disabled={loading}
-                    onPress={handleSubmit}>
-                    {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>{capitalizeFirstWord(`${t('send')} ${t('support.title')}`)}</Text>}
-                </TouchableOpacity>
-
             </ScrollView>
+            <TouchableOpacity style={[AccountStyles.button, { backgroundColor: '#376be3', margin: 7 }]} disabled={loading}
+                onPress={handleSubmit}>
+                {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>{capitalizeFirstWord(`${t('send')} ${t('support.title')}`)}</Text>}
+            </TouchableOpacity>
         </View>
     )
 }

@@ -24,7 +24,7 @@ const Account = () => {
     roomDispatch({
       "type": "logout"
     })
-    
+
     nav.navigate("Login");
   }
 
@@ -37,7 +37,7 @@ const Account = () => {
         <MenuItem
           onPress={() => nav.navigate('Profile')}
           icon={<Avatar.Image size={50} source={user?._j?.avatar ? { uri: user?._j?.avatar } : require('../../assets/batman.png')} />}
-          title={user?._j?.username}
+          title={`${user?._j?.last_name} ${user?._j?.first_name}`}
         />
 
         <View style={[styles.card, { paddingHorizontal: 0 }]}>

@@ -90,7 +90,7 @@ const SurveyQuestions = ({ route }) => {
             setLoading(true)
 
             const token = await AsyncStorage.getItem("access-token")
-            let url = `${endpoints["survey-responses"](survey.id)}?student=${user._j.id}`
+            let url = `${endpoints["survey-responses"](survey.id)}?student=${user?._j?.id}`
 
             const res = await authApis(token).get(url)
             setAnswers(res.data.results)

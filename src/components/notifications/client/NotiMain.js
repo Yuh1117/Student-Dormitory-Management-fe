@@ -16,7 +16,6 @@ dayjs.extend(relativeTime);
 const NotiMain = () => {
   const [selectedType, setSelectedType] = useState('All');
   const [notifications, setNotifications] = useState([]);
-  const [filteredNoti, setFilteredNoti] = useState([])
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [selectedNoti, setSelectedNoti] = useState(null);
@@ -40,7 +39,7 @@ const NotiMain = () => {
           url += `&q=${selectedType}`
         }
 
-        console.log(url + "lo")
+        console.log(url)
 
         const res = await authApis(token).get(url);
         setNotifications([...notifications, ...res.data.results]);
@@ -62,12 +61,11 @@ const NotiMain = () => {
     }
   };
 
-  const onRefresh = async () => {
+  const onRefresh = () => {
     try {
       setRefreshing(true);
 
       setNotifications([])
-      setFilteredNoti([])
       setPage(0);
       setTimeout(() => setPage(1), 0);
 
@@ -78,26 +76,16 @@ const NotiMain = () => {
     }
   };
 
-  useEffect(() => {
+  const handleSelectedTypeChange = (value) => {
+    setSelectedType(value)
     setNotifications([]);
-    setFilteredNoti([])
     setPage(0);
     setTimeout(() => setPage(1), 0);
-  }, [selectedType]);
+  }
 
   useEffect(() => {
-    if (page > 0) {
-      loadNotis();
-    }
+    loadNotis();
   }, [page]);
-
-  useEffect(() => {
-    if (notifications) {
-      setFilteredNoti(selectedType === 'All'
-        ? notifications
-        : notifications.filter(n => n.announcement_type === selectedType))
-    }
-  }, [notifications])
 
   return (
     <SafeAreaView style={[AccountStyles.container, { justifyContent: '' }]}>
@@ -105,7 +93,7 @@ const NotiMain = () => {
 
       <SegmentedButtons
         value={selectedType}
-        onValueChange={setSelectedType}
+        onValueChange={(value) => handleSelectedTypeChange(value)}
         buttons={[
           { value: 'All', label: t('notifications.types.all') },
           { value: 'Maintenance', label: t('notifications.types.Maintenance') },
@@ -125,7 +113,7 @@ const NotiMain = () => {
           ListFooterComponent={loading && <ActivityIndicator size={30} />}
           onEndReached={loadMore}
           style={{ margin: 7, padding: 5 }}
-          data={filteredNoti}
+          data={notifications}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item, index }) => (
             <>
@@ -148,7 +136,7 @@ const NotiMain = () => {
                   setShowDetail(true);
                 }}
               />
-              {index < filteredNoti.length - 1 && <Divider />}
+              {index < notifications.length - 1 && <Divider />}
             </>
           )}
         />

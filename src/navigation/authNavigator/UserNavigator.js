@@ -48,7 +48,7 @@ const StackHomeNavigator = ({ t }) => {
             <Stack.Screen
                 name="RoomChange"
                 component={RoomChange}
-                options={{ headerShown: true, title: `${t('roomChange')}` }}
+                options={{ headerShown: true, title: `${t('roomChange.title')}` }}
             />
 
             <Stack.Screen
