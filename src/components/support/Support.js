@@ -1,5 +1,4 @@
-import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from "react-native";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import AccountStyles from "../auth/AccountStyles";
 import { Divider, Text, ToggleButton } from "react-native-paper";
 import MenuItem from "../auth/MenuItem";

@@ -33,7 +33,7 @@ const UserHome = () => {
           <View style={styles.gridItem}>
             <MenuItem
               icon={<MaterialIcons name="swap-horiz" size={22} color="#333" />}
-              title={t('roomChange')}
+              title={t('roomChange.title')}
               onPress={() => nav.navigate('RoomChange')}
             />
           </View>

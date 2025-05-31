@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { ActivityIndicator, Button, TextInput } from 'react-native-paper';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { ActivityIndicator, Button } from 'react-native-paper';
 import BuildingSelector from './BuildingSelector';
 import AccountStyles from '../../auth/AccountStyles';
 import { authApis, endpoints } from '../../../config/Apis';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MyRoomContext } from '../../../config/MyContexts';
+import RoomChangeRequest from './RoomChangeRequest';
+import { useTranslation } from 'react-i18next';
 
 const RoomChange = () => {
     const [selectedBuilding, setSelectedBuilding] = useState("East Wing")
@@ -14,24 +17,34 @@ const RoomChange = () => {
     const [loading, setLoading] = useState(false);
     const [rooms, setRooms] = useState([])
     const [page, setPage] = useState(1)
+    const room = useContext(MyRoomContext)
+    const [selectedRoom, setSelectedRoom] = useState(null);
+    const [showRequestModal, setShowRequestModal] = useState(false);
+    const { t } = useTranslation()
 
     const loadRooms = async () => {
-        try {
-            setLoading(true);
+        if (page > 0) {
+            try {
+                setLoading(true);
 
-            const token = await AsyncStorage.getItem("access-token");
-            const url = `${endpoints["rooms"]}?page=${page}`;
+                const token = await AsyncStorage.getItem("access-token");
+                const url = `${endpoints["rooms"]}?page=${page}`;
 
-            console.info(url)
+                console.info(url)
 
-            const res = await authApis(token).get(url);
+                const res = await authApis(token).get(url);
 
-            setRooms(res.data.results)
+                setRooms([...rooms, ...res.data.results])
 
-        } catch (ex) {
-            console.error(ex);
-        } finally {
-            setLoading(false);
+                if (res.data.next === null) {
+                    setPage(0)
+                }
+
+            } catch (ex) {
+                console.error(ex);
+            } finally {
+                setLoading(false);
+            }
         }
     }
 
@@ -56,17 +69,28 @@ const RoomChange = () => {
     )
 
     const renderRoom = ({ item }) => (
-        <TouchableOpacity
+        <TouchableOpacity disabled={item.status === "Full" || item.room_number === room?._j?.room_number}
             style={[styles.roomBox, item.status === "Empty" && styles.availableRoom]}
+            onPress={() => {
+                setSelectedRoom(item);
+                setShowRequestModal(true);
+            }}
         >
             <Text style={[styles.roomText, { color: item.status === "Empty" ? 'white' : 'dark' }]}>
                 {item.room_number}
             </Text>
+
+            {item.room_number === room?._j?.room_number &&
+                <Text style={[styles.roomText, { color: item.status === "Empty" ? 'white' : 'dark', fontWeight: '900' }]}>
+                    ({t('roomChange.current_room')})
+                </Text>
+            }
+
             <Text style={[styles.roomText, { color: item.status === "Empty" ? 'white' : 'dark' }]}>
-                Loại: {item.room_type}
+                {t('roomDetails.room_type')}: {item.room_type}
             </Text>
             <Text style={[styles.roomText, { color: item.status === "Empty" ? 'white' : 'dark' }]}>
-                Giá: {item.monthly_fee} VND
+                {t('roomChange.monthly_fee')}: {item.monthly_fee} VND
             </Text>
         </TouchableOpacity>
     );
@@ -97,11 +121,11 @@ const RoomChange = () => {
 
     return (
         <View style={[AccountStyles.container, { justifyContent: '' }]}>
-            <Text style={styles.header}>Chọn phòng muốn đổi</Text>
+            <Text style={styles.header}>{t('roomChange.room_selector')}</Text>
 
             <View style={{ padding: 7, flex: 1 }}>
                 <BuildingSelector buildings={buildings.map(building => ({
-                    label: building.building_name,
+                    label: `${t('roomDetails.building')} ${building.building_name}`,
                     value: building.building_name,
                 }))}
                     onSelect={(value) => setSelectedBuilding(value)}
@@ -116,7 +140,7 @@ const RoomChange = () => {
                                 onPress={() => setSelectedFloor(floor)}
                                 style={styles.floorButton}
                             >
-                                Tầng {floor}
+                                {t('roomDetails.floor')} {floor}
                             </Button>
                         ))}
                     </View>
@@ -125,15 +149,21 @@ const RoomChange = () => {
                         <ActivityIndicator size="large" color="#376be3" />
                     ) : (
                         <FlatList
+                            onEndReached={loadMore}
                             data={filteredRooms}
                             keyExtractor={item => item.id.toString()}
                             renderItem={renderRoom}
                             scrollEnabled={true}
-                            contentContainerStyle={styles.roomGrid}
                         />
                     )}
                 </View>
             </View>
+
+            <RoomChangeRequest
+                visible={showRequestModal}
+                onClose={() => setShowRequestModal(false)}
+                room={selectedRoom}
+            />
         </View>
     )
 }
@@ -146,6 +176,7 @@ const styles = StyleSheet.create({
     },
     floorRow: {
         flexDirection: 'row',
+        flex: 1
     },
     floorList: {
         marginRight: 10,
@@ -153,10 +184,6 @@ const styles = StyleSheet.create({
     floorButton: {
         marginVertical: 5,
         borderRadius: 8,
-    },
-    roomGrid: {
-        flex: 1,
-        justifyContent: 'flex-start',
     },
     roomBox: {
         backgroundColor: '#cccc',
