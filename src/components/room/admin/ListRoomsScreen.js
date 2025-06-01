@@ -35,7 +35,7 @@ export default function ListRoomsScreen() {
     let url = `${endpoints['listRooms']}?page=${isRefreshing ? 1 : page}`;
 
     if (buildindId) {
-      url = `${url}&building_id=${parseInt(buildindId)}`;
+      url = `${url}&building=${parseInt(buildindId)}`;
     }
     if (roomNumber) {
       url = `${url}&room_number=${roomNumber}`;

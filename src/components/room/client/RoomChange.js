@@ -10,7 +10,7 @@ import RoomChangeRequest from './RoomChangeRequest';
 import { useTranslation } from 'react-i18next';
 
 const RoomChange = () => {
-    const [selectedBuilding, setSelectedBuilding] = useState("East Wing")
+    const [selectedBuilding, setSelectedBuilding] = useState("A")
     const [floors, setFloors] = useState([])
     const [buildings, setBuildings] = useState([])
     const [selectedFloor, setSelectedFloor] = useState(1)
@@ -23,18 +23,21 @@ const RoomChange = () => {
     const { t } = useTranslation()
 
     const loadRooms = async () => {
-        if (page > 0) {
+        if (page > 0 && buildings.length > 0) {
             try {
                 setLoading(true);
 
                 const token = await AsyncStorage.getItem("access-token");
-                const url = `${endpoints["rooms"]}?page=${page}`;
 
-                console.info(url)
+                const selectedBuildingData = buildings.find(b => b.building_name === selectedBuilding);
+                const buildingId = selectedBuildingData?.id;
+
+                const url = `${endpoints["rooms"]}?page=${page}&building=${buildingId}&floor=${selectedFloor}`;
+
+                console.info(url);
 
                 const res = await authApis(token).get(url);
-
-                setRooms([...rooms, ...res.data.results])
+                setRooms([...rooms, ...res.data.results]);
 
                 if (res.data.next === null) {
                     setPage(0)
@@ -64,10 +67,6 @@ const RoomChange = () => {
         }
     }
 
-    const filteredRooms = rooms.filter(
-        room => room.floor === selectedFloor && room.building.building_name === selectedBuilding
-    )
-
     const renderRoom = ({ item }) => (
         <TouchableOpacity disabled={item.status === "Full" || item.room_number === room?._j?.room_number}
             style={[styles.roomBox, item.status === "Empty" && styles.availableRoom]}
@@ -90,7 +89,7 @@ const RoomChange = () => {
                 {t('roomDetails.room_type')}: {item.room_type}
             </Text>
             <Text style={[styles.roomText, { color: item.status === "Empty" ? 'white' : 'dark' }]}>
-                {t('roomChange.monthly_fee')}: {item.monthly_fee} VND
+                {t('roomChange.monthly_fee')}: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.monthly_fee)}
             </Text>
         </TouchableOpacity>
     );
@@ -108,6 +107,14 @@ const RoomChange = () => {
     useEffect(() => {
         loadBuildings()
     }, [])
+
+    useEffect(() => {
+        if (buildings.length > 0) {
+            setRooms([])
+            setPage(0)
+            setTimeout(() => setPage(1), 0)
+        }
+    }, [selectedFloor, selectedBuilding, buildings]);
 
     useEffect(() => {
         if (buildings.length === 0) return;
@@ -145,17 +152,22 @@ const RoomChange = () => {
                         ))}
                     </View>
 
-                    {loading ? (
-                        <ActivityIndicator size="large" color="#376be3" />
-                    ) : (
+                    {loading && rooms.length === 0 ? (
+                        <View style={{ flex: 1, alignItems: 'center', padding: 20 }}>
+                            <ActivityIndicator size={40} />
+                        </View>
+                    ) : rooms.length > 0 ? (
                         <FlatList
+                            ListFooterComponent={loading && <ActivityIndicator size={30} />}
                             onEndReached={loadMore}
-                            data={filteredRooms}
+                            data={rooms}
                             keyExtractor={item => item.id.toString()}
                             renderItem={renderRoom}
                             scrollEnabled={true}
                         />
-                    )}
+                    ) : <View style={{ flex: 1, alignItems: 'center', padding: 20 }}>
+                        <Text>{t('roomChange.no_rooms')}</Text>
+                    </View>}
                 </View>
             </View>
 
