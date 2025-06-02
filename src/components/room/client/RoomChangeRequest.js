@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApis, endpoints } from '../../../config/Apis';
 import { useNavigation } from '@react-navigation/native';
+import { formatVietNamCurrency } from '../../../utils/utils';
 
 const RoomChangeRequest = ({ visible, onClose, room }) => {
     const { t } = useTranslation()
@@ -83,7 +84,7 @@ const RoomChangeRequest = ({ visible, onClose, room }) => {
                                 <Text style={styles.modalText}>{t('roomDetails.building')}: {room.building.building_name}</Text>
                                 <Text style={styles.modalText}>{t('roomDetails.floor')}: {room.floor}</Text>
                                 <Text style={styles.modalText}>{t('room')}: {room.room_number}</Text>
-                                <Text style={styles.modalText}>{t('roomChange.monthly_fee')}: {room.monthly_fee} VND</Text>
+                                <Text style={styles.modalText}>{t('roomChange.monthly_fee')}: {formatVietNamCurrency(room.monthly_fee)}</Text>
                             </View>
                             <View style={[roomStyles.row, { flex: 1, flexWrap: 'wrap', gap: 3 }]}>
                                 <View style={[roomStyles.capacityBox, { backgroundColor: '#FFF3E0' }]}>

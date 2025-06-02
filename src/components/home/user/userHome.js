@@ -50,7 +50,7 @@ const UserHome = () => {
 
             <MenuItem
               icon={<Ionicons name="megaphone-outline" size={22} color="#333" />}
-              title={capitalizeFirstWord(`${t('send')} ${t('support.title')}`)}
+              title={t('support.title')}
               onPress={() => nav.navigate("Support")}
             />
           </View>

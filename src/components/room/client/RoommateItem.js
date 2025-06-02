@@ -23,8 +23,8 @@ const RoommateItem = ({ item }) => {
                         </>
                     )}
                 </View>
-                <TouchableOpacity style={styles.chatIcon}>
-                    <MaterialIcons name="chat" size={30} color="#4a90e2" />
+                <TouchableOpacity style={styles.chatIcon} onPress={() => setShowDetails(!showDetails)}>
+                    <MaterialIcons name={showDetails ? "visibility" : "visibility-off"} size={30} color="#4a90e2" />
                 </TouchableOpacity>
             </View>
         </TouchableOpacity>

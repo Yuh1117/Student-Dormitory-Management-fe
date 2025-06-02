@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApis, endpoints } from '../../../config/Apis';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import { formatVietNamCurrency } from '../../../utils/utils';
 
 const RoomInvoice = () => {
     const screenWidth = Dimensions.get('window').width;
@@ -91,7 +92,7 @@ const RoomInvoice = () => {
                                         </View>
                                         <View style={{ alignItems: 'flex-end' }}>
                                             <Text style={styles.unpaid}>
-                                                {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.total_amount)}
+                                                {formatVietNamCurrency(item.total_amount)}
                                             </Text>
                                             <Text style={[styles.unpaid, { fontSize: 13 }]}>
                                                 {t('roomInvoice.unpaid_status')}
@@ -148,7 +149,7 @@ const RoomInvoice = () => {
                                 </View>
                                 <View style={{ alignItems: 'flex-end' }}>
                                     <Text style={styles.label}>
-                                        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.total_amount)}
+                                        {formatVietNamCurrency(item.total_amount)}
                                     </Text>
                                     <Text style={{ color: '#4CAF50' }}>
                                         {t('roomInvoice.paid_status')}

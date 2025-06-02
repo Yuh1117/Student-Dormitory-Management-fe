@@ -9,6 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { authApis, endpoints } from "../../../config/Apis";
 import VNPayScreen from "./VNPayScreen";
 import { useTranslation } from "react-i18next";
+import { formatVietNamCurrency } from "../../../utils/utils";
 
 const InvoiceDetails = ({ route }) => {
     const invoice = route.params?.invoice;
@@ -90,7 +91,7 @@ const InvoiceDetails = ({ route }) => {
                             </View>
                             <View>
                                 <Text style={[styles.label, { fontSize: 25, color: '#376be3' }]}>
-                                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(invoice.total_amount)}
+                                    {formatVietNamCurrency(invoice.total_amount)}
                                 </Text>
                             </View>
                         </View>

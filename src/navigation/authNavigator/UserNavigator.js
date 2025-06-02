@@ -42,7 +42,7 @@ const StackHomeNavigator = ({ t }) => {
             <Stack.Screen
                 name="RoomDetails"
                 component={RoomDetails}
-                options={{ headerShown: true, title: `${t('roomDetails.title')}` }}
+                options={{ headerShown: true, title: `${t('room')}` }}
             />
 
             <Stack.Screen
@@ -197,8 +197,9 @@ export function UserHomeMain() {
                     tabBarInactiveTintColor: "gray",
                 }
             }>
-                <Tab.Screen name={t('home')} children={() => <StackHomeNavigator t={t} />} options={
+                <Tab.Screen name="Home" children={() => <StackHomeNavigator t={t} />} options={
                     {
+                        title: t('home'),
                         headerShown: false,
                         tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="home" color={color} size={size} />
@@ -206,8 +207,9 @@ export function UserHomeMain() {
                     }
                 }></Tab.Screen>
 
-                <Tab.Screen name={t('notifications.title')} children={() => <StackNotiNavigator t={t} />} options={
+                <Tab.Screen name="Notifications" children={() => <StackNotiNavigator t={t} />} options={
                     {
+                        title: t('notifications.title'),
                         headerShown: false,
                         tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="bell" color={color} size={size} />
@@ -225,8 +227,9 @@ export function UserHomeMain() {
                     }
                 }></Tab.Screen>
 
-                <Tab.Screen name={t('account')} children={() => <StackAccountNavigator t={t} />} options={
+                <Tab.Screen name="Account" children={() => <StackAccountNavigator t={t} />} options={
                     {
+                        title: t('account'),
                         headerShown: false,
                         tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="account" color={color} size={size} />

@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MyRoomContext } from '../../../config/MyContexts';
 import RoomChangeRequest from './RoomChangeRequest';
 import { useTranslation } from 'react-i18next';
+import { formatVietNamCurrency } from '../../../utils/utils';
 
 const RoomChange = () => {
     const [selectedBuilding, setSelectedBuilding] = useState("A")
@@ -89,7 +90,7 @@ const RoomChange = () => {
                 {t('roomDetails.room_type')}: {item.room_type}
             </Text>
             <Text style={[styles.roomText, { color: item.status === "Empty" ? 'white' : 'dark' }]}>
-                {t('roomChange.monthly_fee')}: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.monthly_fee)}
+                {t('roomChange.monthly_fee')}: {formatVietNamCurrency(item.monthly_fee)}
             </Text>
         </TouchableOpacity>
     );
