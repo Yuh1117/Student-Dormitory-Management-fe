@@ -75,7 +75,7 @@ const StackHomeNavigator = ({ t }) => {
             <Stack.Screen
                 name="SupportDetail"
                 component={SupportDetail}
-                options={{ headerShown: true, title: `${t('supportDetail')}` }}
+                options={{ headerShown: true, title: `${t('supportDetail.title')}` }}
             />
 
             <Stack.Screen

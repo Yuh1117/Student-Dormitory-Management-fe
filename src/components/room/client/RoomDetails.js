@@ -84,7 +84,7 @@ const RoomDetails = () => {
 
                         <View style={AccountStyles.card}>
                             <Text style={roomStyles.title}>{t('roomDetails.roommates_title')}</Text>
-                            {roommates.length > 0 ? (
+                            {roommates.length > 1 ? (
                                 roommates.map(r => (
                                     r.student_detail.id !== user?._j?.id && <RoommateItem key={r.id} item={r.student_detail} />
                                 ))

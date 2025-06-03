@@ -5,6 +5,7 @@
     "types": {
       "all": "Tất cả",
       "Maintenance": "Bảo trì",
+      "Room": "Phòng",
       "Billing": "Hóa đơn"
     },
     "no_notifications": "Không có thông báo nào"
@@ -78,7 +79,12 @@
     "title": "Gửi yêu cầu hỗ trợ",
     "image_placeholder": "Thêm hình ảnh"
   },
-  "supportDetail": "Thông tin yêu cầu",
+  "supportDetail": {
+    "title": "Thông tin yêu cầu",
+    "sender": "Người gửi",
+    "responses": "Phản hồi",
+    "noResponses": "Chưa có phản hồi!"
+  },
 
   "survey": {
     "title": "Khảo sát",

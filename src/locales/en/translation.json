@@ -5,6 +5,7 @@
     "types": {
       "all": "All",
       "Maintenance": "Maintenance",
+      "Room": "Room",
       "Billing": "Billing"
     },
     "no_notifications": "No notifications available"
@@ -78,7 +79,12 @@
     "title": "Send support request",
     "image_placeholder": "Add Image"
   },
-  "supportDetail": "Support details",
+  "supportDetail": {
+    "title": "Support details",
+    "sender": "Sender",
+    "responses": "Responses",
+    "noResponses": "No responses yet!"
+  },
 
   "survey": {
     "title": "Survey",

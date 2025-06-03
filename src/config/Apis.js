@@ -24,7 +24,6 @@ export const endpoints = {
     "survey-responses": (id) => `/surveys/${id}/survey-responses/`,
     "surveys-history": "/surveys/survey-history",
     "complaints": "/complaints/",
-    "my-complaints": "/complaints/my-complaints",
     "my-room-complaints": "/complaints/my-room-complaints",
     "complaints-resolve":(id) =>`/complaints/${id}/resolve/`,
     "complaints-responses":(id) => `/complaints/${id}/complaints-responses/`,

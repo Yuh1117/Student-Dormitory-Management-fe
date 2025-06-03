@@ -36,7 +36,11 @@ const NotiMain = () => {
         let url = `${endpoints['notifications']}?page=${page}`;
 
         if (selectedType !== 'All') {
-          url += `&q=${selectedType}`
+          if (selectedType === "Room") {
+            url += `&room=true`
+          } else {
+            url += `&q=${selectedType}`
+          }
         }
 
         console.log(url)
@@ -96,8 +100,8 @@ const NotiMain = () => {
         onValueChange={(value) => handleSelectedTypeChange(value)}
         buttons={[
           { value: 'All', label: t('notifications.types.all') },
+          { value: 'Room', label: t('notifications.types.Room') },
           { value: 'Maintenance', label: t('notifications.types.Maintenance') },
-          { value: 'Billing', label: t('notifications.types.Billing') }
         ]}
         style={{ margin: 7, marginBottom: 0 }}
       />
@@ -124,6 +128,11 @@ const NotiMain = () => {
                   <Avatar.Icon
                     icon={item.is_urgent ? 'alert-circle' : 'message'}
                     size={45}
+                    theme={{
+                      colors: {
+                        primary: item.is_urgent ? '#c2232f' : '#376be3'
+                      },
+                    }}
                   />
                 )}
                 right={() => (

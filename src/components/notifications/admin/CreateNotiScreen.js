@@ -5,13 +5,13 @@ import { endpoints } from '../../../config/Apis';
 import useFetchWithToken from '../../../config/UseFetchWithToken';
 import AdminStyles from '../../../styles/AdminStyles';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { set } from 'react-hook-form';
+import { scheduleLocalNotification } from '../../../config/Notis';
 
 export default function CreateNotification({ navigation }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [announcementType, setAnnouncementType] = useState('');
-  const [isUrgent,setIsUrgent] = useState(false);
+  const [isUrgent, setIsUrgent] = useState(false);
   const { fetchWithToken, loading } = useFetchWithToken();
 
   const handleSubmit = async () => {
@@ -20,116 +20,121 @@ export default function CreateNotification({ navigation }) {
       return;
     }
 
-      const res = await fetchWithToken({
-        method: 'POST',
-        url: endpoints['notifications'], // /api/notifications/
-        data: {
-          title,
-          content,
-          announcement_type: announcementType,
-          is_urgent: isUrgent 
-        }
-      });
+    const res = await fetchWithToken({
+      method: 'POST',
+      url: endpoints['notifications'], // /api/notifications/
+      data: {
+        title,
+        content,
+        announcement_type: announcementType,
+        is_urgent: isUrgent
+      }
+    });
 
-      if(res){
-        Alert.alert('Thành công', 'Đã tạo thông báo mới!');
-        navigation.goBack();
+    if (res) {
+      Alert.alert('Thành công', 'Đã tạo thông báo mới!');
 
-      }else{
-        Alert.alert('Tạo thông báo thất bại');
+      if (res.is_urgent) {
+        await scheduleLocalNotification(res.title, res.content)
       }
 
-    
+      navigation.goBack();
+
+    } else {
+      Alert.alert('Tạo thông báo thất bại');
+    }
+
+
   };
-  const setType =(item) =>{
+  const setType = (item) => {
     setAnnouncementType(item);
-    if(item ==="urgent"){
+    if (item === "urgent") {
       setIsUrgent(true);
-    }else{
+    } else {
       setIsUrgent(false)
     }
   }
-  useEffect(()=>{
+  useEffect(() => {
     setContent("");
     setTitle("");
     setAnnouncementType("");
-  },[])
+  }, [])
   return (
-    <SafeAreaView style={[AdminStyles.bgc,AdminStyles.flex_1]}>
+    <SafeAreaView style={[AdminStyles.bgc, AdminStyles.flex_1]}>
 
-    <View style={styles.container}>
-      <Text style={styles.label}>Tiêu đề</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Nhập tiêu đề..."
-        value={title}
-        onChangeText={setTitle}
-      />
-
-      <Text style={styles.label}>Nội dung</Text>
-      <TextInput
-        style={[styles.input, { height: 100 }]}
-        placeholder="Nhập nội dung..."
-        multiline
-        value={content}
-        onChangeText={setContent}
+      <View style={styles.container}>
+        <Text style={styles.label}>Tiêu đề</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Nhập tiêu đề..."
+          value={title}
+          onChangeText={setTitle}
         />
 
-      <Text style={styles.label}>Loại thông báo</Text>
-      <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={announcementType}
-          onValueChange={(itemValue)=>{setType(itemValue);
-            console.log(itemValue)
-          }}
-          >
-          <Picker.Item label="Chọn loại" value="" />
-          <Picker.Item label="Thông báo chung" value="general" />
-          <Picker.Item label="Thông báo khẩn" value="urgent" />
-        </Picker>
-      </View>
+        <Text style={styles.label}>Nội dung</Text>
+        <TextInput
+          style={[styles.input, { height: 100 }]}
+          placeholder="Nhập nội dung..."
+          multiline
+          value={content}
+          onChangeText={setContent}
+        />
 
-      <TouchableOpacity onPress={handleSubmit} style={[styles.button,AdminStyles.successColor]}>
-        <Text style={styles.buttonText}>{loading ? 'Đang gửi...' : 'Tạo thông báo'}</Text>
-      </TouchableOpacity>
-    </View>
+        <Text style={styles.label}>Loại thông báo</Text>
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={announcementType}
+            onValueChange={(itemValue) => {
+              setType(itemValue);
+              console.log(itemValue)
+            }}
+          >
+            <Picker.Item label="Chọn loại" value="" />
+            <Picker.Item label="Thông báo chung" value="general" />
+            <Picker.Item label="Thông báo khẩn" value="urgent" />
+          </Picker>
+        </View>
+
+        <TouchableOpacity onPress={handleSubmit} style={[styles.button, AdminStyles.successColor]}>
+          <Text style={styles.buttonText}>{loading ? 'Đang gửi...' : 'Tạo thông báo'}</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
-    container: {
-      // flex: 1,
-      padding: 16,
-      backgroundColor: '#fff'
-    },
-    label: {
-      fontWeight: 'bold',
-      marginTop: 16
-    },
-    input: {
-      borderWidth: 1,
-      borderColor: '#ccc',
-      borderRadius: 8,
-      padding: 12,
-      marginTop: 8
-    },
-    pickerContainer: {
-      borderWidth: 1,
-      borderColor: '#ccc',
-      borderRadius: 8,
-      marginTop: 8,
-      overflow: 'hidden'
-    },
-    button: {
-      backgroundColor: '#4caf50',
-      padding: 16,
-      borderRadius: 8,
-      marginTop: 24,
-      alignItems: 'center'
-    },
-    buttonText: {
-      color: '#fff',
-      fontWeight: 'bold'
-    }
-  });
-  
+  container: {
+    // flex: 1,
+    padding: 16,
+    backgroundColor: '#fff'
+  },
+  label: {
+    fontWeight: 'bold',
+    marginTop: 16
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 8
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    marginTop: 8,
+    overflow: 'hidden'
+  },
+  button: {
+    backgroundColor: '#4caf50',
+    padding: 16,
+    borderRadius: 8,
+    marginTop: 24,
+    alignItems: 'center'
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold'
+  }
+});
