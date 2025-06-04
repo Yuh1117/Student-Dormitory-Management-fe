@@ -49,6 +49,7 @@ const renderItem = ({ item }) => {
           AdminStyles.invoiceCard,
           isPending && styles.pendingBackground,
           isResolved && styles.resolvedBackground,
+          AdminStyles.mb
         ]}
         onPress={() => navigation.navigate('complaintDetail', { complaint: item })}
       >

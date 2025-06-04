@@ -15,7 +15,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import CreateInvoice from '../../components/billing/admin/CreateInvoiceScreen';
 import { RoomProvider } from '../../components/room/admin/roomContext';
 import UpdateInvoice from '../../components/billing/admin/UpdateInvoicesScreens';
-import UserManage from '../../components/auth/UserManagetScreen';
+import UserManage from '../../components/auth/admin/UserManagetScreen';
 import RegisterScreen from '../../components/auth/register';
 import RoomMember from '../../components/room/admin/RoomMemberScreen';
 import AddRoomMember from '../../components/room/admin/AddRoomMemberScreen';
@@ -32,6 +32,8 @@ import ComplaintDetail from '../../components/support/admin/ComplaintDetailScree
 import RoomChangeRequest from '../../components/room/admin/RoomChangeRequestScreen';
 import RoomChangeDetail from '../../components/room/admin/RequestDetailScreen';
 import Statistics from '../../components/surveys/admin/statistics/StatisticsScreen';
+import StudentList from '../../components/auth/admin/StudentListScreen'
+import StudentDetail from '../../components/auth/admin/StudentDetaiScreen';
 
 
 
@@ -57,6 +59,7 @@ const DrawerNavigator = () => {
                 ),
             }} />
             <Drawer.Screen name="updateInvoice" component={UpdateInvoice} options={{
+                title: 'Cập nhật hóa đơn',
                 drawerItemStyle: { display: 'none' }, // Ẩn khỏi Drawer
 
             }} />
@@ -246,6 +249,16 @@ const StackRoomChangeRequestNavigator =() =>{
 
                     }
                 } />
+                <Stack.Screen name="addRoomMember" component={AddRoomMember} options={
+                    {
+                        headerShown: false,
+                        title: "Hóa Đơn",
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
                 
               
             </Stack.Navigator>
@@ -302,6 +315,24 @@ const StackUserNavigater = () =>{
                     }
                 } />
                 <Stack.Screen name="roomChangeRequestStack" component={StackRoomChangeRequestNavigator} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="studentList" component={StudentList} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+
+                    }
+                } />
+                <Stack.Screen name="studentDetail" component={StudentDetail} options={
                     {
                         headerShown: false,
                         tabBarIcon: ({ color, size }) => (

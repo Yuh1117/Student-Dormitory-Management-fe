@@ -2,13 +2,13 @@ import { StyleSheet, TouchableOpacity, View,Animated, Pressable } from 'react-na
 
 import { Button, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AdminStyles from '../../styles/AdminStyles';
+import AdminStyles from '../../../styles/AdminStyles';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import useFetchWitchToken from '../../config/UseFetchWithToken' 
-import { endpoints } from '../../config/Apis';
-import CountBadge from '../../config/BagdeComponent';
+import useFetchWitchToken from '../../../config/UseFetchWithToken' 
+import { endpoints } from '../../../config/Apis';
+import CountBadge from '../../../config/BagdeComponent';
 import { Surface } from 'react-native-paper';
 
 
@@ -155,7 +155,14 @@ const UserManage = () => {
                 </View>
             </View>
 
-           
+            <View style={AdminStyles.flex_025}>
+                <View style={AdminStyles.flex_1}>
+                    <TouchableOpacity onPress={()=>{navigation.navigate('studentList')}} style={[AdminStyles.flex_1,AdminStyles.center,AdminStyles.successColor,AdminStyles.btn,AdminStyles.row,{backgroundColor:"#27548A"}
+                    ]}>
+                            <MaterialCommunityIcons name='account-multiple' style={style.text}/><Text style={style.text}>Sinh Viên</Text>
+                        </TouchableOpacity>
+                </View>
+            </View>
 
         </SafeAreaView>
     );

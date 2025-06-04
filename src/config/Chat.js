@@ -13,9 +13,6 @@ import {
   limit
 } from 'firebase/firestore';
 import { db } from './FireBase';
-import { getAuth } from "firebase/auth";
-const auth = getAuth();
-console.log("User:", auth.currentUser);
 
 /**
  * Gửi tin nhắn mới và cập nhật lastMessage

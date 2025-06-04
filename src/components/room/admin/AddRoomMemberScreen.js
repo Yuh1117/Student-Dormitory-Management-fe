@@ -103,7 +103,7 @@ export default function AddRoomMember() {
             {/* </SafeAreaView> */}
 
             {/* <Button style = {backgr}  title="Thêm vào phòng" onPress={handleAdd} /> */}
-            <Button theme={{ colors: { primary: AdminStyles.successColor.backgroundColor } }} icon="account-plus" mode="contained" onPress={() => console.log('Pressed')}>
+            <Button theme={{ colors: { primary: AdminStyles.successColor.backgroundColor } }} icon="account-plus" mode="contained" onPress={handleAdd}>
                 Thêm vào phòng
             </Button>
 

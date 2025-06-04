@@ -56,6 +56,7 @@ export default function RoomMember({ navigation ,route}) {
       Alert.alert("Lỗi", error.response?.data?.error || "Xóa thất bại");
     }
   };
+      
   const renderMember = ({ item }) => {
     const student = item.student_detail;
     return (
@@ -92,7 +93,7 @@ export default function RoomMember({ navigation ,route}) {
       </View>
     );
   };
-
+  
   const loadRoomMembers = async () =>{
     const data = await fetchWithToken({
       url:endpoints['get-room-assignments'](selectedRoom.id),
@@ -109,13 +110,16 @@ export default function RoomMember({ navigation ,route}) {
   return (
     <SafeAreaView style={[AdminStyles.container, { flex: 1 }]}>
       <View style={{ flex: 1 }}>
-        <Text style={styles.header}>Danh sách thành viên phòng {selectedRoom?.room_number}</Text>
+        <View style={[AdminStyles.center]}>
 
+          <Text style={[styles.header]}>Danh sách thành viên phòng {selectedRoom?.room_number}</Text>
+        </View>
+        {roomAssignments.length>0?
         <FlatList
           data={roomAssignments}
           renderItem={renderMember}
           keyExtractor={(item, index) => index.toString()}
-        />
+        />:<View style={[AdminStyles.row_center_start,AdminStyles.flex_1]}><Text>Chưa có thành viên nào</Text></View>}
 
         <View>
           <TouchableOpacity

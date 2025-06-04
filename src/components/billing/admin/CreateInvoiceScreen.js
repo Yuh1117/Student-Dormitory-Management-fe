@@ -33,7 +33,9 @@ export default function CreateInvoiceScreen({ navigation }) {
 
   const handleSubmit = async () => {
     const payload = {
-      room: parseInt(selectedRoom.id),
+      room: selectedRoom.id,
+      // room: parseInt(selectedRoom.id),
+      
       total_amount: parseFloat(totalAmount),
       status : "Unpaid",
       description:description,
@@ -43,7 +45,7 @@ export default function CreateInvoiceScreen({ navigation }) {
       })),
     };
 
-    // console.log(payload)
+    console.log(selectedRoom)
     const data = await fetchWithToken({
       method: 'POST',
       url: `${endpoints['invoices']}`,

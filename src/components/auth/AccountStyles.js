@@ -6,6 +6,11 @@ const AccountStyles = StyleSheet.create({
         justifyContent: 'center',
         padding: 10,
     },
+    backGround:{
+        padding: 10,
+        flex:1
+
+    },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
