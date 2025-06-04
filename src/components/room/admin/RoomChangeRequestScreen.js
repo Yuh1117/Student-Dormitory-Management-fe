@@ -67,7 +67,7 @@ const RoomChangeRequest = ({ navigation }) => {
 
     return (
       <TouchableOpacity
-        style={[styles.itemContainer,AdminStyles.invoiceCard]}
+        style={[styles.itemContainer,AdminStyles.invoiceCard,AdminStyles.mb]}
         onPress={() => navigation.navigate('requestDetail', { request: item })}
       >
         <View style={[styles.statusContainer,{backgroundColor: getStatusColor(item.status)},AdminStyles.flex_025,AdminStyles.center]}>
@@ -82,7 +82,7 @@ const RoomChangeRequest = ({ navigation }) => {
           
         </View>
         <View style={{ flex: 0.75 }}>
-          <Text numberOfLines={2} style={styles.title}>Lý do: {item.reason}</Text>
+          <Text numberOfLines={1} style={styles.title}>Lý do: {item.reason}</Text>
           <Text style={styles.subtitle}>Người yêu cầu: {item.student?.first_name || item.student?.last_name 
               ? `${item.student?.first_name || ''} ${item.student?.last_name || ''}`.trim() 
               : item.student?.username || 'Không rõ'}</Text>

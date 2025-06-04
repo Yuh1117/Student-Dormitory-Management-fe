@@ -39,6 +39,7 @@ const RoomChangeDetail = ({ route, navigation }) => {
             method:"PATCH",
             data:{status}
         })
+        console.log(`${endpoints['room-change-requests']}${request.id}/`)
         if(data){
             Alert.alert('Thành công', `Trạng thái đã được cập nhật thành: ${status}`);
             navigation.goBack();

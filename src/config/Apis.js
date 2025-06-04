@@ -1,11 +1,12 @@
 import axios from "axios"
 
-BASE_URL = "http://10.0.2.2:8000/"
-// BASE_URL = "https://vovanhuy.pythonanywhere.com/"
+// BASE_URL = "http://10.0.2.2:8000/"
+BASE_URL = "https://vovanhuy.pythonanywhere.com/"
 
 export const endpoints = {
     "login": "/users/login/",
     "users": "/users/",
+    "deactivate-student":(id)=>`/users/${id}/deactivate_student/`,
     "current-user": "/users/current-user/",
     "listRooms": "/rooms/",
     "buildings": "/buildings/",
@@ -14,7 +15,7 @@ export const endpoints = {
     "my-room-invoices": "/invoices/my-room-invoices",
     "invoice-payment": (id) => `/invoices/${id}/vnpay_payment_url/`,
     "available-student": "/users/available-students/",
-    "room-assignments": "/room-assignments/",
+    // "room-assignments": "/room-assignments/",
     "get-room-assignments":(id)=>`/rooms/${id}/room-assignments/`,
     "remove-member": (id) => `/rooms/${id}/remove-member/`,
     'my-room': `/rooms/my-room/`,

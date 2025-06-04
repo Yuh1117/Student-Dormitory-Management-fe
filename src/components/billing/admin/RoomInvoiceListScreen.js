@@ -50,10 +50,10 @@ const RoomInvoiceList = () => {
     return (
 
         <View style={[AdminStyles.container,{flex:1}]}>
-
             <FlatList
                 onEndReached={loadMore}
                 ListFooterComponent={loading && <ActivityIndicator />}
+                ListEmptyComponent={!loading && <View style={AdminStyles.center}><Text>chưa có hóa đơn nào</Text></View>}
                 data={roomInvoiceList}
                 renderItem={({ item }) => (
                     <TouchableOpacity key={item.id}  onPress={() => {
@@ -79,24 +79,8 @@ const RoomInvoiceList = () => {
                     </TouchableOpacity>
                     
                 )}
-            />
-            
-            <View >
-                <Card  style={[AdminStyles.mb,AdminStyles.invoiceCard,{backgroundColor:getColor("Paid")}]}>
-                            <Card.Content >
-                                <View style={AdminStyles.row}>
-
-                                    <View style={[AdminStyles.flex_05,AdminStyles.center_start]}>
-                                        
-                                        <Text>nhà</Text>
-                                    </View>
-                                    <View style={AdminStyles.flex_05}>
-                                        <Text>VND</Text>
-                                    </View>
-                                </View>
-                            </Card.Content>
-                        </Card>
-            </View>
+            /> 
+             
         </View>
 
     );

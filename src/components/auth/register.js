@@ -40,7 +40,7 @@ const RegisterScreen = ({navigation}) => {
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             style={styles.input}
-            placeholder="Username"
+            placeholder="Tên người dùng"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -56,7 +56,8 @@ const RegisterScreen = ({navigation}) => {
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             style={styles.input}
-            placeholder="Password"
+            placeholder="Mật khẩu"
+            
             secureTextEntry
             onBlur={onBlur}
             onChangeText={onChange}
