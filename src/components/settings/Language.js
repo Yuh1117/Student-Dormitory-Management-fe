@@ -38,8 +38,8 @@ const Language = () => {
                     onValueChange={setSelectedLanguage}
                     value={selectedLanguage}
                 >
-                    <RadioButton.Item label="Tiếng Việt" value="vi" />
-                    <RadioButton.Item label="English" value="en" />
+                    <RadioButton.Item label="🇻🇳 Tiếng Việt" value="vi" />
+                    <RadioButton.Item label="🇬🇧 English" value="en" />
                 </RadioButton.Group>
             </View>
             <TouchableOpacity

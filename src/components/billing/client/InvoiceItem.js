@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { formatVietNamCurrency } from '../../../utils/utils';
 
 const InvoiceItem = ({ item }) => (
     <View style={styles.item}>
@@ -9,7 +10,7 @@ const InvoiceItem = ({ item }) => (
         </View>
         <View>
             <Text style={styles.label}>
-                {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.amount)}
+                {formatVietNamCurrency(item.amount)}
             </Text>
         </View>
     </View>

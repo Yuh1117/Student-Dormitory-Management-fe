@@ -4,20 +4,18 @@ import { Divider, Text, ToggleButton } from "react-native-paper";
 import MenuItem from "../auth/MenuItem";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { authApis, endpoints } from "../../config/Apis";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
+import { MyUserContext } from '../../config/MyContexts';
 
 const Support = () => {
+    const user = useContext(MyUserContext)
     const nav = useNavigation();
     const [loading, setLoading] = useState(false);
     const [complaints, setComplaints] = useState([]);
     const [page, setPage] = useState(1);
-    const [roomLoading, setRoomLoading] = useState(false);
-    const [roomComplaints, setRoomComplaints] = useState([]);
-    const [roomPage, setRoomPage] = useState(1);
     const [viewType, setViewType] = useState("room");
     const { t } = useTranslation();
 
@@ -27,7 +25,11 @@ const Support = () => {
                 setLoading(true);
 
                 const token = await AsyncStorage.getItem("access-token");
-                let url = `${endpoints["my-complaints"]}?page=${page}`;
+                let url = `${endpoints["my-room-complaints"]}?page=${page}`;
+
+                if (viewType === 'mine') {
+                    url = `${url}&student=${user?._j.id}`
+                }
 
                 console.info(url);
 
@@ -49,56 +51,18 @@ const Support = () => {
         }
     };
 
-    const loadRoomComplaints = async () => {
-        if (roomPage > 0) {
-            try {
-                setRoomLoading(true);
-
-                const token = await AsyncStorage.getItem("access-token");
-                const url = `${endpoints["my-room-complaints"]}?page=${roomPage}`;
-                console.info(url);
-
-                const res = await authApis(token).get(url);
-                setRoomComplaints([...roomComplaints, ...res.data.results]);
-
-                if (res.data.next === null) setRoomPage(0);
-            } catch (ex) {
-                console.error(ex);
-            } finally {
-                setRoomLoading(false);
-            }
-        }
-    };
-
-    const loadRoomMore = () => {
-        if (!roomLoading && roomPage > 0) {
-            setRoomPage(roomPage + 1);
-        }
-    };
+    const handleViewTypeChange = (value) => {
+        setViewType(value)
+        setComplaints([]);
+        setPage(0);
+        setTimeout(() => setPage(1), 0);
+    }
 
     useEffect(() => {
-        if (viewType === "room") {
-            loadRoomComplaints();
-        }
-    }, [roomPage, viewType]);
+        loadComplaints()
+    }, [page]);
 
-    useEffect(() => {
-        if (viewType === "mine") {
-            loadComplaints();
-        }
-    }, [page, viewType]);
-
-    useEffect(() => {
-        if (viewType === "room") {
-            setComplaints([]);
-            setPage(1);
-        } else {
-            setRoomComplaints([]);
-            setRoomPage(1);
-        }
-    }, [viewType]);
-
-    const renderComplaintItem = ({ item, index }) => (
+    const renderComplaintItem = ({ item }) => (
         <TouchableOpacity onPress={() => nav.navigate('SupportDetail', { support: item })}>
             <View key={item.id}>
                 <View style={[styles.row, { padding: 7, marginVertical: 5 }]}>
@@ -137,8 +101,10 @@ const Support = () => {
                     {t('support.view_type.' + viewType)}
                 </Text>
                 <ToggleButton.Row
-                    onValueChange={value => {
-                        if (value) setViewType(value);
+                    onValueChange={(value) => {
+                        if (value) {
+                            handleViewTypeChange(value)
+                        }
                     }}
                     value={viewType}
                     style={{ justifyContent: 'center', marginVertical: 5 }}
@@ -165,47 +131,26 @@ const Support = () => {
                 </ToggleButton.Row>
             </View>
 
-            {viewType === "mine" ? (
-                loading && complaints.length === 0 ? (
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-                        <ActivityIndicator size={40} />
-                    </View>
-                ) : complaints.length > 0 ? (
-                    <FlatList
-                        key={viewType}
-                        onEndReached={loadMore}
-                        ListFooterComponent={loading && <ActivityIndicator size={30} />}
-                        data={complaints}
-                        keyExtractor={(item) => `mine-${item.id}`}
-                        renderItem={renderComplaintItem}
-                        contentContainerStyle={{ paddingHorizontal: 7, paddingBottom: 20 }}
-                    />
-                ) : (
-                    <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text>{t('support.no_requests')}</Text>
-                    </View>
-                )
+            {loading && complaints.length === 0 ? (
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+                    <ActivityIndicator size={40} />
+                </View>
+            ) : complaints.length > 0 ? (
+                <FlatList
+                    key={viewType}
+                    onEndReached={loadMore}
+                    ListFooterComponent={loading && <ActivityIndicator size={30} />}
+                    data={complaints}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={renderComplaintItem}
+                    contentContainerStyle={{ paddingHorizontal: 7, paddingBottom: 20 }}
+                />
             ) : (
-                roomLoading && roomComplaints.length === 0 ? (
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-                        <ActivityIndicator size={40} />
-                    </View>
-                ) : roomComplaints.length > 0 ? (
-                    <FlatList
-                        key={viewType}
-                        onEndReached={loadRoomMore}
-                        ListFooterComponent={roomLoading && <ActivityIndicator size={30} />}
-                        data={roomComplaints}
-                        keyExtractor={(item) => `room-${item.id}`}
-                        renderItem={renderComplaintItem}
-                        contentContainerStyle={{ paddingHorizontal: 7, paddingBottom: 20 }}
-                    />
-                ) : (
-                    <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text>{t('support.no_requests')}</Text>
-                    </View>
-                )
+                <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text>{t('support.no_requests')}</Text>
+                </View>
             )}
+
         </View>
     );
 };

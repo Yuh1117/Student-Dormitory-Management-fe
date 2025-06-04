@@ -5,6 +5,7 @@
     "types": {
       "all": "All",
       "Maintenance": "Maintenance",
+      "Room": "Room",
       "Billing": "Billing"
     },
     "no_notifications": "No notifications available"
@@ -61,6 +62,18 @@
     "no_rooms": "No rooms available.",
     "reason": "Reason for room change"
   },
+  "roomChangeHistory": {
+    "title": "Room change requests history",
+    "currentRoom": "Current room",
+    "requestedRoom": "Requested room",
+    "reason": "Reason",
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "noRequests": "No room change requests found."
+  },
 
   "support": {
     "title": "Support",
@@ -78,7 +91,12 @@
     "title": "Send support request",
     "image_placeholder": "Add Image"
   },
-  "supportDetail": "Support details",
+  "supportDetail": {
+    "title": "Support details",
+    "sender": "Sender",
+    "responses": "Responses",
+    "noResponses": "No responses yet!"
+  },
 
   "survey": {
     "title": "Survey",

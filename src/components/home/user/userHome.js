@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MenuItem from '../../auth/MenuItem';
-import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Feather, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import AccountStyles from '../../auth/AccountStyles';
 import { useNavigation } from '@react-navigation/native';
 import PricingList from './PricingList';
@@ -25,7 +25,7 @@ const UserHome = () => {
 
           <View style={styles.gridItem}>
             <MenuItem
-              icon={<Feather name="home" size={22} color="#333" />}
+              icon={<MaterialCommunityIcons name="bed-outline" size={22} color="#333" />}
               title={t('room')}
               onPress={() => nav.navigate("RoomDetails")}
             />
@@ -50,7 +50,7 @@ const UserHome = () => {
 
             <MenuItem
               icon={<Ionicons name="megaphone-outline" size={22} color="#333" />}
-              title={capitalizeFirstWord(`${t('send')} ${t('support.title')}`)}
+              title={t('support.title')}
               onPress={() => nav.navigate("Support")}
             />
           </View>

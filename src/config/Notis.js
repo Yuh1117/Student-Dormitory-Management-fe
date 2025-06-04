@@ -14,7 +14,19 @@ export const registerForPushNotificationsAsync = async () => {
       return;
     }
     const token = (await Notifications.getExpoPushTokenAsync()).data;
-    return token; 
+    return token;
   }
+};
+
+export const scheduleLocalNotification = async (title, content) => {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: title,
+      body: content,
+    },
+    trigger: {
+      seconds: 5,
+    },
+  });
 };
 

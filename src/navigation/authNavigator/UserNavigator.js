@@ -26,6 +26,7 @@ import { useContext, useEffect } from 'react';
 import { MyRoomDispatchContext } from '../../config/MyContexts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApis, endpoints } from '../../config/Apis';
+import RoomChangeHistory from '../../components/room/client/RoomChangeHistory';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -42,13 +43,28 @@ const StackHomeNavigator = ({ t }) => {
             <Stack.Screen
                 name="RoomDetails"
                 component={RoomDetails}
-                options={{ headerShown: true, title: `${t('roomDetails.title')}` }}
+                options={{ headerShown: true, title: `${t('room')}` }}
             />
 
             <Stack.Screen
                 name="RoomChange"
                 component={RoomChange}
-                options={{ headerShown: true, title: `${t('roomChange.title')}` }}
+                options={({ navigation }) => ({
+                    headerShown: true, title: `${t('roomChange.title')}`,
+                    headerRight: () => (
+                        <TouchableOpacity
+                            style={{ marginRight: 20 }}
+                            onPress={() => navigation.navigate("RoomChangeHistory")}
+                        >
+                            <MaterialCommunityIcons name="history" size={30} />
+                        </TouchableOpacity>
+                    ),
+                })}
+            />
+            <Stack.Screen
+                name="RoomChangeHistory"
+                component={RoomChangeHistory}
+                options={{ headerShown: true, title: `${t('roomChangeHistory.title')}` }}
             />
 
             <Stack.Screen
@@ -59,7 +75,7 @@ const StackHomeNavigator = ({ t }) => {
             <Stack.Screen
                 name="InvoiceDetail"
                 component={InvoiceDetails}
-                options={{ headerShown: true, title: `${t('invoiceDetails.title')}` }}
+                options={{ headerShown: true, title: `${t('invoiceDetails.title')}`, }}
             />
 
             <Stack.Screen
@@ -75,7 +91,7 @@ const StackHomeNavigator = ({ t }) => {
             <Stack.Screen
                 name="SupportDetail"
                 component={SupportDetail}
-                options={{ headerShown: true, title: `${t('supportDetail')}` }}
+                options={{ headerShown: true, title: `${t('supportDetail.title')}` }}
             />
 
             <Stack.Screen
@@ -197,8 +213,9 @@ export function UserHomeMain() {
                     tabBarInactiveTintColor: "gray",
                 }
             }>
-                <Tab.Screen name={t('home')} children={() => <StackHomeNavigator t={t} />} options={
+                <Tab.Screen name="Home" children={() => <StackHomeNavigator t={t} />} options={
                     {
+                        title: t('home'),
                         headerShown: false,
                         tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="home" color={color} size={size} />
@@ -206,8 +223,9 @@ export function UserHomeMain() {
                     }
                 }></Tab.Screen>
 
-                <Tab.Screen name={t('notifications.title')} children={() => <StackNotiNavigator t={t} />} options={
+                <Tab.Screen name="Notifications" children={() => <StackNotiNavigator t={t} />} options={
                     {
+                        title: t('notifications.title'),
                         headerShown: false,
                         tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="bell" color={color} size={size} />
@@ -225,8 +243,9 @@ export function UserHomeMain() {
                     }
                 }></Tab.Screen>
 
-                <Tab.Screen name={t('account')} children={() => <StackAccountNavigator t={t} />} options={
+                <Tab.Screen name="Account" children={() => <StackAccountNavigator t={t} />} options={
                     {
+                        title: t('account'),
                         headerShown: false,
                         tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="account" color={color} size={size} />

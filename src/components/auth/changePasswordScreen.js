@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import useFetchWithToken from '../../config/UseFetchWithToken';
 import { endpoints } from '../../config/Apis';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator, TextInput } from 'react-native-paper';
 import { MyDispatchContext, MyUserContext } from '../../config/MyContexts';
 
 const ChangPasswordScreen = () => {
@@ -16,8 +16,12 @@ const ChangPasswordScreen = () => {
     const { loading, fetchWithToken } = useFetchWithToken()
 
     useEffect(() => {
-        setValue('username', user._j.username);
-    }, [])
+        if (user?._j) {
+            setValue('username', user._j.username || '');
+            setValue('email', user._j.email || '');
+            setValue('phone_number', user._j.student_detail?.phone_number || '');
+        }
+    }, []);
 
     const onSubmit = async (data) => {
         const token = await AsyncStorage.getItem("access-token");
@@ -32,7 +36,7 @@ const ChangPasswordScreen = () => {
                 Authorization: `Bearer ${token}`
             }
         })
-        
+
         if (res) {
             dispatch({
                 "type": "update",
@@ -97,6 +101,50 @@ const ChangPasswordScreen = () => {
 
             <Controller
                 control={control}
+                name="email"
+                rules={{
+                    required: 'Thông tin bắt buộc',
+                    pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: 'Email không hợp lệ',
+                    },
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Email"
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                    />
+                )}
+            />
+            {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
+
+            <Controller
+                control={control}
+                name="phone_number"
+                rules={{
+                    required: 'Thông tin bắt buộc',
+                    pattern: {
+                        value: /^\d{10}$/,
+                        message: 'Số điện thoại không hợp lệ',
+                    },
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        style={styles.input}
+                        placeholder="SĐT"
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                    />
+                )}
+            />
+            {errors.phone_number && <Text style={styles.error}>{errors.phone_number.message}</Text>}
+
+            <Controller
+                control={control}
                 name="password"
                 rules={{ required: 'Thông tin bắt buộc', minLength: { value: 4, message: 'Password must be at least 4 characters' } }}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -138,6 +186,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginBottom: 10,
         minWidth: 300,
+        backgroundColor: 'white'
     },
     error: {
         color: 'red',

@@ -47,21 +47,23 @@ const RoomDetails = () => {
                 ) : room !== null ? (
                     <>
                         <View style={AccountStyles.card}>
-                            <View style={roomStyles.row}>
-                                <Text style={roomStyles.title}>
-                                    {t('roomDetails.building')} {room.building.building_name} - { }
-                                </Text>
-                                <Text style={roomStyles.title}>
-                                    {t('roomDetails.floor')} {room.floor}
-                                </Text>
-
-                            </View>
-
-                            <Text style={roomStyles.subtitle}>
-                                {t('roomDetails.room_number')} {room.room_number}
+                            <Text style={roomStyles.title}>
+                                {t('roomDetails.title')}
                             </Text>
 
-                            <View style={[roomStyles.row, {gap: 5}]}>
+                            <View style={roomStyles.row}>
+                                <Text style={roomStyles.subtitle}>
+                                    {t('roomDetails.building')} {room.building.building_name} | { }
+                                </Text>
+                                <Text style={roomStyles.subtitle}>
+                                    {t('roomDetails.floor')} {room.floor} | { }
+                                </Text>
+                                <Text style={roomStyles.subtitle}>
+                                    {t('roomDetails.room_number')} {room.room_number}
+                                </Text>
+                            </View>
+
+                            <View style={[roomStyles.row, { gap: 5 }]}>
                                 <View style={[roomStyles.capacityBox, { backgroundColor: '#FFF3E0' }]}>
                                     <Text style={[roomStyles.capacityText, { color: "#FF9800" }]}>
                                         {room.room_type}
@@ -82,7 +84,7 @@ const RoomDetails = () => {
 
                         <View style={AccountStyles.card}>
                             <Text style={roomStyles.title}>{t('roomDetails.roommates_title')}</Text>
-                            {roommates.length > 0 ? (
+                            {roommates.length > 1 ? (
                                 roommates.map(r => (
                                     r.student_detail.id !== user?._j?.id && <RoommateItem key={r.id} item={r.student_detail} />
                                 ))
@@ -107,7 +109,7 @@ export const roomStyles = StyleSheet.create({
     title: {
         fontWeight: 'bold',
         fontSize: 20,
-        marginBottom: 5,
+        marginBottom: 10,
     },
     row: {
         flexDirection: 'row',
@@ -138,8 +140,8 @@ export const roomStyles = StyleSheet.create({
     },
     subtitle: {
         fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 10
+        fontWeight: '500',
+        marginBottom: 7
     },
 });
 

@@ -5,12 +5,15 @@ import { ActivityIndicator, Card, Title, Paragraph, Text, Divider } from "react-
 import { authApis, endpoints } from "../../config/Apis";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AccountStyles from "../auth/AccountStyles"
+import RoommateItem from "../room/client/RoommateItem";
+import { useTranslation } from "react-i18next";
 
 const SupportDetail = ({ route }) => {
     const [loading, setLoading] = useState(false);
     const support = route.params?.support;
     const [responses, setResponses] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
+    const { t } = useTranslation()
 
 
     const loadSupport = async () => {
@@ -38,11 +41,18 @@ const SupportDetail = ({ route }) => {
                 {support && (
                     <>
                         <View style={AccountStyles.card}>
+                            <Text style={styles.title}>{t('supportDetail.sender')}</Text>
+                            <RoommateItem item={support.student} />
+                        </View>
+                        <View style={AccountStyles.card}>
                             <View>
                                 <View style={styles.row}>
                                     <Text style={styles.title}>{support.title}</Text>
-                                    {support.status === "Pending" ? <Text style={{ color: 'orange' }}>Đã gửi</Text> :
-                                        <Text style={{ color: '#4CAF50' }}>Đã giải quyết</Text>}
+                                    {support.status === "Pending" ? (
+                                        <Text style={{ color: 'orange' }}>{t('support.status.pending')}</Text>
+                                    ) : (
+                                        <Text style={{ color: '#4CAF50' }}>{t('support.status.resolved')}</Text>
+                                    )}
                                 </View>
                                 <Paragraph style={styles.description}>{support.description}</Paragraph>
                                 {support.image !== '' && (
@@ -71,13 +81,12 @@ const SupportDetail = ({ route }) => {
                                         </Modal>
                                     </>
                                 )}
-
                             </View>
                         </View>
 
                         <View style={AccountStyles.card}>
                             <View>
-                                <Text style={styles.title}>Phản hồi</Text>
+                                <Text style={styles.title}>{t('supportDetail.responses')}</Text>
                                 {loading ? (
                                     <View style={{ padding: 20, alignItems: 'center', justifyContent: 'center' }}>
                                         <ActivityIndicator size={40} />
@@ -87,7 +96,7 @@ const SupportDetail = ({ route }) => {
                                         <View key={idx} style={{ marginBottom: 10 }}>
                                             <Text style={styles.description}>{r.content}</Text>
                                             <Text style={styles.responseDate}>
-                                                {new Date(r.created_date).toLocaleDateString("vi-VN", {
+                                                {new Date(r.created_date).toLocaleDateString(t('locale'), {
                                                     hour: "2-digit",
                                                     minute: "2-digit",
                                                 })}
@@ -96,7 +105,7 @@ const SupportDetail = ({ route }) => {
                                         </View>
                                     ))
                                 ) : (
-                                    <Paragraph>Chưa có phản hồi!</Paragraph>
+                                    <Paragraph>{t('supportDetail.noResponses')}</Paragraph>
                                 )}
                             </View>
                         </View>

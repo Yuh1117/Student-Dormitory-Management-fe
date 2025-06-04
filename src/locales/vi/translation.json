@@ -5,6 +5,7 @@
     "types": {
       "all": "Tất cả",
       "Maintenance": "Bảo trì",
+      "Room": "Phòng",
       "Billing": "Hóa đơn"
     },
     "no_notifications": "Không có thông báo nào"
@@ -61,9 +62,21 @@
     "no_rooms": "Không có phòng nào phù hợp.",
     "reason": "Lý do đổi phòng"
   },
+  "roomChangeHistory": {
+    "title": "Lịch sử yêu cầu đổi phòng",
+    "currentRoom": "Phòng hiện tại",
+    "requestedRoom": "Phòng yêu cầu",
+    "reason": "Lý do",
+    "status": {
+      "pending": "Đang chờ",
+      "approved": "Chấp nhận",
+      "rejected": "Từ chối"
+    },
+    "noRequests": "Không có yêu cầu đổi phòng nào."
+  },
 
   "support": {
-    "title": "Yêu cầu",
+    "title": "Hỗ trợ",
     "view_type": {
       "mine": "Yêu cầu của tôi",
       "room": "Yêu cầu của phòng"
@@ -78,7 +91,12 @@
     "title": "Gửi yêu cầu hỗ trợ",
     "image_placeholder": "Thêm hình ảnh"
   },
-  "supportDetail": "Thông tin yêu cầu",
+  "supportDetail": {
+    "title": "Thông tin yêu cầu",
+    "sender": "Người gửi",
+    "responses": "Phản hồi",
+    "noResponses": "Chưa có phản hồi!"
+  },
 
   "survey": {
     "title": "Khảo sát",
@@ -118,14 +136,14 @@
   
   "pricingListTitle": "Danh mục tính tiền",
   "pricingItems": {
-    "home": "Tiền nhà",
+    "home": "Tiền phòng",
     "electricity": "Tiền điện",
     "water": "Tiền nước",
     "trash": "Tiền rác",
     "wifi": "Tiền wifi"
   },
   "pricingValues": {
-    "home": "Theo loại phòng",
+    "home": "Theo phòng",
     "electricity": "3.500đ/KWh",
     "electricitySub": "Tính theo đồng hồ",
     "water": "20.000đ/Khối",

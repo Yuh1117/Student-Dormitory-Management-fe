@@ -56,6 +56,12 @@ const Profile = () => {
                 setMsg("Email không hợp lệ!");
                 return false;
             }
+
+            const phoneRegex = /^\d{10}$/;
+            if (f.field === "phone_number" && !phoneRegex.test(user[f.field])) {
+                setMsg("SĐT không hợp lệ!");
+                return false;
+            }
         }
         return true
     }
@@ -120,10 +126,6 @@ const Profile = () => {
                     </TouchableOpacity>
                 </View>
 
-                <HelperText style={AccountStyles.m} type="error" visible={msg}>
-                    {msg}
-                </HelperText>
-
                 <View style={AccountStyles.card}>
 
                     {fields.map(f =>
@@ -139,6 +141,10 @@ const Profile = () => {
                             right={<TextInput.Icon icon={f.icon} />}
                         />
                     )}
+
+                    {msg && <HelperText style={AccountStyles.m} type="error" visible={msg}>
+                        {msg}
+                    </HelperText>}
 
                     < TouchableOpacity style={AccountStyles.button} onPress={saveInfor} disabled={loading} >
                         {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>{t('update')}</Text>}
