@@ -62,6 +62,18 @@
     "no_rooms": "No rooms available.",
     "reason": "Reason for room change"
   },
+  "roomChangeHistory": {
+    "title": "Room change requests history",
+    "currentRoom": "Current room",
+    "requestedRoom": "Requested room",
+    "reason": "Reason",
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "noRequests": "No room change requests found."
+  },
 
   "support": {
     "title": "Support",

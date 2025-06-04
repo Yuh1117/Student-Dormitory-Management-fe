@@ -62,6 +62,18 @@
     "no_rooms": "Không có phòng nào phù hợp.",
     "reason": "Lý do đổi phòng"
   },
+  "roomChangeHistory": {
+    "title": "Lịch sử yêu cầu đổi phòng",
+    "currentRoom": "Phòng hiện tại",
+    "requestedRoom": "Phòng yêu cầu",
+    "reason": "Lý do",
+    "status": {
+      "pending": "Đang chờ",
+      "approved": "Chấp nhận",
+      "rejected": "Từ chối"
+    },
+    "noRequests": "Không có yêu cầu đổi phòng nào."
+  },
 
   "support": {
     "title": "Hỗ trợ",
@@ -124,14 +136,14 @@
   
   "pricingListTitle": "Danh mục tính tiền",
   "pricingItems": {
-    "home": "Tiền nhà",
+    "home": "Tiền phòng",
     "electricity": "Tiền điện",
     "water": "Tiền nước",
     "trash": "Tiền rác",
     "wifi": "Tiền wifi"
   },
   "pricingValues": {
-    "home": "Theo loại phòng",
+    "home": "Theo phòng",
     "electricity": "3.500đ/KWh",
     "electricitySub": "Tính theo đồng hồ",
     "water": "20.000đ/Khối",

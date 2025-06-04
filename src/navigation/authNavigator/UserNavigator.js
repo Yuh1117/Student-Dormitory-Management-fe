@@ -26,6 +26,7 @@ import { useContext, useEffect } from 'react';
 import { MyRoomDispatchContext } from '../../config/MyContexts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApis, endpoints } from '../../config/Apis';
+import RoomChangeHistory from '../../components/room/client/RoomChangeHistory';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -48,7 +49,22 @@ const StackHomeNavigator = ({ t }) => {
             <Stack.Screen
                 name="RoomChange"
                 component={RoomChange}
-                options={{ headerShown: true, title: `${t('roomChange.title')}` }}
+                options={({ navigation }) => ({
+                    headerShown: true, title: `${t('roomChange.title')}`,
+                    headerRight: () => (
+                        <TouchableOpacity
+                            style={{ marginRight: 20 }}
+                            onPress={() => navigation.navigate("RoomChangeHistory")}
+                        >
+                            <MaterialCommunityIcons name="history" size={30} />
+                        </TouchableOpacity>
+                    ),
+                })}
+            />
+            <Stack.Screen
+                name="RoomChangeHistory"
+                component={RoomChangeHistory}
+                options={{ headerShown: true, title: `${t('roomChangeHistory.title')}` }}
             />
 
             <Stack.Screen
@@ -59,7 +75,7 @@ const StackHomeNavigator = ({ t }) => {
             <Stack.Screen
                 name="InvoiceDetail"
                 component={InvoiceDetails}
-                options={{ headerShown: true, title: `${t('invoiceDetails.title')}` }}
+                options={{ headerShown: true, title: `${t('invoiceDetails.title')}`, }}
             />
 
             <Stack.Screen

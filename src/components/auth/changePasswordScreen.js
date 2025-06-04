@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginBottom: 10,
         minWidth: 300,
+        backgroundColor: 'white'
     },
     error: {
         color: 'red',

@@ -76,7 +76,7 @@ const RoomInvoice = () => {
                             <Card key={item.id} style={[styles.card, { width: screenWidth - 50, padding: 3 }]}>
                                 <Card.Content>
                                     <View style={[styles.row, { marginBottom: 5 }]}>
-                                        <View style={styles.row}>
+                                        <View style={[styles.row, {width: '60%'}]}>
                                             <Avatar.Icon
                                                 icon="home"
                                                 size={45}
