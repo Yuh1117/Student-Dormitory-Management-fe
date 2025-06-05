@@ -104,7 +104,12 @@ const Profile = () => {
                     });
 
                     Alert.alert("Cập nhật thông tin thành công")
-                    nav.navigate("AccountMain")
+                    nav.dispatch(
+                        CommonActions.reset({
+                            index: 0,
+                            routes: [{ name: "AccountMain" }],
+                        })
+                    )
                 }
             } catch (ex) {
                 console.error(ex);

@@ -158,5 +158,6 @@
   "title": "Title",    
   "description": "Description",
   "search": "Search",
-  "close": "Close"
+  "close": "Close",
+  "finish": "Finish"
 }

@@ -1,12 +1,12 @@
 import React, { useContext, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, ImageBackground } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import axios from 'axios';
 import Apis, { endpoints } from "../../config/Apis";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { registerForPushNotificationsAsync } from "../../config/Notis";
 import { MyDispatchContext } from "../../config/MyContexts";
 import AccountStyles from "./AccountStyles";
+import { CommonActions } from "@react-navigation/native";
 
 const LoginScreen = ({ navigation }) => {
   const { control, handleSubmit, formState: { errors } } = useForm();
@@ -39,12 +39,17 @@ const LoginScreen = ({ navigation }) => {
         const is_staff = response.data.user.is_staff
         const is_first_access = response.data.user.is_first_access
 
-        if (is_first_access) {
-          navigation.navigate('ChangePass', { user: user })
+        if (is_staff) {
+          navigation.navigate("AdminHome")
         } else {
-          is_staff ? navigation.navigate("AdminHome") : navigation.navigate('UserHome')
+          is_first_access ? navigation.navigate("ChangePass") :
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: "UserHome" }],
+              })
+            )
         }
-
       } else {
         Alert.alert('Error', response.data);
       }
@@ -65,132 +70,132 @@ const LoginScreen = ({ navigation }) => {
       <ImageBackground style={[AccountStyles.backGround, AccountStyles.container]} source={require('../../assets/room2.jpg')} resizeMode="cover">
         <View style={[styles.loginArea]}>
           <View style={styles.backgroundBlur} />
-            <View style={styles.foregroundContent}>
+          <View style={styles.foregroundContent}>
 
 
-              {/* <Text style={[AccountStyles.title,styles.LoginTitle]}>Đăng nhập</Text> */}
+            {/* <Text style={[AccountStyles.title,styles.LoginTitle]}>Đăng nhập</Text> */}
 
-              <Controller
-                control={control}
-                name="username"
-                rules={{ required: 'Tên đăng nhập không được để trống' }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    style={[AccountStyles.input,styles.loginInput]}
-                    placeholder="Tên đăng nhập"
-                    placeholderTextColor={"#886e61"}
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                )}
-              />
-              {errors.username && <Text style={AccountStyles.error}>{errors.username.message}</Text>}
+            <Controller
+              control={control}
+              name="username"
+              rules={{ required: 'Tên đăng nhập không được để trống' }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={[AccountStyles.input, styles.loginInput]}
+                  placeholder="Tên đăng nhập"
+                  placeholderTextColor={"#886e61"}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+            />
+            {errors.username && <Text style={AccountStyles.error}>{errors.username.message}</Text>}
 
-              <Controller
-                control={control}
-                name="password"
-                rules={{ required: 'Mật khẩu không được để trống', minLength: { value: 1, message: 'Password must be at least 6 characters' } }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    style={[AccountStyles.input,styles.loginInput]}
-                    placeholder="Mật khẩu"
-                    placeholderTextColor={"#886e61"}
-                    secureTextEntry
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                )}
-              />
-              {errors.password && <Text style={AccountStyles.error}>{errors.password.message}</Text>}
+            <Controller
+              control={control}
+              name="password"
+              rules={{ required: 'Mật khẩu không được để trống', minLength: { value: 1, message: 'Password must be at least 6 characters' } }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={[AccountStyles.input, styles.loginInput]}
+                  placeholder="Mật khẩu"
+                  placeholderTextColor={"#886e61"}
+                  secureTextEntry
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+            />
+            {errors.password && <Text style={AccountStyles.error}>{errors.password.message}</Text>}
 
-              <TouchableOpacity style={[AccountStyles.button,styles.loginButton]} onPress={handleSubmit(onSubmit)} disabled={loading}>
-                {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>Đăng nhập</Text>}
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={[AccountStyles.button, styles.loginButton]} onPress={handleSubmit(onSubmit)} disabled={loading}>
+              {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>Đăng nhập</Text>}
+            </TouchableOpacity>
+          </View>
 
         </View>
       </ImageBackground>
     </View>
   );
 
-//   return (
-//   <View style={[AccountStyles.container, { padding: 0 }]}>
-//     <ImageBackground
-//       style={[AccountStyles.backGround, AccountStyles.container]}
-//       source={require('../../assets/room.jpg')}
-//       resizeMode="cover"
-//     >
-//       <View style={styles.loginArea}>
-//         <BlurView
-//           intensity={100} // Có thể điều chỉnh để thấy rõ hơn
-//           tint="light"
-//           style={styles.blurBox}
-//         >
-//           <View style={styles.foregroundContent}>
-//             <Text style={AccountStyles.title}>Đăng nhập</Text>
+  //   return (
+  //   <View style={[AccountStyles.container, { padding: 0 }]}>
+  //     <ImageBackground
+  //       style={[AccountStyles.backGround, AccountStyles.container]}
+  //       source={require('../../assets/room.jpg')}
+  //       resizeMode="cover"
+  //     >
+  //       <View style={styles.loginArea}>
+  //         <BlurView
+  //           intensity={100} // Có thể điều chỉnh để thấy rõ hơn
+  //           tint="light"
+  //           style={styles.blurBox}
+  //         >
+  //           <View style={styles.foregroundContent}>
+  //             <Text style={AccountStyles.title}>Đăng nhập</Text>
 
-//             <Controller
-//               control={control}
-//               name="username"
-//               rules={{ required: 'Tên đăng nhập không được để trống' }}
-//               render={({ field: { onChange, onBlur, value } }) => (
-//                 <TextInput
-//                   style={AccountStyles.input}
-//                   placeholder="Tên đăng nhập"
-//                   onBlur={onBlur}
-//                   onChangeText={onChange}
-//                   value={value}
-//                 />
-//               )}
-//             />
-//             {errors.username && (
-//               <Text style={AccountStyles.error}>{errors.username.message}</Text>
-//             )}
+  //             <Controller
+  //               control={control}
+  //               name="username"
+  //               rules={{ required: 'Tên đăng nhập không được để trống' }}
+  //               render={({ field: { onChange, onBlur, value } }) => (
+  //                 <TextInput
+  //                   style={AccountStyles.input}
+  //                   placeholder="Tên đăng nhập"
+  //                   onBlur={onBlur}
+  //                   onChangeText={onChange}
+  //                   value={value}
+  //                 />
+  //               )}
+  //             />
+  //             {errors.username && (
+  //               <Text style={AccountStyles.error}>{errors.username.message}</Text>
+  //             )}
 
-//             <Controller
-//               control={control}
-//               name="password"
-//               rules={{
-//                 required: 'Mật khẩu không được để trống',
-//                 minLength: {
-//                   value: 1,
-//                   message: 'Password must be at least 6 characters',
-//                 },
-//               }}
-//               render={({ field: { onChange, onBlur, value } }) => (
-//                 <TextInput
-//                   style={[AccountStyles.input]}
-//                   placeholder="Mật khẩu"
-//                   secureTextEntry
-//                   onBlur={onBlur}
-//                   onChangeText={onChange}
-//                   value={value}
-//                 />
-//               )}
-//             />
-//             {errors.password && (
-//               <Text style={AccountStyles.error}>{errors.password.message}</Text>
-//             )}
+  //             <Controller
+  //               control={control}
+  //               name="password"
+  //               rules={{
+  //                 required: 'Mật khẩu không được để trống',
+  //                 minLength: {
+  //                   value: 1,
+  //                   message: 'Password must be at least 6 characters',
+  //                 },
+  //               }}
+  //               render={({ field: { onChange, onBlur, value } }) => (
+  //                 <TextInput
+  //                   style={[AccountStyles.input]}
+  //                   placeholder="Mật khẩu"
+  //                   secureTextEntry
+  //                   onBlur={onBlur}
+  //                   onChangeText={onChange}
+  //                   value={value}
+  //                 />
+  //               )}
+  //             />
+  //             {errors.password && (
+  //               <Text style={AccountStyles.error}>{errors.password.message}</Text>
+  //             )}
 
-//             <TouchableOpacity
-//               style={AccountStyles.button}
-//               onPress={handleSubmit(onSubmit)}
-//               disabled={loading}
-//             >
-//               {loading ? (
-//                 <ActivityIndicator color="white" />
-//               ) : (
-//                 <Text style={AccountStyles.buttonText}>Đăng nhập</Text>
-//               )}
-//             </TouchableOpacity>
-//           </View>
-//         </BlurView>
-//       </View>
-//     </ImageBackground>
-//   </View>
-// );
+  //             <TouchableOpacity
+  //               style={AccountStyles.button}
+  //               onPress={handleSubmit(onSubmit)}
+  //               disabled={loading}
+  //             >
+  //               {loading ? (
+  //                 <ActivityIndicator color="white" />
+  //               ) : (
+  //                 <Text style={AccountStyles.buttonText}>Đăng nhập</Text>
+  //               )}
+  //             </TouchableOpacity>
+  //           </View>
+  //         </BlurView>
+  //       </View>
+  //     </ImageBackground>
+  //   </View>
+  // );
 
 };
 
@@ -213,15 +218,15 @@ const styles = StyleSheet.create({
   foregroundContent: {
     zIndex: 1,
   },
-  loginInput:{
-    borderColor:"#886e61",
-    color:"#886e61"
+  loginInput: {
+    borderColor: "#886e61",
+    color: "#886e61"
   },
-  LoginTitle:{
-    color:"#a48c80",
-    fontSize:30
+  LoginTitle: {
+    color: "#a48c80",
+    fontSize: 30
   },
-  loginButton:{
-    backgroundColor:"#7fad90"
+  loginButton: {
+    backgroundColor: "#7fad90"
   }
 })

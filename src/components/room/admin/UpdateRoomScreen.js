@@ -35,7 +35,7 @@ export default  function UpdateRoom() {
 
     const handleUpdate = async () => {
         const token = await AsyncStorage.getItem("access-token");
-        let url = `${endpoints["rooms"]}/${room.id}/`
+        let url = `${endpoints["rooms"]}${room.id}/`
         const res = await fetchWithToken({
             url,
             method: "PATCH",

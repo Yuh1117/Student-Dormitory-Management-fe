@@ -1,7 +1,7 @@
 import axios from "axios"
 
-// BASE_URL = "http://10.0.2.2:8000/"
-BASE_URL = "https://vovanhuy.pythonanywhere.com/"
+BASE_URL = "http://10.0.2.2:8000/"
+// BASE_URL = "https://vovanhuy.pythonanywhere.com/"
 // BASE_URL = "https://yuh1117.pythona
 
 export const endpoints = {

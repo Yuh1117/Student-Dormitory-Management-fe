@@ -4,10 +4,11 @@ import { Alert, TouchableOpacity, View } from "react-native";
 import AccountStyles from "../auth/AccountStyles";
 import { authApis, endpoints } from "../../config/Apis";
 import { ActivityIndicator, Card, HelperText, Text, TextInput } from "react-native-paper";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MyUserContext } from '../../config/MyContexts';
+import { useTranslation } from "react-i18next";
 
 const SurveyQuestions = ({ route }) => {
     const [questions, setQuestions] = useState([])
@@ -18,6 +19,7 @@ const SurveyQuestions = ({ route }) => {
     const [msg, setMsg] = useState()
     const user = useContext(MyUserContext)
     const nav = useNavigation()
+    const { t } = useTranslation()
 
     const loadQuestions = async () => {
         try {
@@ -76,7 +78,12 @@ const SurveyQuestions = ({ route }) => {
 
             if (res) {
                 Alert.alert("Bạn đã hoàn thành khảo sát")
-                nav.navigate("UserHome")
+                nav.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [{ name: "UserHome" }],
+                    })
+                )
             }
         } catch (ex) {
             console.error(ex);
@@ -142,17 +149,16 @@ const SurveyQuestions = ({ route }) => {
 
     return (
         <View style={AccountStyles.container}>
-            <View style={{ margin: 10 }}>
-                <Text style={[styles.title, styles.quicksand]}>{survey.title}</Text>
-                <Text style={styles.description}>{survey.description}</Text>
-            </View>
-
-            <FlatList
-                ListFooterComponent={loading && <ActivityIndicator size={30} />}
-                data={questions}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item, index }) => (
-                    <Card style={[AccountStyles.card, { padding: 5 }]}>
+            <ScrollView>
+                <View style={{ margin: 10 }}>
+                    <Text style={[styles.title]}>{survey.title}</Text>
+                    <Text style={styles.description}>{survey.description}</Text>
+                </View>
+                {loading && questions.length === 0 ? (
+                    <View style={{ padding: 20, alignItems: 'center', justifyContent: 'center' }}>
+                        <ActivityIndicator size={40} />
+                    </View>) : questions.length > 0 ?
+                    questions && questions.map((item, index) => <Card key={item.id} style={[AccountStyles.card, { padding: 5 }]}>
                         <Card.Content>
                             <Text style={styles.title}>{`${index + 1}. ${item.question_text}`}</Text>
                             <Text style={styles.description}>{item.question_type}</Text>
@@ -170,9 +176,11 @@ const SurveyQuestions = ({ route }) => {
                                 onChangeText={(text) => updateAnswer(item.id, text)}
                             />
                         </Card.Content>
-                    </Card>
-                )}
-            />
+                    </Card>) : <View style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
+                        <Text>{t('survey.no_surveys')}</Text>
+                    </View>
+                }
+            </ScrollView>
 
             {msg &&
                 <HelperText style={{ fontSize: 18 }} type="error" visible={msg}>
@@ -182,7 +190,7 @@ const SurveyQuestions = ({ route }) => {
 
             {(questions.length > 0 && !done) &&
                 <TouchableOpacity onPress={handleSubmit} style={[AccountStyles.button, { backgroundColor: '#376be3', margin: 7 }]} disabled={loading}>
-                    {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>Hoàn thành</Text>}
+                    {loading ? <ActivityIndicator color="white" /> : <Text style={AccountStyles.buttonText}>{t('finish')}</Text>}
                 </TouchableOpacity>
             }
         </View>

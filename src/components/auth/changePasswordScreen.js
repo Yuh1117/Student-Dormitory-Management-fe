@@ -19,17 +19,18 @@ const ChangPasswordScreen = () => {
         if (user?._j) {
             setValue('username', user._j.username || '');
             setValue('email', user._j.email || '');
-            setValue('phone_number', user._j.student_detail?.phone_number || '');
+            setValue('phone_number', user._j?.phone_number || '');
         }
     }, []);
 
     const onSubmit = async (data) => {
+        const { confirm_password, ...submitData } = data;
         const token = await AsyncStorage.getItem("access-token");
         const res = await fetchWithToken({
             method: 'PATCH',
             url: endpoints["current-user"],
             data: {
-                ...data,
+                ...submitData,
                 is_first_access: false,
             },
             headers: {
@@ -53,7 +54,7 @@ const ChangPasswordScreen = () => {
 
             <Controller
                 control={control}
-                name="first_name"
+                name="last_name"
                 rules={{ required: 'Thông tin bắt buộc' }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
@@ -69,7 +70,7 @@ const ChangPasswordScreen = () => {
 
             <Controller
                 control={control}
-                name="last_name"
+                name="first_name"
                 rules={{ required: 'Thông tin bắt buộc' }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
@@ -146,7 +147,7 @@ const ChangPasswordScreen = () => {
             <Controller
                 control={control}
                 name="password"
-                rules={{ required: 'Thông tin bắt buộc', minLength: { value: 4, message: 'Password must be at least 4 characters' } }}
+                rules={{ required: 'Thông tin bắt buộc' }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         style={styles.input}
@@ -159,6 +160,27 @@ const ChangPasswordScreen = () => {
                 )}
             />
             {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
+
+            <Controller
+                control={control}
+                name="confirm_password"
+                rules={{
+                    required: 'Thông tin bắt buộc',
+                    validate: (value) =>
+                        value === control._formValues.password || 'Mật khẩu không khớp',
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Nhập lại mật khẩu"
+                        secureTextEntry
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                    />
+                )}
+            />
+            {errors.confirm_password && <Text style={styles.error}>{errors.confirm_password.message}</Text>}
 
             {loading ? <ActivityIndicator /> : <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
                 <Text style={styles.buttonText}>Thay đổi</Text>
