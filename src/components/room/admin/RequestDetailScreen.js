@@ -10,28 +10,8 @@ import { RoomContext } from './roomContext';
 const RoomChangeDetail = ({ route, navigation }) => {
     const { request } = route.params;
     const { loading, fetchWithToken } = useFetchWithToken();
-    const [currentRoom, setCurrentRoom] = useState({});
-    const [requestedRoom, setRequestedRoom] = useState({});
     const { setSelectedRoom } = useContext(RoomContext);
-    const [isHandle, setIsHandle] =useState(false);
-
-    const loadRequestDetail = async () => {
-        if(request.status.toLowerCase() !='pending') setIsHandle(true)
-        try {
-            const currentRoomData = await fetchWithToken({
-                url: `${endpoints['rooms']}/${request.current_room}/`,
-            });
-
-            const requestedRoomData = await fetchWithToken({
-                url: `${endpoints['rooms']}/${request.requested_room}/`,
-            });
-
-            if (currentRoomData) setCurrentRoom(currentRoomData);
-            if (requestedRoomData) setRequestedRoom(requestedRoomData);
-        } catch (error) {
-            console.log('Error loading room details:', error);
-        }
-    };
+    // const [isHandle, setIsHandle] =useState(false);
 
     const handleUpdateStatus = async (status) => {
         const data = await fetchWithToken({
@@ -49,12 +29,16 @@ const RoomChangeDetail = ({ route, navigation }) => {
         
     };
 
-    useEffect(() => {
-        loadRequestDetail();
-    }, []);
 
     if (loading) return <ActivityIndicator style={{ marginTop: 50 }} />;
-
+    const getStatus = (status)=>{
+        if(status=="Full") return "Đã đủ sinh viên"
+        return "Còn trống"
+    }
+    const isHandle = ()=>{
+        if(request.status == "Pending") return false;
+        return true;
+    }
     return (
         <SafeAreaView style={[AdminStyles.container, AdminStyles.flex_1]}>
             <ScrollView contentContainerStyle={[styles.contentContainer]}>
@@ -69,7 +53,7 @@ const RoomChangeDetail = ({ route, navigation }) => {
                             <Text  style={[styles.value,AdminStyles.flex_1]}>{request.reason}</Text>
                         </View>
                         <View style ={[AdminStyles.row,{justifyContent:"flex-start",alignItems:"center"}]}>
-                            <Text style={styles.label}>Người yêu cầu:</Text>
+                            <Text style={styles.label}>Người yêu cầu: </Text>
                             <Text style={[styles.value,AdminStyles.flex_1]}>{request.student?.first_name || request.student?.last_name 
                             ? `${request.student?.first_name || ''} ${request.student?.last_name || ''}`.trim() 
                             : request.student?.username || 'Không rõ'}</Text>
@@ -77,7 +61,7 @@ const RoomChangeDetail = ({ route, navigation }) => {
                     </View>
 
                     <TouchableOpacity style={[styles.section,{backgroundColor:"#94B4C1"},AdminStyles.row,AdminStyles.center_space_between]} onPress={()=>{
-                                setSelectedRoom(currentRoom)
+                                setSelectedRoom(request.current_room)
                                 navigation.navigate("roomMember")
                             
                             }
@@ -85,30 +69,30 @@ const RoomChangeDetail = ({ route, navigation }) => {
                         <View>
                             
                             <Text style={styles.sectionTitle}>Phòng Hiện Tại</Text>
-                            <Text style={styles.value}>Số phòng: {currentRoom.room_number}</Text>
-                            <Text style={styles.value}>Loại phòng: {currentRoom.room_type}</Text>
-                            <Text style={styles.value}>Giường: {currentRoom.total_beds}</Text>
-                            <Text style={styles.value}>Tình trạng: {currentRoom.status}</Text>
+                            <Text style={styles.value}>Số phòng: {request.current_room.room_number}</Text>
+                            <Text style={styles.value}>Loại phòng: {request.current_room.room_type}</Text>
+                            <Text style={styles.value}>Giường: {request.current_room.total_beds}</Text>
+                            <Text style={styles.value}>Tình trạng: {getStatus(request.current_room.status)}</Text>
                         </View>
                         <Ionicons name="chevron-forward-outline" size={24} color="#000" />
                     </TouchableOpacity>
 
                     <TouchableOpacity style={[styles.section,AdminStyles.roomBgColor,AdminStyles.row,AdminStyles.center_space_between]} onPress={()=>{
-                                setSelectedRoom(requestedRoom)
+                                setSelectedRoom(request.requested_room)
                                 navigation.navigate("roomMember")
                             
                             }
                         }>
                         <View>
                             <Text style={styles.sectionTitle}>Phòng Yêu Cầu</Text>
-                            <Text style={styles.value}>Số phòng: {requestedRoom.room_number}</Text>
-                            <Text style={styles.value}>Loại phòng: {requestedRoom.room_type}</Text>
-                            <Text style={styles.value}>Giường: {requestedRoom.total_beds}</Text>
-                            <Text style={styles.value}>Tình trạng: {requestedRoom.status}</Text>
+                            <Text style={styles.value}>Số phòng: {request.requested_room.room_number}</Text>
+                            <Text style={styles.value}>Loại phòng: {request.requested_room.room_type}</Text>
+                            <Text style={styles.value}>Giường: {request.requested_room.total_beds}</Text>
+                            <Text style={styles.value}>Tình trạng: {getStatus(request.requested_room.status)}</Text>
                         </View>
                         <Ionicons name="chevron-forward-outline" size={24} color="#000" />
                     </TouchableOpacity>
-                    {isHandle ? 
+                    {isHandle() ? 
                         <View style ={[AdminStyles.row,AdminStyles.flex_1,AdminStyles.center]}>
                             <Text style = {{fontSize:15}}>Đã Giải Quyết</Text>
                         </View>

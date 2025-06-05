@@ -6,15 +6,18 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useFetchWithToken from '../../../config/UseFetchWithToken';
 import { endpoints } from '../../../config/Apis';
-import { Modal, TextInput, Button } from 'react-native-paper';
+import { Modal, TextInput, Button, ActivityIndicator } from 'react-native-paper';
 import AdminStyles from '../../../styles/AdminStyles';
+import { FlatList } from 'react-native-gesture-handler';
 
 const ComplaintDetail = ({ route, navigation }) => {
   const { complaint } = route.params;
   const { loading, fetchWithToken } = useFetchWithToken();
   const [responseContent, setResponseContent] = useState('');
-  const [responses, setResponses] = useState(complaint.responses || []);
+  const [responses, setResponses] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [page, setPage] = useState(1);
+  const [show, setShow] = useState(false)
 
   const isPending = complaint.status.toLowerCase() === 'pending';
   const isResolved = complaint.status.toLowerCase() === 'resolved';
@@ -57,63 +60,112 @@ const ComplaintDetail = ({ route, navigation }) => {
       setModalVisible(false);
     }
   };
+  const loadResponse = async () => {
+    if (page > 0) {
 
+      const data = await fetchWithToken({
+        url: `${endpoints['complaints-responses'](complaint.id)}?page=${page}`,
+        method: "GET"
+      })
+      console.log(data.results)
+      if (data?.results) {
+        setResponses([...responses, ...data.results]);
+        console.log(responses)
+      }
+      if (data.next === null) setPage(0)
+
+    }
+
+  }
+  const loadMore = () => {
+    if (!loading && responses.length > 0 && page > 0)
+      setPage(page + 1)
+  }
+  const renderRespone = ({ item }) => {
+    return (
+
+      <View key={item.id.toString()}
+        style={styles.responseItem}>
+        <Text style={styles.responseUser}>{item.user.username}:</Text>
+        <Text style={styles.responseContent}>{item.content}</Text>
+      </View>
+    )
+  }
+  useEffect(() => {
+    if (show) {
+      console.log("goi")
+      loadResponse();
+    }
+  }, [page, show])
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          <View style={[styles.infoCard,AdminStyles.invoiceCard,AdminStyles.roomBgColor]}>
-            <View style={[AdminStyles.mb]}>
-              <Text style={styles.label}>Nội dung:</Text>
-              <Text style={styles.content}>{complaint.description}</Text>
+        <View>
+          <ScrollView contentContainerStyle={[styles.scrollContent]}>
+            <View style={[styles.infoCard, AdminStyles.invoiceCard, AdminStyles.roomBgColor]}>
+              <View style={[AdminStyles.mb]}>
+                <Text style={styles.label}>Nội dung:</Text>
+                <Text style={styles.content}>{complaint.description}</Text>
+              </View>
+
+              <View style={[AdminStyles.row, AdminStyles.row_center_start, AdminStyles.mb]}>
+
+                <Text style={styles.label}>Người gửi: </Text>
+                <Text style={styles.content}>{fullName}</Text>
+              </View>
+
+              <View style={[AdminStyles.row, AdminStyles.row_center_start, AdminStyles.mb]}>
+
+                <Text style={styles.label}>Ngày tạo: </Text>
+                <Text style={styles.content}>{new Date(complaint.created_date).toLocaleDateString('vi-VN')}</Text>
+              </View>
+
+              <Text style={styles.label}>Phòng:</Text>
+              <Text style={styles.content}>Số phòng: {complaint.room?.room_number || 'Không rõ'}</Text>
+              <Text style={styles.content}>Tầng: {complaint.room?.floor || 'Không rõ'}</Text>
+              <Text style={styles.content}>Tòa: {complaint.room?.building.building_name || 'Không rõ'}</Text>
             </View>
-            
-          <View style={[AdminStyles.row,AdminStyles.row_center_start,AdminStyles.mb]}>
 
-            <Text style={styles.label}>Người gửi: </Text>
-            <Text style={styles.content}>{fullName}</Text>
-          </View>
-
-            <View style={[AdminStyles.row,AdminStyles.row_center_start,AdminStyles.mb]}>
-
-            <Text style={styles.label}>Ngày tạo: </Text>
-            <Text style={styles.content}>{new Date(complaint.created_date).toLocaleDateString('vi-VN')}</Text>
-            </View>
-
-            <Text style={styles.label}>Phòng:</Text>
-            <Text style={styles.content}>Số phòng: {complaint.room?.room_number || 'Không rõ'}</Text>
-            <Text style={styles.content}>Tầng: {complaint.room?.floor || 'Không rõ'}</Text>
-            <Text style={styles.content}>Tòa: {complaint.room?.building || 'Không rõ'}</Text>
-          </View>
-
-          {complaint.image && (
-            <Image source={{ uri: complaint.image }} style={styles.image} resizeMode="contain" />
-          )}
-
-          <Text style={styles.label}>Phản hồi:</Text>
-          <ScrollView style={AdminStyles.flex_1}>
-
-            {responses.length > 0 ? (
-              responses.map((response, index) => (
-                <View key={index} style={styles.responseItem}>
-                  <Text style={styles.responseUser}>{response.user.username}:</Text>
-                  <Text style={styles.responseContent}>{response.content}</Text>
-                </View>
-              ))
-            ) : (
-              <Text style={styles.noResponse}>Chưa có phản hồi nào</Text>
+            {complaint.image && (
+              <Image source={{ uri: complaint.image }} style={styles.image} resizeMode="contain" />
             )}
-          </ScrollView>
 
-          <TouchableOpacity style={[styles.addButton,AdminStyles.successColor]} onPress={() => setModalVisible(true)}>
-            <Text style={styles.buttonText}>Tạo phản hồi</Text>
-          </TouchableOpacity>
-        </ScrollView>
+          </ScrollView>
+          <View style={styles.scrollContent}>
+            <View>
+              <TouchableOpacity
+                onPress={() => { setShow(!show) }}
+                style={[AdminStyles.row,{alignItems:"center"},AdminStyles.mb]}>
+              
+                <Text style={[styles.label,AdminStyles.row_center_start]}>Phản hồi
+
+                </Text>
+                {show?<Ionicons name="chevron-up" size={14} color="#000"/>:<Ionicons name="chevron-down" size={14} color="#000" />}
+              </TouchableOpacity>
+            </View>
+            {show ? (
+              <FlatList data={responses}
+                renderItem={renderRespone}
+                ListFooterComponent={loading && <ActivityIndicator />}
+                onEndReached={loadMore}
+                ListEmptyComponent={!loading && <Text style={styles.noResponse}>Chưa có phản hồi nào</Text>} />
+            ) : (
+              <></>
+            )}
+            <TouchableOpacity style={[styles.addButton, AdminStyles.successColor]} onPress={() => setModalVisible(true)}>
+              <Text style={styles.buttonText}>Tạo phản hồi</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
 
         {isPending && (
-          <TouchableOpacity style={styles.button} onPress={Resolve}>
-            <Text style={styles.buttonText}>Giải quyết</Text>
-          </TouchableOpacity>
+          <View style={{ paddingHorizontal: 20, paddingVertical: 15 }}>
+
+            <TouchableOpacity style={styles.button} onPress={Resolve}>
+              <Text style={styles.buttonText}>Giải quyết xong</Text>
+            </TouchableOpacity>
+          </View>
         )}
 
         <Modal visible={isModalVisible} onDismiss={() => setModalVisible(false)} contentContainerStyle={styles.modal}>
@@ -124,7 +176,7 @@ const ComplaintDetail = ({ route, navigation }) => {
             onChangeText={setResponseContent}
             style={styles.input}
           />
-          <Button mode="contained" onPress={handleAddResponse} style={[styles.modalButton,AdminStyles.successColor]}>
+          <Button mode="contained" onPress={handleAddResponse} style={[styles.modalButton, AdminStyles.successColor]}>
             Tạo
           </Button>
           <Button mode="outlined" onPress={() => setModalVisible(false)} style={styles.modalButton}>
@@ -148,7 +200,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   scrollContent: {
-    padding: 20,
+    paddingHorizontal: 20,
+    marginTop:20
   },
   infoCard: {
     backgroundColor: '#f9f9f9',
@@ -158,7 +211,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontWeight: 'bold',
-    
+
   },
   content: {
   },
@@ -201,6 +254,7 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 5
   },
   modal: {
     backgroundColor: 'white',
@@ -218,7 +272,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 10,
-    backgroundColor:"#fff"
+    backgroundColor: "#fff"
   },
 });
 

@@ -27,6 +27,7 @@ export default  function UpdateRoom() {
         floor: room?.floor?.toString() || '',
         monthly_fee: room?.monthly_fee?.toString() || '',
     });
+     
     
     useEffect(() => {
             navigation.setOptions({ title: `Cập nhật phòng ${room.room_number}` });

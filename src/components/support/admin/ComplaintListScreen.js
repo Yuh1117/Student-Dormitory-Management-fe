@@ -15,7 +15,7 @@ const ComplaintList = ({ navigation }) => {
   const loadComplaints = async () => {
     if(page>0){
         const data = await fetchWithToken({ 
-            url: endpoints['complaints']
+            url: `${endpoints['complaints']}?page=${page}`
         });
         if (data?.results) {
             setComplaints([...complaints,...data.results]);
@@ -30,7 +30,9 @@ const ComplaintList = ({ navigation }) => {
   }, [page]);
   useFocusEffect(
     useCallback(() => {
-        loadComplaints();
+      setComplaints([])
+      setPage(1)
+      loadComplaints();
     }, [])
   );
 
@@ -76,7 +78,6 @@ const renderItem = ({ item }) => {
   };
   
 
-  if (loading) return <ActivityIndicator style={{ marginTop: 50 }} />;
 
   return (
     <SafeAreaView style={[AdminStyles.container, AdminStyles.flex_1]}>
