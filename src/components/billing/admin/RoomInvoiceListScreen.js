@@ -19,7 +19,7 @@ const RoomInvoiceList = () => {
         if(page>0){
             const data = await fetchWithToken({
                 // url: `${endpoints['invoices']}?room_id=${selectedRoom.id}&page=${page}`,
-                url: `${endpoints['rooms']}/${selectedRoom.id}/invoices/`
+                url: `${endpoints['rooms']}${selectedRoom.id}/invoices/`
             })
             if (data?.results) setRoomInvoiceList([...roomInvoiceList,...data.results]);
             if(data.next===null) setPage(0);

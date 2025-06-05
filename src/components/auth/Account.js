@@ -2,7 +2,7 @@ import { View, ScrollView } from 'react-native';
 import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Text } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import MenuItem from './MenuItem';
 import styles from './AccountStyles';
 import { useContext } from 'react';
@@ -25,7 +25,12 @@ const Account = () => {
       "type": "logout"
     })
 
-    nav.navigate("Login");
+    nav.dispatch(
+      CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Login" }],
+      })
+  )
   }
 
   return (

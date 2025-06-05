@@ -58,7 +58,12 @@ const RoomChangeRequest = ({ visible, onClose, room }) => {
 
             Alert.alert("Bạn đã gửi yêu cầu thành công.")
             handleClose()
-            nav.navigate("UserHome")
+            nav.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: "UserHome" }],
+                })
+            )
         } catch (err) {
             console.error(err)
             Alert.alert("Đã xảy ra lỗi.");
@@ -80,7 +85,7 @@ const RoomChangeRequest = ({ visible, onClose, room }) => {
                         <Text style={styles.header}>{t('roomChange.modal.title')}</Text>
 
                         <View style={roomStyles.row}>
-                            <View style={{width: '50%'}}>
+                            <View style={{ width: '50%' }}>
                                 <Text style={styles.modalText}>{t('roomDetails.building')}: {room.building.building_name}</Text>
                                 <Text style={styles.modalText}>{t('roomDetails.floor')}: {room.floor}</Text>
                                 <Text style={styles.modalText}>{t('room')}: {room.room_number}</Text>

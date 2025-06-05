@@ -142,13 +142,13 @@ const StackAccountNavigator = ({ t }) => {
             <Stack.Screen
                 name="Profile"
                 component={Profile}
-                options={{ headerShown: true, title: "Thông tin cá nhân" }}
+                options={{ headerShown: true, title: t('profile.title') }}
             />
 
             <Stack.Screen
                 name="Settings"
                 component={Settings}
-                options={{ headerShown: true, title: "Cài đặt" }}
+                options={{ headerShown: true, title: t('settings') }}
             />
             <Stack.Screen
                 name="Language"

@@ -5,7 +5,7 @@ import { ActivityIndicator, Button, HelperText, Text, TextInput } from "react-na
 import { useState } from "react"
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialIcons } from "@expo/vector-icons"
-import { useNavigation } from "@react-navigation/native"
+import { CommonActions, useNavigation } from "@react-navigation/native"
 import { authApis, endpoints } from "../../config/Apis"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useTranslation } from "react-i18next"
@@ -91,7 +91,12 @@ const SendSupport = () => {
 
             if (res) {
                 Alert.alert("Gửi yêu cầu thành công")
-                nav.navigate("UserHome")
+                nav.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [{ name: "UserHome" }],
+                    })
+                )
             }
         } catch (ex) {
             console.error(ex);
