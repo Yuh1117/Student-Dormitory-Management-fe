@@ -34,6 +34,7 @@ import RoomChangeDetail from '../../components/room/admin/RequestDetailScreen';
 import Statistics from '../../components/surveys/admin/statistics/StatisticsScreen';
 import StudentList from '../../components/auth/admin/StudentListScreen'
 import StudentDetail from '../../components/auth/admin/StudentDetaiScreen';
+import AccountAdmin from '../../components/auth/admin/AccountAdmin';
 
 
 
@@ -139,87 +140,87 @@ const StackRoomNavigater = () => {
     )
 }
 
-const StackSurveysNavigator =() =>{
-    return(
+const StackSurveysNavigator = () => {
+    return (
         <Stack.Navigator initialRouteName="surveyList">
-                
-                <Stack.Screen name="surveyList" component={SurveyList} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
 
-                    }
-                } />
-                <Stack.Screen name="surveyDetail" component={SurveyDetail} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
+            <Stack.Screen name="surveyList" component={SurveyList} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
 
-                    }
-                } />
-                <Stack.Screen name="createSurvey" component={CreateSurvey} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
+                }
+            } />
+            <Stack.Screen name="surveyDetail" component={SurveyDetail} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
 
-                    }
-                } />
-                <Stack.Screen name="surveyResponses" component={SurveyResponses} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
+                }
+            } />
+            <Stack.Screen name="createSurvey" component={CreateSurvey} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
 
-                    }
-                } />
-                
-              
-            </Stack.Navigator>
+                }
+            } />
+            <Stack.Screen name="surveyResponses" component={SurveyResponses} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
+
+                }
+            } />
+
+
+        </Stack.Navigator>
     );
 }
 
-const StackComplaintNavigator =() =>{
-    return(
+const StackComplaintNavigator = () => {
+    return (
         <Stack.Navigator initialRouteName="complaintsList">
-                
-                <Stack.Screen name="complaintsList" component={ComplaintList} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
 
-                    }
-                } />
-                <Stack.Screen name="complaintDetail" component={ComplaintDetail} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
+            <Stack.Screen name="complaintsList" component={ComplaintList} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
 
-                    }
-                } />
-                
-                
-              
-            </Stack.Navigator>
+                }
+            } />
+            <Stack.Screen name="complaintDetail" component={ComplaintDetail} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
+
+                }
+            } />
+
+
+
+        </Stack.Navigator>
     );
 }
 
-const StackRoomChangeRequestNavigator =() =>{
-    return(
+const StackRoomChangeRequestNavigator = () => {
+    return (
         <RoomProvider>
 
-        <Stack.Navigator initialRouteName="requestsList">
-                
+            <Stack.Navigator initialRouteName="requestsList">
+
                 <Stack.Screen name="requestsList" component={RoomChangeRequest} options={
                     {
                         headerShown: false,
@@ -258,15 +259,15 @@ const StackRoomChangeRequestNavigator =() =>{
 
                     }
                 } />
-                
-              
+
+
             </Stack.Navigator>
         </RoomProvider>
     );
 }
 
-const StackUserNavigater = () =>{
-    return(
+const StackUserNavigater = () => {
+    return (
         <Stack.Navigator initialRouteName="userManageMainScreen">
             <Stack.Screen name="userManageMainScreen" component={UserManage} options={
                 {
@@ -293,56 +294,56 @@ const StackUserNavigater = () =>{
                         <MaterialCommunityIcons name="home" color={color} size={size} />
                     ),
 
-                    }
-                } />
-                <Stack.Screen name="surveyStack" component={StackSurveysNavigator} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
+                }
+            } />
+            <Stack.Screen name="surveyStack" component={StackSurveysNavigator} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
 
-                    }
-                } />
-                <Stack.Screen name="complaintsStack" component={StackComplaintNavigator} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
+                }
+            } />
+            <Stack.Screen name="complaintsStack" component={StackComplaintNavigator} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
 
-                    }
-                } />
-                <Stack.Screen name="roomChangeRequestStack" component={StackRoomChangeRequestNavigator} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
+                }
+            } />
+            <Stack.Screen name="roomChangeRequestStack" component={StackRoomChangeRequestNavigator} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
 
-                    }
-                } />
-                <Stack.Screen name="studentList" component={StudentList} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
+                }
+            } />
+            <Stack.Screen name="studentList" component={StudentList} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
 
-                    }
-                } />
-                <Stack.Screen name="studentDetail" component={StudentDetail} options={
-                    {
-                        headerShown: false,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-                        ),
+                }
+            } />
+            <Stack.Screen name="studentDetail" component={StudentDetail} options={
+                {
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
 
-                    }
-                } />
-                
-              
-            </Stack.Navigator>
+                }
+            } />
+
+
+        </Stack.Navigator>
     );
 }
 
@@ -409,6 +410,15 @@ export function AdminHomeMain() {
                     headerShown: false,
                     tabBarIcon: getTabBarIcon('chart-box-outline'),
 
+                }
+            }></Tab.Screen>
+            <Tab.Screen name="Account" component={AccountAdmin} options={
+                {
+                    title: "Tài khoản",
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="account" color={color} size={size} />
+                    ),
                 }
             }></Tab.Screen>
 

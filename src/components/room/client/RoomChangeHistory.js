@@ -13,7 +13,7 @@ const RoomChangeHistory = () => {
     const [page, setPage] = useState(1);
     const [expandedId, setExpandedId] = useState(null);
     const nav = useNavigation();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const loadSurveys = async () => {
         if (page > 0) {
@@ -22,9 +22,9 @@ const RoomChangeHistory = () => {
                 const token = await AsyncStorage.getItem("access-token");
                 const url = `${endpoints["room-change-requests-history"]}?page=${page}`;
                 const res = await authApis(token).get(url);
-                
+
                 setRequests([...requests, ...res.data.results]);
-                
+
                 if (res.data.next === null) setPage(0);
             } catch (ex) {
                 console.error(ex);
@@ -61,6 +61,12 @@ const RoomChangeHistory = () => {
                                 </Text>
                                 <Text style={styles.title}>
                                     {t("roomChangeHistory.requestedRoom")}: <Text style={styles.highlight}>{item.requested_room.room_number}</Text>
+                                </Text>
+                                <Text style={{ fontSize: 14, color: 'gray' }}>
+                                    {new Date(item.created_date).toLocaleDateString(i18n.language, {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                    })}
                                 </Text>
                             </View>
                             <Chip
