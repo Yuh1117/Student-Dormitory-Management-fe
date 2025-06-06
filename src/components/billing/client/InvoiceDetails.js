@@ -46,7 +46,12 @@ const InvoiceDetails = ({ route }) => {
                         setShowWebView(false);
                         if (status === true) {
                             Alert.alert(t('invoiceDetails.payment_success'));
-                            nav.navigate('UserHome');
+                            nav.dispatch(
+                                CommonActions.reset({
+                                    index: 0,
+                                    routes: [{ name: "UserHome" }],
+                                })
+                            )
                         } else if (status === 'canceled') {
                             Alert.alert(t('invoiceDetails.payment_canceled'));
                         } else {
