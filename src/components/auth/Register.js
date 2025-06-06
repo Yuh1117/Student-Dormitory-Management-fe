@@ -6,13 +6,13 @@ import useFetchWithToken from '../../config/UseFetchWithToken';
 import { endpoints } from '../../config/Apis';
 import AdminStyles from '../../styles/AdminStyles';
 
-const RegisterScreen = ({navigation}) => {
+const RegisterScreen = ({ navigation }) => {
   const { control, handleSubmit, formState: { errors } } = useForm();
-  const {loading,fetchWithToken} = useFetchWithToken();
+  const { loading, fetchWithToken } = useFetchWithToken();
   const onSubmit = async (data) => {
     data = {
       ...data,
-      role:"Student",
+      role: "Student",
     }
 
     const res = await fetchWithToken({
@@ -21,7 +21,7 @@ const RegisterScreen = ({navigation}) => {
       data: data,
     })
 
-    if(res){
+    if (res) {
       Alert.alert('Success', 'Đăng Kí Thành Công');
       navigation.goBack();
     }
@@ -32,11 +32,10 @@ const RegisterScreen = ({navigation}) => {
     <View style={styles.container}>
       <Text style={styles.title}>Đăng Kí Sinh Viên</Text>
 
-
       <Controller
         control={control}
         name="username"
-        rules={{ required: 'Username is required' }}
+        rules={{ required: 'Tên người dùng bắt buộc' }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             style={styles.input}
@@ -52,12 +51,12 @@ const RegisterScreen = ({navigation}) => {
       <Controller
         control={control}
         name="password"
-        rules={{ required: 'Password is required', minLength: { value: 3, message: 'Password must be at least 3 characters' } }}
+        rules={{ required: 'Mật khẩu bắt buộc' }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             style={styles.input}
             placeholder="Mật khẩu"
-            
+
             secureTextEntry
             onBlur={onBlur}
             onChangeText={onChange}
@@ -66,6 +65,50 @@ const RegisterScreen = ({navigation}) => {
         )}
       />
       {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
+
+      <Controller
+        control={control}
+        name="email"
+        rules={{
+          required: 'Thông tin bắt buộc',
+          pattern: {
+            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            message: 'Email không hợp lệ',
+          },
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
+      />
+      {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
+
+      <Controller
+        control={control}
+        name="phone_number"
+        rules={{
+          required: 'Thông tin bắt buộc',
+          pattern: {
+            value: /^\d{10}$/,
+            message: 'Số điện thoại không hợp lệ',
+          },
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.input}
+            placeholder="SĐT"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
+      />
+      {errors.phone_number && <Text style={styles.error}>{errors.phone_number.message}</Text>}
 
       <Controller
         control={control}
@@ -82,6 +125,7 @@ const RegisterScreen = ({navigation}) => {
         )}
       />
       {errors.student_code && <Text style={styles.error}>{errors.student_code.message}</Text>}
+
       <Controller
         control={control}
         name="university"
@@ -98,7 +142,7 @@ const RegisterScreen = ({navigation}) => {
       />
       {errors.student_code && <Text style={styles.error}>{errors.student_code.message}</Text>}
 
-      {loading ?<ActivityIndicator/>:<TouchableOpacity style={[styles.button,AdminStyles.successColor]} onPress={handleSubmit(onSubmit)}>
+      {loading ? <ActivityIndicator /> : <TouchableOpacity style={[styles.button, AdminStyles.successColor]} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.buttonText}>Đăng Kí</Text>
       </TouchableOpacity>}
     </View>

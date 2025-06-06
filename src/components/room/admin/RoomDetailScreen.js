@@ -3,7 +3,7 @@ import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/nativ
 import { useEffect, useCallback, useState, useContext } from 'react';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { Ionicons, FontAwesome } from '@expo/vector-icons'; // hoặc 'react-native-vector-icons'
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import AdminStyles from '../../../styles/AdminStyles';
 import { RoomContext } from './roomContext';
 

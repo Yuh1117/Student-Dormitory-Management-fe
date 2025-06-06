@@ -60,7 +60,7 @@ export default StyleSheet.create({
         padding: 30,
         margin:6,
         borderRadius: 20,
-        justifyContent: "center",   // căn giữa theo chiều dọc
+        justifyContent: "center",
         alignItems: "center",
     },
     flex_1:{

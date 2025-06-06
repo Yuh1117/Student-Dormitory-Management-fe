@@ -7,7 +7,7 @@ import AdminStyles from '../../../styles/AdminStyles';
 import { RoomContext } from '../../room/admin/roomContext';
 
 export default function UpdateInvoice({ route, navigation }) {
-    // const { invoice } = route.params; // Nhận hóa đơn cần cập nhật
+    // const { invoice } = route.params;
     const { selectedInvoice } = useContext(RoomContext);
     const [invoice, setInvoice] = useState(selectedInvoice)
     const [status, setStatus] = useState(selectedInvoice.status || 'Unpaid');
@@ -36,14 +36,13 @@ export default function UpdateInvoice({ route, navigation }) {
     const handleUpdate = async () => {
         const newErrors = items.map(item => {
             return {
-                description: !item.description.trim(), // true nếu thiếu mô tả
-                amount: isNaN(parseFloat(item.amount)), // true nếu amount không hợp lệ
+                description: !item.description.trim(),
+                amount: isNaN(parseFloat(item.amount)),
             };
         });
 
         setErrors(newErrors);
 
-        // Nếu có lỗi, không gửi
         const hasErrors = newErrors.some(err => err.description || err.amount);
         if (hasErrors) {
             alert("Vui lòng điền đầy đủ mô tả và số tiền hợp lệ cho tất cả các khoản.");
@@ -74,7 +73,6 @@ export default function UpdateInvoice({ route, navigation }) {
     };
 
     const handleDelete = () => {
-        // Hiển thị hộp thoại xác nhận
         Alert.alert(
             "Xác nhận xoá",
             "Bạn có chắc muốn xoá hóa đơn này không?",

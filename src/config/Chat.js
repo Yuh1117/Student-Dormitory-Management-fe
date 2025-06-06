@@ -15,7 +15,6 @@ import {
 import { db } from './FireBase';
 
 /**
- * Gửi tin nhắn mới và cập nhật lastMessage
  * @param {string} chatId
  * @param {string} senderId
  * @param {string} content
@@ -31,10 +30,8 @@ export const sendMessage = async (chatId, senderId, senderName, receiverId, rece
     isRead: false,
   };
 
-  // Gửi tin nhắn
   await addDoc(collection(db, 'chats', chatId, 'messages'), messageData);
 
-  // Cập nhật tin nhắn cuối (lastMessage) và thông tin đối phương
   await setDoc(doc(db, 'chats', chatId), {
     lastMessage: {
       ...messageData,
@@ -49,7 +46,6 @@ export const sendMessage = async (chatId, senderId, senderName, receiverId, rece
 
 
 /**
- * Lắng nghe tin nhắn trong 1 chat
  * @param {string} chatId
  * @param {function} callback
  */
@@ -63,7 +59,6 @@ export const sendMessage = async (chatId, senderId, senderName, receiverId, rece
 //   const chatDoc = await getDoc(doc(db, 'chats', chatId));
 //   const chatData = chatDoc.data();
   
-//   // Xác định người đối thoại (student) dựa vào ID
 //   const participants = Object.keys(chatData.participants);
 //   const studentId = participants.find(id => id !== adminId);
 //   const receiverName = chatData.participants[studentId];
@@ -91,17 +86,14 @@ export const listenMessagesAdmin = async (chatId, callback) => {
   const chatDoc = await getDoc(doc(db, 'chats', chatId));
   const chatData = chatDoc.data();
 
-  // Xác định người đối thoại (student) dựa vào ID
   const participants = Object.keys(chatData.participants);
-  const studentId = participants.find(id => id !== 'admin'); // Ở đây bạn không có biến `adminId`, mình sửa lại là 'admin'
+  const studentId = participants.find(id => id !== 'admin');
   const receiverName = chatData.participants[studentId];
 
-  // Cập nhật lastMessage.isRead = true
   await updateDoc(doc(db, 'chats', chatId), {
     "lastMessage.isRead": true
   });
 
-  // Bắt đầu lắng nghe tin nhắn mới
   return onSnapshot(q, (snapshot) => {
     const messages = snapshot.docs.map(doc => ({
       id: doc.id,
@@ -121,12 +113,10 @@ export const listenMessages = async (chatId, callback) => {
   const chatDoc = await getDoc(doc(db, 'chats', chatId));
   const chatData = chatDoc.data();
   
-  // Xác định người đối thoại (student) dựa vào ID
   // const participants = Object.keys(chatData.participants);
   // const studentId = participants.find(id => id !== adminId);
   // const receiverName = chatData.participants[studentId];
 
-  // Cập nhật lastMessage.isRead = true
   await updateDoc(doc(db, 'chats', chatId), {
     "lastMessage.isRead": true
   });
@@ -141,7 +131,6 @@ export const listenMessages = async (chatId, callback) => {
 };
 
 /**
- * Cập nhật trạng thái đã đọc tin nhắn
  * @param {string} chatId
  * @param {Array} messageIds
  */
@@ -155,7 +144,6 @@ export const markMessagesAsRead = async (chatId, messageIds) => {
 };
 
 /**
- * Lắng nghe danh sách các cuộc trò chuyện (dùng cho admin)
  * @param {function} callback
  */
 // export const listenToChatList = (adminId, callback) => {
@@ -192,12 +180,10 @@ export const listenToChatList = (adminId, callback) => {
       const chat = docSnap.data();
       const chatId = docSnap.id;
 
-      // Tìm ID của đối phương
       const participants = Object.keys(chat.participants);
       const otherUserId = participants.find(id => id !== adminId);
       const otherUserName = chat.participants[otherUserId];
 
-      // Kiểm tra xem có tin nhắn chưa đọc không
       const hasUnreadMessages = chat.lastMessage.senderId !== adminId && !chat.lastMessage.isRead;
 
       return {

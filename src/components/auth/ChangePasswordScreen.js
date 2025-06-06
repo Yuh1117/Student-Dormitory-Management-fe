@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { ActivityIndicator, TextInput } from 'react-native-paper';
 import { MyDispatchContext, MyUserContext } from '../../config/MyContexts';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ChangPasswordScreen = () => {
     const user = useContext(MyUserContext)
@@ -49,7 +50,7 @@ const ChangPasswordScreen = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Cập nhật thông tin cá nhân</Text>
 
             <Controller
@@ -185,7 +186,7 @@ const ChangPasswordScreen = () => {
             {loading ? <ActivityIndicator /> : <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
                 <Text style={styles.buttonText}>Thay đổi</Text>
             </TouchableOpacity>}
-        </View>
+        </SafeAreaView>
     );
 };
 

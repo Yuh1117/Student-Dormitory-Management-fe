@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import AdminHome from '../../components/home/admin/adminHome';
+import AdminHome from '../../components/home/admin/AdminHome';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import ListRoomsScreen from '../../components/room/admin/ListRoomsScreen';
@@ -16,7 +16,7 @@ import CreateInvoice from '../../components/billing/admin/CreateInvoiceScreen';
 import { RoomProvider } from '../../components/room/admin/roomContext';
 import UpdateInvoice from '../../components/billing/admin/UpdateInvoicesScreens';
 import UserManage from '../../components/auth/admin/UserManagetScreen';
-import RegisterScreen from '../../components/auth/register';
+import RegisterScreen from '../../components/auth/Register';
 import RoomMember from '../../components/room/admin/RoomMemberScreen';
 import AddRoomMember from '../../components/room/admin/AddRoomMemberScreen';
 import CreateNotification from '../../components/notifications/admin/CreateNotiScreen';
@@ -60,7 +60,7 @@ const DrawerNavigator = () => {
             }} />
             <Drawer.Screen name="updateInvoice" component={UpdateInvoice} options={{
                 title: 'Cập nhật hóa đơn',
-                drawerItemStyle: { display: 'none' }, // Ẩn khỏi Drawer
+                drawerItemStyle: { display: 'none' },
 
             }} />
 
@@ -70,7 +70,6 @@ const DrawerNavigator = () => {
 
 
 
-//chuyêm
 const StackRoomNavigater = () => {
     return (
 
@@ -375,7 +374,6 @@ const AdminChatStack = () => {
     );
 }
 
-// trang AdminHomeMain chứa các tab cho admin dùng
 export function AdminHomeMain() {
     return (
         <Tab.Navigator ScreenOptions={

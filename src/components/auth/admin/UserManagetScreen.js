@@ -82,7 +82,6 @@ const UserManage = () => {
       startShakeAnimation();
     }, 1000);
 
-    // Clear interval khi component bị unmount
     return () => clearInterval(interval);
   }, []);
 

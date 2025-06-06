@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
-// import { listenToChatList } from './FirebaseService'; // Import hàm vừa tạo
+// import { listenToChatList } from './FirebaseService';
 // import { useEffect, useState } from 'react';
 import { Badge } from 'react-native-paper';
 
@@ -16,7 +16,7 @@ const ChatListScreen = ({ navigation }) => {
   const [chats, setChats] = useState([]);
   
   useEffect(() => {
-    const unsubscribe = listenToChatList('admin', setChats); // admin là ID của admin
+    const unsubscribe = listenToChatList('admin', setChats);
     return () => unsubscribe();
   }, []);
 

@@ -30,7 +30,6 @@ export default function AddRoomMember() {
         setStudents(data)
     }
     useEffect(() => {
-        // Gọi API lấy danh sách sinh viên chưa có phòng
         loadAvailableStudent()
     }, []);
 
@@ -56,13 +55,13 @@ export default function AddRoomMember() {
         });
         if(updatedRoom.available_beds !== selectedRoom.available_beds){
 
-            setSelectedRoom(updatedRoom);  // Cập nhật selectedRoom sau khi thành công
+            setSelectedRoom(updatedRoom);
     
             Alert.alert("Đăng kí thành công", "", [
                 {
                     text: "OK",
                     onPress: () => {
-                        navigation.goBack();  // Quay lại màn hình trước khi điều hướng
+                        navigation.goBack();
                     }
                 }
             ]);

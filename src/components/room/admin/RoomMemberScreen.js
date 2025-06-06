@@ -30,7 +30,7 @@ export default function RoomMember({ navigation ,route}) {
       if (!confirm) return;
       
       await fetchWithToken({
-        method: "PATCH", // hoặc DELETE tùy API
+        method: "PATCH",
         url: `${endpoints['remove-member'](selectedRoom.id)}`,
         data: { 
           room: selectedRoom.id,

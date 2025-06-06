@@ -1,9 +1,9 @@
-import LoginScreen from '../../components/auth/login';
+import LoginScreen from '../../components/auth/Login';
 import { UserHomeMain } from './UserNavigator';
-import { AdminHomeMain } from './adminNavigator';
+import { AdminHomeMain } from './AdminNavigator';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import ChangPasswordScreen from '../../components/auth/changePasswordScreen';
+import ChangPasswordScreen from '../../components/auth/ChangePasswordScreen';
 import MyUserReducer from "../../reducers/MyUserReducer";
 import MyRoomReducer from "../../reducers/MyRoomReducer";
 import { useReducer } from 'react';
