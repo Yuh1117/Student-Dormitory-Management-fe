@@ -25,7 +25,7 @@ import StudentChatScreen from '../../services/user/ChatScreen';
 import AdminChatScreen from '../../services/admin/AdminChatScreen';
 import CreateSurvey from '../../components/surveys/admin/CreateSurveyScreen'
 import SurveyList from '../../components/surveys/admin/ListvurveysScreen';
-import SurveyDetail from '../../components/surveys/admin/SurveyDetail.Screen';
+import SurveyDetail from '../../components/surveys/admin/SurveyDetailScreen';
 import SurveyResponses from '../../components/surveys/admin/ResponseSurveysScreen';
 import ComplaintList from '../../components/support/admin/ComplaintListScreen';
 import ComplaintDetail from '../../components/support/admin/ComplaintDetailScreen';
