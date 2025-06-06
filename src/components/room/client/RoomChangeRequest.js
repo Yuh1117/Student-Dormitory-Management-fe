@@ -6,7 +6,7 @@ import { roomStyles } from '../../room/client/RoomDetails'
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApis, endpoints } from '../../../config/Apis';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import { formatVietNamCurrency } from '../../../utils/utils';
 
 const RoomChangeRequest = ({ visible, onClose, room }) => {

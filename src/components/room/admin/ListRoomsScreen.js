@@ -29,7 +29,6 @@ export default function ListRoomsScreen() {
   const { setSelectedRoom } = useContext(RoomContext);
   const [refreshing, setRefreshing] = useState(false);
 
-  // hàm lấy các phòng
   const loadRooms = async (isRefreshing = false) => {
     const token = await AsyncStorage.getItem('access-token');
     let url = `${endpoints['listRooms']}?page=${isRefreshing ? 1 : page}`;
@@ -57,13 +56,9 @@ export default function ListRoomsScreen() {
     }
   };
 
-  // hàm lấy id của building
   const loadBuilding = async (isRefreshing = false) => {
-    //lấy token
     const token = await AsyncStorage.getItem("access-token");
-    //lấy url
     const url = endpoints['buildings']
-    //gọi api
     const data = await fetchWithToken(
       {
         url,
@@ -71,28 +66,24 @@ export default function ListRoomsScreen() {
       }
     );
     if (data) setBuilding(data);
-    setBuildingId(data[0].id) // lấy mặc định là tòa đầu tiên
+    setBuildingId(data[0].id)
   }
 
-  //hiển thị danh sách các tòa 
   useEffect(() => {
     loadBuilding();
   }, [])
 
-  // hiển thị danh sách phòng khi có building và page thay đổi
   useEffect(() => {
     if (buildindId) {
       loadRooms();
     }
   }, [buildindId, page]);
 
-  // hàm load thêm trang nữa
   const loadMore = () => {
     if (!loading && rooms.length > 0 && page > 0)
       setPage(page + 1)
   }
 
-  // hàm khi thay đổi chọn tòa
   const changeBuilding = (val, callback) => {
     setPage(1)
     setRooms([])
@@ -102,14 +93,12 @@ export default function ListRoomsScreen() {
     callback(val)
   }
 
-  // khi back từ detail trở về laod lại các room
   // useFocusEffect(
   //   useCallback(() => {
-  //     // Reset lại rooms, page và gọi lại loadRooms
   //     setRooms([]);
-  //     setPage(1); // Triggers useEffect to reload rooms
+  //     setPage(1);
   //     loadRooms()
-  //   }, [buildindId]) // khi tòa nhà đổi thì cũng chạy lại
+  //   }, [buildindId])
   // );
   const onRefresh = async () => {
     setRefreshing(true);

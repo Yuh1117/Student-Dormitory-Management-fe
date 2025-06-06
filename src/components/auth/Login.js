@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     padding: 20,
     borderRadius: 20,
-    overflow: 'hidden', // để background không tràn ra ngoài
+    overflow: 'hidden',
   },
   backgroundBlur: {
     ...StyleSheet.absoluteFillObject,

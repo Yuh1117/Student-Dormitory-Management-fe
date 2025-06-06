@@ -3,14 +3,14 @@ export const RoomContext = createContext();
 
 export const RoomProvider = ({ children }) => {
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const [selectedInvoice, setSelectedInvoice] = useState(null); // 👉 Thêm dòng này
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
 
   return (
     <RoomContext.Provider value={{
       selectedRoom,
       setSelectedRoom,
       selectedInvoice,
-      setSelectedInvoice, // 👉 Và dòng này
+      setSelectedInvoice,
     }}>
       {children}
     </RoomContext.Provider>

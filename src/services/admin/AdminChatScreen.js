@@ -17,7 +17,7 @@ const AdminChatScreen = ({ route }) => {
       setMessages(msgs);
       setReceiverName(rName)
       const unreadIds = msgs
-        .filter(m => !m.isRead && m.senderId !== 'admin') // admin là người nhận, kiểm tra tin nhắn chưa đọc
+        .filter(m => !m.isRead && m.senderId !== 'admin')
         .map(m => m.id);
 
       if (unreadIds.length) {
@@ -28,7 +28,6 @@ const AdminChatScreen = ({ route }) => {
     return unsubscribe;
   }
 
-  // Lắng nghe tin nhắn khi đã có chatId và senderId
   useEffect(() => {
     if (!chatId || !senderId) return;
 
@@ -38,7 +37,7 @@ const AdminChatScreen = ({ route }) => {
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    await sendMessage(chatId, 'admin',"Admin",receiverId,receiverName, input); // Gửi tin nhắn với senderId là 'admin'
+    await sendMessage(chatId, 'admin',"Admin",receiverId,receiverName, input);
     setInput('');
     flatListRef.current?.scrollToEnd({ animated: true });
   };

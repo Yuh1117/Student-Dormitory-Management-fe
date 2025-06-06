@@ -3,7 +3,7 @@ import { View, ActivityIndicator, ScrollView, TouchableOpacity, Alert } from 're
 import { Avatar, HelperText, Text, TextInput } from "react-native-paper";
 import { MyDispatchContext, MyUserContext } from "../../config/MyContexts";
 import * as ImagePicker from 'expo-image-picker';
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { authApis, endpoints } from "../../config/Apis";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AccountStyles from "./AccountStyles";

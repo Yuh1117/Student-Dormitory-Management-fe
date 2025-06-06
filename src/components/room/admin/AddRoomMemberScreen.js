@@ -30,7 +30,6 @@ export default function AddRoomMember() {
         setStudents(data)
     }
     useEffect(() => {
-        // Gọi API lấy danh sách sinh viên chưa có phòng
         loadAvailableStudent()
     }, []);
 
@@ -42,7 +41,7 @@ export default function AddRoomMember() {
 
         const data = await fetchWithToken({
             method: 'POST',
-            url: `${endpoints['rooms']}/${selectedRoom.id}/register-member/`,
+            url: `${endpoints['rooms']}${selectedRoom.id}/register-member/`,
             data : {
                 student_id: selectedStudent,
                 room: selectedRoom.id,
@@ -52,17 +51,17 @@ export default function AddRoomMember() {
 
         const updatedRoom = await fetchWithToken({
             method: 'GET',
-            url: `${endpoints['rooms']}/${selectedRoom.id}/`
+            url: `${endpoints['rooms']}${selectedRoom.id}/`
         });
         if(updatedRoom.available_beds !== selectedRoom.available_beds){
 
-            setSelectedRoom(updatedRoom);  // Cập nhật selectedRoom sau khi thành công
+            setSelectedRoom(updatedRoom);
     
             Alert.alert("Đăng kí thành công", "", [
                 {
                     text: "OK",
                     onPress: () => {
-                        navigation.goBack();  // Quay lại màn hình trước khi điều hướng
+                        navigation.goBack();
                     }
                 }
             ]);

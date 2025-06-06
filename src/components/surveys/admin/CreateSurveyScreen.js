@@ -41,7 +41,6 @@ const CreateSurvey = ({ navigation }) => {
   //   }
   // };
   const submitSurvey = async () => {
-    // Tạo survey trước
     const surveyData = await fetchWithToken({
       url: endpoints['surveys'],
       method: "POST",
@@ -58,7 +57,6 @@ const CreateSurvey = ({ navigation }) => {
   
     const surveyId = surveyData.id;
   
-    // Gửi API để tạo các câu hỏi
     const questionsData = await fetchWithToken({
       url: `${endpoints['surveys']}${surveyId}/survey-questions/`,
       method: "POST",
@@ -75,7 +73,6 @@ const CreateSurvey = ({ navigation }) => {
   
 
   const handleSubmit = () => {
-    // Validate tiêu đề và mô tả
   if (!title.trim()) {
     Alert.alert("Lỗi", "Tiêu đề không được để trống");
     return;
@@ -86,7 +83,6 @@ const CreateSurvey = ({ navigation }) => {
     return;
   }
 
-  // Validate câu hỏi
   for (let i = 0; i < questions.length; i++) {
     const { question_text, question_type } = questions[i];
     if (!question_text.trim()) {
@@ -99,7 +95,6 @@ const CreateSurvey = ({ navigation }) => {
     }
   }
 
-  // Hiện xác nhận nếu hợp lệ
   Alert.alert(
     "Xác nhận",
     "Bạn có chắc muốn tạo khảo sát này?",

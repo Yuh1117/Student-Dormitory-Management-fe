@@ -11,7 +11,7 @@ export const RoomCard = ({room}) => {
       key={room.id}
       style={[
         styles.container,
-        isAvailable && {...AdminStyles.roomBgColor }, // xanh nhạt nếu còn trống
+        isAvailable && {...AdminStyles.roomBgColor },
       ]}
     >
       <Card.Title
