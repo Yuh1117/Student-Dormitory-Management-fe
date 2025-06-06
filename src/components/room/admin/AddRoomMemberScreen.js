@@ -41,7 +41,7 @@ export default function AddRoomMember() {
 
         const data = await fetchWithToken({
             method: 'POST',
-            url: `${endpoints['rooms']}/${selectedRoom.id}/register-member/`,
+            url: `${endpoints['rooms']}${selectedRoom.id}/register-member/`,
             data : {
                 student_id: selectedStudent,
                 room: selectedRoom.id,
@@ -51,7 +51,7 @@ export default function AddRoomMember() {
 
         const updatedRoom = await fetchWithToken({
             method: 'GET',
-            url: `${endpoints['rooms']}/${selectedRoom.id}/`
+            url: `${endpoints['rooms']}${selectedRoom.id}/`
         });
         if(updatedRoom.available_beds !== selectedRoom.available_beds){
 

@@ -42,7 +42,7 @@ export default function RoomMember({ navigation ,route}) {
       
       const updatedRoom = await fetchWithToken({
         method: 'GET',
-        url: `${endpoints['rooms']}/${selectedRoom.id}/`
+        url: `${endpoints['rooms']}${selectedRoom.id}/`
       });
       
       if (updatedRoom) {
