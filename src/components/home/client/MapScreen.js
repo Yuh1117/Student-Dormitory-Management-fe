@@ -2,24 +2,20 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
+import Apis, { authApis, endpoints } from '../../../config/Apis';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {
-    REACT_APP_GOOGLE_MAPS_APIKEY
-} from '@env';
-
-const home = {  
+const home = {
     latitude: 10.675319,
     longitude: 106.690484,
     title: 'Ký túc xá YUH',
 };
 
-const destination = { 
+const destination = {
     latitude: 10.675476,
     longitude: 106.690346,
     title: 'Bãi gửi xe ký túc xá YUH',
 };
-
-const GOOGLE_MAPS_APIKEY = REACT_APP_GOOGLE_MAPS_APIKEY;
 
 const MapScreen = () => {
     const [origin, setOrigin] = useState(null);
@@ -51,53 +47,20 @@ const MapScreen = () => {
     }, []);
 
     const fetchRoute = async (start, end) => {
-        const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${start.latitude},${start.longitude}&destination=${end.latitude},${end.longitude}&key=${GOOGLE_MAPS_APIKEY}&mode=driving`;
+        try {
+            const token = await AsyncStorage.getItem("access-token");
+            const url = `${endpoints['map']}?origin_lat=${start.latitude}&origin_lng=${start.longitude}&dest_lat=${end.latitude}&dest_lng=${end.longitude}`;
 
-        const res = await fetch(url);
-        const json = await res.json();
+            const res = await authApis(token).get(url);
 
-        if (json.status === 'OK' && json.routes.length) {
-            const points = decodePolyline(json.routes[0].overview_polyline.points);
-            setRouteCoords(points);
-        } else {
-            console.warn("Google Maps API error:", json.status);
+            if (res.status === 200 && res.data?.overview_polyline) {
+                setRouteCoords(res.data.overview_polyline);
+            } else {
+                console.warn("Error fetching route:", res.data?.error || "Unknown error");
+            }
+        } catch (error) {
+            console.error("Axios error fetching route:", error.message || error);
         }
-    };
-
-    const decodePolyline = (t) => {
-        let points = [];
-        let index = 0,
-            len = t.length;
-        let lat = 0,
-            lng = 0;
-
-        while (index < len) {
-            let b, shift = 0, result = 0;
-            do {
-                b = t.charCodeAt(index++) - 63;
-                result |= (b & 0x1f) << shift;
-                shift += 5;
-            } while (b >= 0x20);
-            let dlat = (result & 1) !== 0 ? ~(result >> 1) : result >> 1;
-            lat += dlat;
-
-            shift = 0;
-            result = 0;
-            do {
-                b = t.charCodeAt(index++) - 63;
-                result |= (b & 0x1f) << shift;
-                shift += 5;
-            } while (b >= 0x20);
-            let dlng = (result & 1) !== 0 ? ~(result >> 1) : result >> 1;
-            lng += dlng;
-
-            points.push({
-                latitude: lat / 1e5,
-                longitude: lng / 1e5,
-            });
-        }
-
-        return points;
     };
 
     return (

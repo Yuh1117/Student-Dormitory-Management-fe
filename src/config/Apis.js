@@ -33,7 +33,8 @@ export const endpoints = {
     "room-change-requests-history": "room-change-requests/my-room-change-requests",
     "/statistics-sumamary/":"/statistics/summary/",
     "/statistics-detail/":"/statistics/detail/",
-    "survey-student-count":(id) => `surveys/${id}/survey-student-count/`
+    "survey-student-count":(id) => `surveys/${id}/survey-student-count/`,
+    "map": "/map/get-direction"
 }
 
 export const authApis = (token) => {
