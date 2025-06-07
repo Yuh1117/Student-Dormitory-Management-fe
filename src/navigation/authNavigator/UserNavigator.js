@@ -27,6 +27,7 @@ import { MyRoomDispatchContext } from '../../config/MyContexts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApis, endpoints } from '../../config/Apis';
 import RoomChangeHistory from '../../components/room/client/RoomChangeHistory';
+import MapScreen from '../../components/home/client/MapScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -238,6 +239,16 @@ export function UserHomeMain() {
                         headerShown: false,
                         tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="chat" color={color} size={size} />
+                        ),
+
+                    }
+                }></Tab.Screen>
+
+                <Tab.Screen name="Map" component={MapScreen} options={
+                    {
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="map" color={color} size={size} />
                         ),
 
                     }
