@@ -73,10 +73,10 @@ const RoomInvoice = () => {
                         data={unpaidInvoices}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
-                            <Card key={item.id} style={[styles.card, { width: screenWidth - 50, padding: 3 }]}>
+                            <Card key={item.id} style={[styles.card, { width: screenWidth - 40, padding: 3 }]}>
                                 <Card.Content>
                                     <View style={[styles.row, { marginBottom: 5 }]}>
-                                        <View style={[styles.row, {width: '60%'}]}>
+                                        <View style={[styles.row, {width: '55%'}]}>
                                             <Avatar.Icon
                                                 icon="home"
                                                 size={45}
@@ -125,7 +125,7 @@ const RoomInvoice = () => {
                 <Text style={{ color: '#376be3' }}>{t('roomInvoice.view_more')}</Text>
             </View>
 
-            {loading && unpaidInvoices.length === 0 ? (
+            {loading && paidInvoices.length === 0 ? (
                 <View style={{ padding: 20, alignItems: 'center', justifyContent: 'center' }}>
                     <ActivityIndicator size={40} />
                 </View>
