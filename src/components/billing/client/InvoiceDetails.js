@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import AccountStyles from "../../auth/AccountStyles";
 import { useEffect, useState } from "react";
 import { Alert, Modal, StyleSheet, TouchableOpacity, View } from "react-native";

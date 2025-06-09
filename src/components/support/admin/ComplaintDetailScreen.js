@@ -67,10 +67,11 @@ const ComplaintDetail = ({ route, navigation }) => {
         url: `${endpoints['complaints-responses'](complaint.id)}?page=${page}`,
         method: "GET"
       })
+
       console.log(data.results)
+
       if (data?.results) {
         setResponses([...responses, ...data.results]);
-        console.log(responses)
       }
       if (data.next === null) setPage(0)
 
@@ -92,11 +93,12 @@ const ComplaintDetail = ({ route, navigation }) => {
     )
   }
   useEffect(() => {
-    if (show) {
-      console.log("goi")
+    if (show && page > 0) {
+      setResponses([])
       loadResponse();
     }
   }, [page, show])
+  
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -135,12 +137,12 @@ const ComplaintDetail = ({ route, navigation }) => {
             <View>
               <TouchableOpacity
                 onPress={() => { setShow(!show) }}
-                style={[AdminStyles.row,{alignItems:"center"},AdminStyles.mb]}>
-              
-                <Text style={[styles.label,AdminStyles.row_center_start]}>Phản hồi
+                style={[AdminStyles.row, { alignItems: "center" }, AdminStyles.mb]}>
+
+                <Text style={[styles.label, AdminStyles.row_center_start]}>Phản hồi
 
                 </Text>
-                {show?<Ionicons name="chevron-up" size={14} color="#000"/>:<Ionicons name="chevron-down" size={14} color="#000" />}
+                {show ? <Ionicons name="chevron-up" size={14} color="#000" /> : <Ionicons name="chevron-down" size={14} color="#000" />}
               </TouchableOpacity>
             </View>
             {show ? (
@@ -201,7 +203,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 20,
-    marginTop:20
+    marginTop: 20
   },
   infoCard: {
     backgroundColor: '#f9f9f9',
