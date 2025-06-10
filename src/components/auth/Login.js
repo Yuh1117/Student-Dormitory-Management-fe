@@ -95,7 +95,7 @@ const LoginScreen = ({ navigation }) => {
             <Controller
               control={control}
               name="password"
-              rules={{ required: 'Mật khẩu không được để trống', minLength: { value: 1, message: 'Password must be at least 6 characters' } }}
+              rules={{ required: 'Mật khẩu không được để trống' }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
                   style={[AccountStyles.input, styles.loginInput]}
@@ -119,83 +119,6 @@ const LoginScreen = ({ navigation }) => {
       </ImageBackground>
     </View>
   );
-
-  //   return (
-  //   <View style={[AccountStyles.container, { padding: 0 }]}>
-  //     <ImageBackground
-  //       style={[AccountStyles.backGround, AccountStyles.container]}
-  //       source={require('../../assets/room.jpg')}
-  //       resizeMode="cover"
-  //     >
-  //       <View style={styles.loginArea}>
-  //         <BlurView
-  //           intensity={100} // Có thể điều chỉnh để thấy rõ hơn
-  //           tint="light"
-  //           style={styles.blurBox}
-  //         >
-  //           <View style={styles.foregroundContent}>
-  //             <Text style={AccountStyles.title}>Đăng nhập</Text>
-
-  //             <Controller
-  //               control={control}
-  //               name="username"
-  //               rules={{ required: 'Tên đăng nhập không được để trống' }}
-  //               render={({ field: { onChange, onBlur, value } }) => (
-  //                 <TextInput
-  //                   style={AccountStyles.input}
-  //                   placeholder="Tên đăng nhập"
-  //                   onBlur={onBlur}
-  //                   onChangeText={onChange}
-  //                   value={value}
-  //                 />
-  //               )}
-  //             />
-  //             {errors.username && (
-  //               <Text style={AccountStyles.error}>{errors.username.message}</Text>
-  //             )}
-
-  //             <Controller
-  //               control={control}
-  //               name="password"
-  //               rules={{
-  //                 required: 'Mật khẩu không được để trống',
-  //                 minLength: {
-  //                   value: 1,
-  //                   message: 'Password must be at least 6 characters',
-  //                 },
-  //               }}
-  //               render={({ field: { onChange, onBlur, value } }) => (
-  //                 <TextInput
-  //                   style={[AccountStyles.input]}
-  //                   placeholder="Mật khẩu"
-  //                   secureTextEntry
-  //                   onBlur={onBlur}
-  //                   onChangeText={onChange}
-  //                   value={value}
-  //                 />
-  //               )}
-  //             />
-  //             {errors.password && (
-  //               <Text style={AccountStyles.error}>{errors.password.message}</Text>
-  //             )}
-
-  //             <TouchableOpacity
-  //               style={AccountStyles.button}
-  //               onPress={handleSubmit(onSubmit)}
-  //               disabled={loading}
-  //             >
-  //               {loading ? (
-  //                 <ActivityIndicator color="white" />
-  //               ) : (
-  //                 <Text style={AccountStyles.buttonText}>Đăng nhập</Text>
-  //               )}
-  //             </TouchableOpacity>
-  //           </View>
-  //         </BlurView>
-  //       </View>
-  //     </ImageBackground>
-  //   </View>
-  // );
 
 };
 
