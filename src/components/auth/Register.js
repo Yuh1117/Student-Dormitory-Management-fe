@@ -12,7 +12,6 @@ const RegisterScreen = ({ navigation }) => {
   const onSubmit = async (data) => {
     data = {
       ...data,
-      role: "Student",
     }
 
     const res = await fetchWithToken({
